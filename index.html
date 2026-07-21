@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
-<title>GEO Citation Monitor 3.2</title>
+<title>GEO Citation Monitor 4.0</title>
 <style>
 :root{
   --bg:#f3f6fb;--surface:#fff;--surface-2:#f7f9fc;--surface-3:#edf2f8;
@@ -70,6 +70,10 @@ input,select,textarea{width:100%;border:1px solid var(--border);border-radius:10
 @media print{.sidebar,.topbar,.toolbar,.no-print,.modal-backdrop,.toast-zone{display:none!important}.app{display:block}.content{padding:0}.section{display:none!important}#reports.section{display:block!important}.card{box-shadow:none;break-inside:avoid}}
 
 .content-decision{border:1px solid var(--border);border-radius:14px;padding:16px;background:var(--surface-2);margin:14px 0}.content-decision h3{margin:0 0 8px}.decision-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.decision-card{border:1px solid var(--border);border-radius:12px;padding:13px;background:var(--surface)}.decision-card.active{outline:3px solid color-mix(in srgb,var(--accent) 22%,transparent);border-color:var(--accent)}.content-output{min-height:560px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px;line-height:1.6}.risk-high{color:var(--danger);font-weight:800}.risk-medium{color:var(--warning);font-weight:800}.risk-low{color:var(--success);font-weight:800}.fact-list{display:grid;gap:8px}.fact-row{padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--surface)}@media(max-width:900px){.decision-grid{grid-template-columns:1fr}}
+
+.advanced-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.status-confirmed{border-left:5px solid var(--success)}.status-probable{border-left:5px solid var(--warning)}.status-verify{border-left:5px solid var(--info)}.status-resolved{border-left:5px solid var(--muted)}.fact-row{display:grid;grid-template-columns:150px 1fr 130px 90px;gap:8px;align-items:start;padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--surface-2);margin-bottom:8px}.task-row{display:grid;grid-template-columns:90px minmax(220px,1.5fr) 150px 145px minmax(180px,1fr);gap:9px;align-items:start;padding:12px;border-bottom:1px solid var(--border)}.qa-score{font-size:54px;font-weight:900;letter-spacing:-.05em}.mini-code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;white-space:pre-wrap;word-break:break-word;background:var(--surface-3);padding:12px;border-radius:10px}.source-validation{display:grid;grid-template-columns:minmax(220px,1.2fr) repeat(4,minmax(110px,.55fr));gap:8px;padding:11px;border-bottom:1px solid var(--border)}.campaign-card{border:1px solid var(--border);border-radius:14px;padding:16px;background:var(--surface);margin-bottom:12px}.stability-number{font-size:36px;font-weight:900}.evidence-label{display:inline-flex;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:850}.evidence-confirmed{background:color-mix(in srgb,var(--success) 15%,transparent);color:var(--success)}.evidence-probable{background:color-mix(in srgb,var(--warning) 15%,transparent);color:var(--warning)}.evidence-verify{background:color-mix(in srgb,var(--info) 15%,transparent);color:var(--info)}
+@media(max-width:1050px){.task-row,.source-validation,.fact-row{grid-template-columns:1fr}.advanced-grid{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -93,6 +97,16 @@ input,select,textarea{width:100%;border:1px solid var(--border);border-radius:10
     <button class="nav-item" data-section="opportunities">◇ <span>Opportunità GEO</span></button>
     <button class="nav-item" data-section="quality">✓ <span>Qualità dati</span></button>
   </div>
+  <div class="nav-group"><div class="nav-label">Diagnosi avanzata</div>
+    <button class="nav-item" data-section="page-lab">⌁ <span>Analisi pagina</span></button>
+    <button class="nav-item" data-section="source-lab">⌕ <span>Validazione fonti</span></button>
+    <button class="nav-item" data-section="campaigns">◉ <span>Campagne e stabilità</span></button>
+    <button class="nav-item" data-section="knowledge">▰ <span>Knowledge Base</span></button>
+    <button class="nav-item" data-section="content-qa">✓ <span>Controllo contenuti</span></button>
+    <button class="nav-item" data-section="actions">☑ <span>Action Manager</span></button>
+    <button class="nav-item" data-section="gsc">G <span>Search Console</span></button>
+    <button class="nav-item" data-section="wordpress">W <span>WordPress Assistant</span></button>
+  </div>
   <div class="nav-group"><div class="nav-label">Output</div>
     <button class="nav-item" data-section="generator">✦ <span>Generatore prompt</span></button>
     <button class="nav-item" data-section="content-engine">✎ <span>Content Resolution Engine</span></button>
@@ -103,7 +117,7 @@ input,select,textarea{width:100%;border:1px solid var(--border);border-radius:10
     <button class="nav-item" data-section="backup">⇩ <span>Backup e ripristino</span></button>
     <button class="nav-item" data-section="guide">? <span>Guida</span></button>
   </div>
-  <div class="sidebar-footer">Versione 3.2.0<br>I dati restano nel browser.</div>
+  <div class="sidebar-footer">Versione 4.0.0<br>I dati restano nel browser.</div>
 </aside>
 <main class="main" id="mainContent">
   <header class="topbar">
@@ -126,6 +140,14 @@ input,select,textarea{width:100%;border:1px solid var(--border);border-radius:10
     <section class="section" id="quality"></section>
     <section class="section" id="generator"></section>
     <section class="section" id="content-engine"></section>
+    <section class="section" id="page-lab"></section>
+    <section class="section" id="source-lab"></section>
+    <section class="section" id="campaigns"></section>
+    <section class="section" id="knowledge"></section>
+    <section class="section" id="content-qa"></section>
+    <section class="section" id="actions"></section>
+    <section class="section" id="gsc"></section>
+    <section class="section" id="wordpress"></section>
     <section class="section" id="reports"></section>
     <section class="section" id="settings"></section>
     <section class="section" id="backup"></section>
@@ -143,7 +165,7 @@ input,select,textarea{width:100%;border:1px solid var(--border);border-radius:10
 // ============================================================
 const CONFIG = {
   APP_KEY: 'geoCitationMonitor_v3',
-  VERSION: '3.2.0',
+  VERSION: '4.0.0',
   MAX_LOGO_SIZE: 350000,
   MIN_RESPONSE_LENGTH: 120,
   ANOMALY_THRESHOLD: 20,
@@ -3156,6 +3178,149 @@ function bindEvents() {
     }
   });
 }
+
+
+// ============================================================
+// ADVANCED MODULES 4.0
+// ============================================================
+Object.assign(PAGES, {
+  'page-lab':['Analisi pagina','Analizza HTML o testo reale della pagina target'],
+  'source-lab':['Validazione fonti','Classifica e verifica manualmente le fonti delle risposte AI'],
+  campaigns:['Campagne e stabilità','Misura ricorrenza e stabilità su più test'],
+  knowledge:['Knowledge Base','Archivio dei soli dati verificati del progetto'],
+  'content-qa':['Controllo contenuti','Valida bozze prima della pubblicazione'],
+  actions:['Action Manager','Gestisci attività, scadenze e misurazione prima/dopo'],
+  gsc:['Search Console','Importa CSV e supporta le decisioni editoriali'],
+  wordpress:['WordPress Assistant','Prepara pacchetti HTML, SEO e schema per WordPress']
+});
+
+state.pageSnapshots ||= [];
+state.campaigns ||= [];
+state.knowledge ||= [];
+state.tasks ||= [];
+state.gscImports ||= [];
+state.contentAudits ||= [];
+state.sourceValidations ||= {};
+state.wpPackages ||= [];
+
+const AdvancedStore = {
+  db:null,
+  open(){ return new Promise((resolve,reject)=>{ const req=indexedDB.open('geoCitationMonitorDB',1); req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains('snapshots'))db.createObjectStore('snapshots',{keyPath:'id'});if(!db.objectStoreNames.contains('backups'))db.createObjectStore('backups',{keyPath:'id'});};req.onsuccess=()=>{this.db=req.result;resolve(this.db)};req.onerror=()=>reject(req.error);}); },
+  async mirror(){ try{const db=this.db||await this.open();const tx=db.transaction('backups','readwrite');tx.objectStore('backups').put({id:'latest',date:Utils.now(),state:structuredClone(state)});}catch(e){console.warn('IndexedDB mirror non disponibile',e);} },
+  async restore(){ try{const db=this.db||await this.open();return await new Promise((resolve,reject)=>{const r=db.transaction('backups').objectStore('backups').get('latest');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)});}catch{return null;} }
+};
+const originalSaveState=saveState;
+saveState=function(silent=false){const ok=originalSaveState(silent); if(ok) AdvancedStore.mirror(); return ok;};
+
+function evidenceBadge(status){const m={confirmed:['Confermato','confirmed'],probable:['Probabile','probable'],verify:['Da verificare','verify'],resolved:['Già risolto','confirmed'],unknown:['Non valutabile','verify']};const x=m[status]||m.verify;return `<span class="evidence-label evidence-${x[1]}">${x[0]}</span>`;}
+function projectKnowledge(projectId){return state.knowledge.filter(x=>x.projectId===projectId && x.verified);}
+function latestPageSnapshot(projectId){return state.pageSnapshots.filter(x=>x.projectId===projectId).sort((a,b)=>new Date(b.date)-new Date(a.date))[0];}
+function stripHtml(html){const d=document.createElement('div');d.innerHTML=html;return (d.textContent||'').replace(/\s+/g,' ').trim();}
+function analyzePageInput(project,raw){
+  const isHtml=/<[a-z][\s\S]*>/i.test(raw); const doc=document.implementation.createHTMLDocument('audit'); if(isHtml) doc.documentElement.innerHTML=raw; else doc.body.textContent=raw;
+  const text=isHtml?(doc.body?.innerText||doc.body?.textContent||''):raw;
+  const title=isHtml?(doc.querySelector('title')?.textContent||''):'';
+  const meta=isHtml?(doc.querySelector('meta[name="description"]')?.content||''):'';
+  const h1s=isHtml?[...doc.querySelectorAll('h1')].map(x=>x.textContent.trim()).filter(Boolean):[];
+  const headings=isHtml?[...doc.querySelectorAll('h2,h3')].map(x=>({tag:x.tagName,text:x.textContent.trim()})).filter(x=>x.text):[];
+  const links=isHtml?[...doc.querySelectorAll('a[href]')].map(a=>a.getAttribute('href')).filter(Boolean):[];
+  const schemas=isHtml?[...doc.querySelectorAll('script[type="application/ld+json"]')].map(x=>x.textContent):[];
+  const low=text.toLowerCase(); const services=(project.services||[]).filter(x=>low.includes(String(x).toLowerCase())); const locations=[project.location,...(project.nearbyLocations||[])].filter(Boolean).filter(x=>low.includes(String(x).toLowerCase()));
+  const hasFaq=/domande frequenti|faq/i.test(text)||headings.some(x=>/faq|domande frequenti/i.test(x.text));
+  const hasAuthor=/autore|scritto da|di roberto|about the author/i.test(text)||schemas.some(x=>/"author"/i.test(x));
+  const hasSchema=schemas.length>0; const wordCount=text.trim()?text.trim().split(/\s+/).length:0;
+  const checks=[
+    {key:'title',label:'Title presente e descrittivo',status:title?(title.length>=25?'confirmed':'probable'):'verify',detail:title||'Non rilevato nel contenuto incollato'},
+    {key:'h1',label:'Un solo H1',status:h1s.length===1?'confirmed':h1s.length?'probable':'verify',detail:h1s.length?`${h1s.length} H1: ${h1s.join(' | ')}`:'Nessun H1 rilevato'},
+    {key:'intro',label:'Risposta iniziale sostanziale',status:wordCount>=250?'confirmed':wordCount>=100?'probable':'verify',detail:`${wordCount} parole rilevate`},
+    {key:'brand',label:'Brand esplicito',status:low.includes(String(project.brand||'').toLowerCase())?'confirmed':'verify',detail:project.brand||'Brand non configurato'},
+    {key:'services',label:'Servizi associati',status:services.length?'confirmed':'verify',detail:services.join(', ')||'Nessun servizio configurato rilevato'},
+    {key:'location',label:'Località associata',status:locations.length?'confirmed':'verify',detail:locations.join(', ')||'Località non rilevata'},
+    {key:'faq',label:'FAQ presenti',status:hasFaq?'confirmed':'verify',detail:hasFaq?'Sezione FAQ rilevata':'Non rilevata'},
+    {key:'schema',label:'Dati strutturati',status:hasSchema?'confirmed':'verify',detail:`${schemas.length} blocchi JSON-LD`},
+    {key:'author',label:'Autore identificabile',status:hasAuthor?'confirmed':'verify',detail:hasAuthor?'Segnale autore rilevato':'Non rilevato'},
+    {key:'links',label:'Link presenti',status:links.length>=3?'confirmed':links.length?'probable':'verify',detail:`${links.length} link rilevati`}
+  ];
+  return {isHtml,title,meta,h1s,headings,links,schemas,services,locations,hasFaq,hasAuthor,hasSchema,wordCount,text:text.slice(0,50000),checks};
+}
+
+let pageLabProject='';
+function renderPageLab(){
+ const pid=document.getElementById('pageLabProject')?.value||pageLabProject||state.projects[0]?.id||'';pageLabProject=pid;const p=projectBy(pid);const snap=latestPageSnapshot(pid);
+ document.getElementById('page-lab').innerHTML=`<div class="toolbar"><select id="pageLabProject"><option value="">Seleziona progetto</option>${options(state.projects,pid)}</select><div class="spacer"></div>${snap?badge('Ultima analisi '+Utils.date(snap.date,true),'info'):''}</div>${!p?empty('Seleziona un progetto','Serve un progetto per contestualizzare l’analisi.'):`<div class="advanced-grid"><div class="card"><h2>HTML o testo della pagina</h2><p class="help">Incolla il sorgente HTML oppure il testo completo. In modalità standalone l’app non scarica automaticamente URL esterni.</p><textarea id="pageLabInput" class="response-text" placeholder="Incolla qui HTML o testo…">${Utils.esc(snap?.raw||'')}</textarea><div class="compact-actions" style="margin-top:12px"><button class="btn btn-primary" data-action="analyze-page">Analizza e salva snapshot</button><button class="btn" data-action="use-project-audit">Usa audit manuale</button></div></div><div class="card" id="pageLabResults">${snap?renderPageSnapshot(snap):empty('Nessuna analisi','Incolla la pagina e avvia l’analisi.')}</div></div>`}`;
+}
+function renderPageSnapshot(s){return `<h2>Diagnosi pagina</h2><div class="grid grid-3">${metric('Parole',s.analysis.wordCount,'Testo analizzato')}${metric('H1',s.analysis.h1s.length,'Numero rilevato')}${metric('Schema',s.analysis.schemas.length,'Blocchi JSON-LD')}</div><div style="margin-top:14px">${s.analysis.checks.map(c=>`<div class="diagnosis-item status-${c.status}"><div class="flex gap-8 wrap"><strong>${Utils.esc(c.label)}</strong>${evidenceBadge(c.status)}</div><div class="help">${Utils.esc(c.detail)}</div></div>`).join('')}</div><div class="implementation-box"><h4>Decisione editoriale</h4>${pageDecisionFromSnapshot(s)}</div>`;}
+function pageDecisionFromSnapshot(s){const missing=s.analysis.checks.filter(x=>x.status==='verify').map(x=>x.label);return missing.length?`Mancanze confermate dal contenuto incollato: <strong>${Utils.esc(missing.join(', '))}</strong>. Correggi prima la pagina esistente quando la query è commerciale o locale. Crea un articolo solo per un intento informativo distinto.`:'Non emergono mancanze strutturali evidenti. Prima di creare nuovo contenuto, concentra il lavoro su citazioni indipendenti, prove e test multipli.';}
+
+function renderSourceLab(){const cid=document.getElementById('sourceLabCheck')?.value||state.checks.slice().sort((a,b)=>new Date(b.date)-new Date(a.date))[0]?.id||'';const c=state.checks.find(x=>x.id===cid);const vals=state.sourceValidations[cid]||{};document.getElementById('source-lab').innerHTML=`<div class="toolbar"><select id="sourceLabCheck"><option value="">Seleziona verifica</option>${state.checks.slice().sort((a,b)=>new Date(b.date)-new Date(a.date)).map(x=>`<option value="${x.id}" ${x.id===cid?'selected':''}>${Utils.esc(platformBy(x.platformId).name)} · ${Utils.date(x.date)} · ${Utils.esc(promptBy(x.promptId)?.text||'')}</option>`).join('')}</select><button class="btn btn-primary" data-action="save-source-validations">Salva validazioni</button></div>${!c?empty('Nessuna verifica','Seleziona una verifica con fonti.'):(c.urls||[]).length?`<div class="table-wrap"><div class="source-validation"><strong>Fonte</strong><strong>Raggiungibile</strong><strong>Pertinenza</strong><strong>Supporta risposta</strong><strong>Tipo</strong></div>${c.urls.map((u,i)=>{const v=vals[u]||{};return `<div class="source-validation" data-source-url="${Utils.esc(u)}"><div><strong>${Utils.esc(Utils.domain(u))}</strong><div class="help">${Utils.esc(u)}</div><input class="source-title" placeholder="Titolo verificato" value="${Utils.esc(v.title||'')}"></div><select class="source-reachable"><option value="unknown">Da verificare</option><option value="yes" ${v.reachable==='yes'?'selected':''}>Sì</option><option value="no" ${v.reachable==='no'?'selected':''}>No</option></select><select class="source-relevance"><option value="0">Da valutare</option>${[1,2,3,4,5].map(n=>`<option value="${n}" ${Number(v.relevance)===n?'selected':''}>${n}/5</option>`).join('')}</select><select class="source-support"><option value="unknown">Da verificare</option><option value="yes" ${v.support==='yes'?'selected':''}>Sì</option><option value="partial" ${v.support==='partial'?'selected':''}>Parziale</option><option value="no" ${v.support==='no'?'selected':''}>No</option></select><select class="source-kind"><option>Sito web</option><option ${v.kind==='Fonte indipendente'?'selected':''}>Fonte indipendente</option><option ${v.kind==='Sito proprietario'?'selected':''}>Sito proprietario</option><option ${v.kind==='Directory'?'selected':''}>Directory</option><option ${v.kind==='Istituzionale'?'selected':''}>Istituzionale</option><option ${v.kind==='Social'?'selected':''}>Social</option></select></div>`}).join('')}</div>`:empty('Nessuna fonte registrata','Aggiungi gli URL alla verifica prima di validarli.')}`;}
+
+function campaignMetrics(cam){const checks=state.checks.filter(c=>c.projectId===cam.projectId&&c.promptId===cam.promptId&&(!cam.platformIds?.length||cam.platformIds.includes(c.platformId)));const n=checks.length;const brand=checks.filter(c=>c.brandMentioned).length;const domain=checks.filter(c=>c.domainCited||c.domainMentioned).length;const positions=checks.filter(c=>c.position>0).map(c=>c.position);return {checks:n,brand,domain,brandRate:n?Math.round(brand/n*100):0,domainRate:n?Math.round(domain/n*100):0,avgPosition:positions.length?(positions.reduce((a,b)=>a+b,0)/positions.length).toFixed(1):'—',platforms:new Set(checks.map(c=>c.platformId)).size};}
+function renderCampaigns(){document.getElementById('campaigns').innerHTML=`<div class="toolbar"><button class="btn btn-primary" data-action="new-campaign">＋ Nuova campagna</button><div class="spacer"></div></div>${state.campaigns.length?state.campaigns.map(cam=>{const m=campaignMetrics(cam);const p=promptBy(cam.promptId);return `<article class="campaign-card"><div class="flex wrap gap-8"><h3>${Utils.esc(cam.name)}</h3><div class="spacer"></div>${badge(cam.status||'Attiva',cam.status==='Completata'?'success':'info')}</div><div class="help">${Utils.esc(p?.text||'Prompt eliminato')}</div><div class="grid grid-4" style="margin-top:12px">${metric('Test',m.checks,`Obiettivo ${cam.targetRuns||3}`)}${metric('Stabilità brand',m.brandRate+'%',`${m.brand}/${m.checks||0}`)}${metric('Dominio',m.domainRate+'%',`${m.domain}/${m.checks||0}`)}${metric('Posizione media',m.avgPosition,`${m.platforms} piattaforme`)}</div><div class="card-actions"><button class="btn btn-sm" data-action="campaign-start-test" data-id="${cam.id}">Avvia test</button><button class="btn btn-sm" data-action="campaign-baseline" data-id="${cam.id}">Salva baseline</button><button class="btn btn-sm btn-success" data-action="campaign-complete" data-id="${cam.id}">Completa</button><button class="btn btn-sm btn-danger" data-action="campaign-delete" data-id="${cam.id}">Elimina</button></div>${cam.baseline?`<div class="notice" style="margin-top:10px">Baseline: brand ${cam.baseline.brandRate}% · dominio ${cam.baseline.domainRate}% · test ${cam.baseline.checks}</div>`:''}</article>`}).join(''):empty('Nessuna campagna','Crea una campagna per ripetere lo stesso prompt su più piattaforme.')}`;}
+function campaignForm(){return `<form id="campaignForm" class="form-grid">${field('name','Nome campagna','',true)}<div class="field"><label>Progetto</label><select name="projectId" required><option value="">Seleziona</option>${options(state.projects,'')}</select></div><div class="field"><label>Prompt</label><select name="promptId" required><option value="">Seleziona dopo il progetto</option>${state.prompts.map(p=>`<option value="${p.id}">${Utils.esc(p.text)}</option>`).join('')}</select></div>${field('targetRuns','Numero minimo di test',6,'','','number')}<div class="field full"><label>Piattaforme</label><div class="checklist">${state.platforms.filter(p=>p.active).map(p=>`<label class="check-item"><input type="checkbox" name="platformIds" value="${p.id}" style="width:auto"> ${Utils.esc(p.name)}</label>`).join('')}</div></div></form>`;}
+
+function renderKnowledge(){const pid=document.getElementById('knowledgeProject')?.value||state.projects[0]?.id||'';const facts=state.knowledge.filter(x=>x.projectId===pid);document.getElementById('knowledge').innerHTML=`<div class="toolbar"><select id="knowledgeProject"><option value="">Seleziona progetto</option>${options(state.projects,pid)}</select><button class="btn btn-primary" data-action="new-fact">＋ Aggiungi dato</button><div class="spacer"></div>${badge(`${facts.filter(x=>x.verified).length} verificati`,'success')}</div><div class="notice">Il generatore deve usare direttamente solo i dati marcati come verificati e dotati di fonte o nota interna.</div>${facts.length?facts.map(f=>`<div class="fact-row"><div>${badge(f.category||'Altro','info')}</div><div><strong>${Utils.esc(f.label)}</strong><div>${Utils.esc(f.value)}</div><div class="help">Fonte: ${Utils.esc(f.source||'non indicata')}</div></div><div>${f.verified?evidenceBadge('confirmed'):evidenceBadge('verify')}</div><button class="btn btn-sm btn-danger" data-action="delete-fact" data-id="${f.id}">Elimina</button></div>`).join(''):empty('Knowledge Base vuota','Aggiungi biografia, servizi, case study, risultati, recensioni e certificazioni reali.')}`;}
+function factForm(pid){return `<form id="factForm" class="form-grid"><input type="hidden" name="projectId" value="${Utils.esc(pid)}"><div class="field"><label>Categoria</label><select name="category"><option>Identità</option><option>Servizio</option><option>Esperienza</option><option>Case study</option><option>Risultato</option><option>Recensione</option><option>Certificazione</option><option>Prezzo</option><option>Contatto</option><option>Altro</option></select></div>${field('label','Etichetta','',true)}${textareaField('value','Dato approvato','', 'Testo esatto utilizzabile nei contenuti.',4)}${field('source','Fonte o URL','') }<label><input type="checkbox" name="verified" style="width:auto"> Dato verificato e autorizzato</label></form>`;}
+
+function qaContent(project,text){const low=text.toLowerCase();const h1=(text.match(/<h1\b/gi)||[]).length;const placeholders=(text.match(/\[[^\]]{4,}\]/g)||[]);const urls=Utils.urls(text);const numericClaims=(text.match(/\b\d+(?:[.,]\d+)?\s*(?:%|anni|clienti|progetti|euro|€)\b/gi)||[]);const facts=projectKnowledge(project.id);const unsupported=numericClaims.filter(cl=>!facts.some(f=>String(f.value).toLowerCase().includes(cl.toLowerCase())));const checks=[['H1 unico',h1===1,h1?`${h1} H1`:'Nessun H1 HTML'],['Brand presente',low.includes(String(project.brand||'').toLowerCase()),project.brand],['Località presente',!project.location||low.includes(project.location.toLowerCase()),project.location||'Non configurata'],['Servizi presenti',(project.services||[]).some(s=>low.includes(s.toLowerCase())),(project.services||[]).join(', ')],['Nessun segnaposto',placeholders.length===0,placeholders.join(', ')],['Nessuna promessa numerica non supportata',unsupported.length===0,unsupported.join(', ')],['Link presenti',urls.length>0,`${urls.length} URL`],['FAQ o domande',/faq|domande frequenti|<h2[^>]*>[^<]*(domande|faq)/i.test(text),'Sezione rilevata']];const score=Math.round(checks.filter(x=>x[1]).length/checks.length*100);return {score,checks,placeholders,unsupported,blockers:checks.filter(x=>!x[1]&&['Nessun segnaposto','Nessuna promessa numerica non supportata'].includes(x[0]))};}
+let qaProject='',qaText='';
+function renderContentQa(){const pid=document.getElementById('qaProject')?.value||qaProject||state.projects[0]?.id||'';qaProject=pid;const p=projectBy(pid);const last=state.contentAudits.filter(x=>x.projectId===pid).sort((a,b)=>new Date(b.date)-new Date(a.date))[0];document.getElementById('content-qa').innerHTML=`<div class="toolbar"><select id="qaProject"><option value="">Seleziona progetto</option>${options(state.projects,pid)}</select><button class="btn btn-primary" data-action="run-content-qa">Controlla contenuto</button></div><div class="advanced-grid"><div class="card"><textarea id="qaText" class="response-text" placeholder="Incolla HTML o testo della bozza…">${Utils.esc(qaText||'')}</textarea></div><div class="card" id="qaResults">${last?renderQa(last.result):empty('Nessun controllo','Incolla una bozza e avvia il controllo.')}</div></div>`;}
+function renderQa(r){return `<div class="qa-score">${r.score}/100</div><div class="help">Prontezza editoriale indicativa</div>${r.blockers.length?`<div class="notice danger" style="margin-top:12px"><strong>Problemi bloccanti:</strong> ${r.blockers.map(x=>Utils.esc(x[0])).join(', ')}</div>`:'<div class="notice success" style="margin-top:12px">Nessun problema bloccante automatico.</div>'}<div style="margin-top:12px">${r.checks.map(x=>`<div class="diagnosis-item ${x[1]?'status-confirmed':'status-verify'}"><strong>${x[1]?'✓':'!'} ${Utils.esc(x[0])}</strong><div class="help">${Utils.esc(x[2]||'')}</div></div>`).join('')}</div>`;}
+
+function syncTasks(){generateOpportunities();for(const o of state.opportunities){if(!state.tasks.some(t=>t.opportunityId===o.id))state.tasks.push({id:Utils.uid(),opportunityId:o.id,projectId:o.projectId,checkId:o.checkId,title:o.title,priority:o.priority,status:'Da verificare',owner:'',due:'',url:projectBy(o.projectId)?.targetUrl||'',notes:'',evidence:'',beforeCheckId:o.checkId,afterCheckId:'',createdAt:Utils.now()});}}
+function renderActions(){syncTasks();const pid=document.getElementById('taskProject')?.value||'';const status=document.getElementById('taskStatus')?.value||'';const tasks=state.tasks.filter(t=>(!pid||t.projectId===pid)&&(!status||t.status===status));document.getElementById('actions').innerHTML=`<div class="toolbar"><button class="btn btn-primary" data-action="new-task">＋ Nuova attività</button><button class="btn" data-action="sync-tasks">Sincronizza opportunità</button><select id="taskProject"><option value="">Tutti i progetti</option>${options(state.projects,pid)}</select><select id="taskStatus"><option value="">Tutti gli stati</option>${['Da verificare','Confermata','Da fare','In corso','Completata','Non applicabile','Da ritestare'].map(x=>`<option ${x===status?'selected':''}>${x}</option>`).join('')}</select></div><div class="card" style="padding:0;overflow:auto"><div class="task-row"><strong>Priorità</strong><strong>Attività</strong><strong>Stato</strong><strong>Scadenza</strong><strong>Gestione</strong></div>${tasks.map(t=>`<div class="task-row" data-task-id="${t.id}"><div>${badge(t.priority,t.priority==='P1'?'danger':t.priority==='P2'?'warning':'info')}</div><div><strong>${Utils.esc(t.title)}</strong><div class="help">${Utils.esc(projectBy(t.projectId)?.name||'')}</div><input class="task-owner" placeholder="Responsabile" value="${Utils.esc(t.owner||'')}"></div><select class="task-status">${['Da verificare','Confermata','Da fare','In corso','Completata','Non applicabile','Da ritestare'].map(x=>`<option ${x===t.status?'selected':''}>${x}</option>`).join('')}</select><input class="task-due" type="date" value="${Utils.esc(t.due||'')}"><div><input class="task-url" placeholder="URL interessato" value="${Utils.esc(t.url||'')}"><textarea class="task-notes" placeholder="Note / evidenza" style="min-height:70px">${Utils.esc(t.notes||'')}</textarea><select class="task-after"><option value="">Verifica dopo intervento</option>${state.checks.filter(c=>c.projectId===t.projectId).map(c=>`<option value="${c.id}" ${c.id===t.afterCheckId?'selected':''}>${Utils.date(c.date)} · ${c.score}/100</option>`).join('')}</select><div class="compact-actions"><button class="btn btn-sm" data-action="save-task" data-id="${t.id}">Salva</button><button class="btn btn-sm btn-danger" data-action="delete-task" data-id="${t.id}">Elimina</button></div>${taskDelta(t)}</div></div>`).join('')}</div>`;}
+function taskDelta(t){const b=state.checks.find(c=>c.id===t.beforeCheckId),a=state.checks.find(c=>c.id===t.afterCheckId);if(!b||!a)return '<div class="help">Collega una verifica successiva per misurare prima/dopo.</div>';return `<div class="notice ${a.score>=b.score?'success':'warning'}">Prima ${b.score}/100 → Dopo ${a.score}/100 (${a.score-b.score>=0?'+':''}${a.score-b.score})</div>`;}
+function taskForm(){return `<form id="taskForm" class="form-grid"><div class="field"><label>Progetto</label><select name="projectId" required><option value="">Seleziona</option>${options(state.projects,'')}</select></div>${field('title','Attività','',true)}<div class="field"><label>Priorità</label><select name="priority"><option>P1</option><option>P2</option><option selected>P3</option><option>P4</option></select></div>${field('owner','Responsabile','')}${field('due','Scadenza','','','','date')}${field('url','URL interessato','','','https://…','url')}${textareaField('notes','Istruzioni e prova richiesta','', '',4)}</form>`;}
+
+function parseCsv(text){const rows=[];let row=[],cell='',q=false;for(let i=0;i<text.length;i++){const ch=text[i],n=text[i+1];if(ch==='"'&&q&&n==='"'){cell+='"';i++;}else if(ch==='"')q=!q;else if(ch===','&&!q){row.push(cell);cell='';}else if((ch==='\n'||ch==='\r')&&!q){if(ch==='\r'&&n==='\n')i++;row.push(cell);if(row.some(x=>x.trim()))rows.push(row);row=[];cell='';}else cell+=ch;}row.push(cell);if(row.some(x=>x.trim()))rows.push(row);return rows;}
+function normalizeGsc(rows){if(rows.length<2)return[];const h=rows[0].map(x=>Utils.slug(x));const idx=(...names)=>h.findIndex(x=>names.some(n=>x.includes(n)));const iq=idx('query','query principali'),ip=idx('pagina','page'),ic=idx('clic','click'),ii=idx('impression'),ict=idx('ctr'),ipos=idx('posizione','position');return rows.slice(1).map(r=>({query:r[iq]||'',page:r[ip]||'',clicks:Number(String(r[ic]||0).replace(',','.'))||0,impressions:Number(String(r[ii]||0).replace(/[.\s]/g,'').replace(',','.'))||0,ctr:r[ict]||'',position:Number(String(r[ipos]||0).replace(',','.'))||0})).filter(x=>x.query||x.page);}
+let gscProject='';
+function renderGsc(){const pid=document.getElementById('gscProject')?.value||gscProject||state.projects[0]?.id||'';gscProject=pid;const imports=state.gscImports.filter(x=>x.projectId===pid);const latest=imports.sort((a,b)=>new Date(b.date)-new Date(a.date))[0];document.getElementById('gsc').innerHTML=`<div class="toolbar"><select id="gscProject"><option value="">Seleziona progetto</option>${options(state.projects,pid)}</select><input type="file" id="gscFile" accept=".csv,text/csv"><button class="btn btn-primary" data-action="import-gsc">Importa CSV</button></div><div class="notice">Importa il CSV “Query” o “Pagine” di Search Console. Per ZIP usa prima l’esportazione CSV estratta.</div>${latest?renderGscData(latest):empty('Nessun dato Search Console','Importa un CSV per supportare la decisione tra aggiornamento e nuovo contenuto.')}`;}
+function renderGscData(im){const top=im.rows.slice().sort((a,b)=>b.impressions-a.impressions).slice(0,50);return `<div class="grid grid-4">${metric('Righe',im.rows.length,'Importate')}${metric('Impression',im.rows.reduce((s,x)=>s+x.impressions,0),'Totale')}${metric('Clic',im.rows.reduce((s,x)=>s+x.clicks,0),'Totale')}${metric('Query pagina target',im.rows.filter(x=>x.page&&x.page.includes(projectBy(im.projectId)?.targetUrl||'___')).length,'Corrispondenze')}</div><div class="table-wrap" style="margin-top:16px"><table><thead><tr><th>Query</th><th>Pagina</th><th>Clic</th><th>Impression</th><th>Posizione</th><th>Decisione</th></tr></thead><tbody>${top.map(x=>`<tr><td>${Utils.esc(x.query)}</td><td>${Utils.esc(x.page)}</td><td>${x.clicks}</td><td>${x.impressions}</td><td>${x.position||'—'}</td><td>${x.impressions>20&&x.position>5?badge('Aggiorna pagina','warning'):x.impressions===0?badge('Dato insufficiente','info'):badge('Mantieni e rafforza','success')}</td></tr>`).join('')}</tbody></table></div>`;}
+
+function renderWordpress(){const pid=document.getElementById('wpProject')?.value||state.projects[0]?.id||'';const p=projectBy(pid);const facts=projectKnowledge(pid);document.getElementById('wordpress').innerHTML=`<div class="toolbar"><select id="wpProject"><option value="">Seleziona progetto</option>${options(state.projects,pid)}</select><button class="btn btn-primary" data-action="generate-wp-package">Genera pacchetto</button></div>${!p?empty('Seleziona progetto','Serve un progetto configurato.'):`<div class="advanced-grid"><div class="card"><h2>Input</h2><label>Tipo</label><select id="wpType"><option>Article</option><option>Service</option><option>LocalBusiness</option></select><label style="margin-top:10px">HTML contenuto</label><textarea id="wpHtml" class="response-text" placeholder="Incolla la bozza HTML oppure usa l’output del Content Resolution Engine">${Utils.esc(contentEngineOutput&&contentEngineOutput.includes('<')?contentEngineOutput:'')}</textarea></div><div class="card" id="wpOutput">${empty('Pacchetto non generato','Il pacchetto include HTML, title, meta, permalink, FAQ/schema e checklist Rank Math.')}</div></div><div class="notice warning" style="margin-top:16px">La versione standalone prepara una bozza. Non pubblica automaticamente e non conserva credenziali WordPress.</div>`}`;}
+function makeWpPackage(p,html,type){const text=stripHtml(html);const h1=(html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)||[])[1]||promptBy(state.checks.filter(c=>c.projectId===p.id).sort((a,b)=>new Date(b.date)-new Date(a.date))[0]?.promptId)?.text||p.brand;const cleanH1=stripHtml(h1);const title=(cleanH1+' | '+p.brand).slice(0,60);const meta=text.slice(0,155);const slug=Utils.slug(cleanH1).replace(/\s+/g,'-');const faq=[...html.matchAll(/<h[23][^>]*>([^<]*\?[^<]*)<\/h[23]>\s*<p[^>]*>([\s\S]*?)<\/p>/gi)].map(m=>({q:stripHtml(m[1]),a:stripHtml(m[2])}));const schema={"@context":"https://schema.org","@type":type,headline:cleanH1,name:p.brand,url:p.targetUrl||undefined,areaServed:p.location||undefined,mainEntity:faq.length?faq.map(x=>({"@type":"Question",name:x.q,acceptedAnswer:{"@type":"Answer",text:x.a}})):undefined};return {title,meta,slug,html,schema,checklist:['H1 unico','Title ≤ 60 caratteri','Meta ≤ 155 caratteri','URL leggibile','Link interno alla pagina target','Alt immagini da compilare','Schema validato','Revisione dati verificati','Salva come bozza, non pubblicare direttamente']};}
+
+const advancedRenderers={'page-lab':renderPageLab,'source-lab':renderSourceLab,campaigns:renderCampaigns,knowledge:renderKnowledge,'content-qa':renderContentQa,actions:renderActions,gsc:renderGsc,wordpress:renderWordpress};
+const baseRender=render;
+render=function(id){if(advancedRenderers[id])advancedRenderers[id]();else baseRender(id);};
+
+Object.assign(actionHandlers,{
+ 'analyze-page':()=>{const p=projectBy(pageLabProject);const raw=document.getElementById('pageLabInput')?.value||'';if(!p||raw.trim().length<20){Utils.toast('Seleziona progetto e incolla almeno 20 caratteri.','error');return;}const snap={id:Utils.uid(),projectId:p.id,date:Utils.now(),raw,analysis:analyzePageInput(p,raw),algorithmVersion:CONFIG.VERSION};state.pageSnapshots.push(snap);saveState();renderPageLab();},
+ 'use-project-audit':()=>{const p=projectBy(pageLabProject);const a=p?.pageAudit||{};document.getElementById('pageLabInput').value=`Title: ${a.title||''}\nH1: ${a.h1||''}\n${a.intro||''}\nFAQ: ${a.hasFaq?'Sì':'No'}\nSchema: ${a.hasSchema?'Sì':'No'}\nAutore: ${a.hasAuthor?'Sì':'No'}`;},
+ 'save-source-validations':()=>{const cid=document.getElementById('sourceLabCheck')?.value;if(!cid)return;const out={};document.querySelectorAll('[data-source-url]').forEach(r=>out[r.dataset.sourceUrl]={title:r.querySelector('.source-title').value,reachable:r.querySelector('.source-reachable').value,relevance:Number(r.querySelector('.source-relevance').value),support:r.querySelector('.source-support').value,kind:r.querySelector('.source-kind').value,verifiedAt:Utils.now()});state.sourceValidations[cid]=out;saveState();},
+ 'new-campaign':()=>{modal('Nuova campagna',campaignForm(),'<button class="btn" data-close-modal>Annulla</button><button class="btn btn-primary" id="saveCampaign">Salva</button>');document.getElementById('saveCampaign').onclick=()=>{const f=document.getElementById('campaignForm');if(!f.reportValidity())return;const d=Utils.form(f);state.campaigns.push({id:Utils.uid(),name:d.name,projectId:d.projectId,promptId:d.promptId,targetRuns:Number(d.targetRuns||6),platformIds:[...f.querySelectorAll('[name="platformIds"]:checked')].map(x=>x.value),status:'Attiva',createdAt:Utils.now()});saveState();closeModal();renderCampaigns();};},
+ 'campaign-start-test':e=>{const c=state.campaigns.find(x=>x.id===e.target.dataset.id);state.checkDraft={projectId:c.projectId,promptId:c.promptId,platformId:c.platformIds?.[0]||'chatgpt',wizardStep:1};saveState(true);setSection('new-check');},
+ 'campaign-baseline':e=>{const c=state.campaigns.find(x=>x.id===e.target.dataset.id);c.baseline=campaignMetrics(c);c.baselineDate=Utils.now();saveState();renderCampaigns();},
+ 'campaign-complete':e=>{const c=state.campaigns.find(x=>x.id===e.target.dataset.id);c.status='Completata';c.final=campaignMetrics(c);c.completedAt=Utils.now();saveState();renderCampaigns();},
+ 'campaign-delete':e=>{state.campaigns=state.campaigns.filter(x=>x.id!==e.target.dataset.id);saveState();renderCampaigns();},
+ 'new-fact':()=>{const pid=document.getElementById('knowledgeProject')?.value||state.projects[0]?.id||'';modal('Nuovo dato verificato',factForm(pid),'<button class="btn" data-close-modal>Annulla</button><button class="btn btn-primary" id="saveFact">Salva</button>');document.getElementById('saveFact').onclick=()=>{const f=document.getElementById('factForm');if(!f.reportValidity())return;const d=Utils.form(f);state.knowledge.push({id:Utils.uid(),projectId:d.projectId,category:d.category,label:d.label,value:d.value,source:d.source,verified:f.elements.verified.checked,createdAt:Utils.now()});saveState();closeModal();renderKnowledge();};},
+ 'delete-fact':e=>{state.knowledge=state.knowledge.filter(x=>x.id!==e.target.dataset.id);saveState();renderKnowledge();},
+ 'run-content-qa':()=>{const p=projectBy(qaProject),text=document.getElementById('qaText')?.value||'';if(!p||text.length<40){Utils.toast('Seleziona progetto e incolla il contenuto.','error');return;}qaText=text;const result=qaContent(p,text);state.contentAudits.push({id:Utils.uid(),projectId:p.id,date:Utils.now(),result,text:text.slice(0,100000)});saveState();renderContentQa();},
+ 'sync-tasks':()=>{syncTasks();saveState();renderActions();},
+ 'new-task':()=>{modal('Nuova attività',taskForm(),'<button class="btn" data-close-modal>Annulla</button><button class="btn btn-primary" id="saveNewTask">Salva</button>');document.getElementById('saveNewTask').onclick=()=>{const f=document.getElementById('taskForm');if(!f.reportValidity())return;const d=Utils.form(f);state.tasks.push({id:Utils.uid(),projectId:d.projectId,title:d.title,priority:d.priority,status:'Da fare',owner:d.owner,due:d.due,url:d.url,notes:d.notes,evidence:'',beforeCheckId:'',afterCheckId:'',createdAt:Utils.now()});saveState();closeModal();renderActions();};},
+ 'save-task':e=>{const row=e.target.closest('[data-task-id]'),t=state.tasks.find(x=>x.id===e.target.dataset.id);Object.assign(t,{owner:row.querySelector('.task-owner').value,status:row.querySelector('.task-status').value,due:row.querySelector('.task-due').value,url:row.querySelector('.task-url').value,notes:row.querySelector('.task-notes').value,afterCheckId:row.querySelector('.task-after').value,completedAt:row.querySelector('.task-status').value==='Completata'?Utils.now():t.completedAt||''});saveState();renderActions();},
+ 'delete-task':e=>{state.tasks=state.tasks.filter(x=>x.id!==e.target.dataset.id);saveState();renderActions();},
+ 'import-gsc':()=>{const file=document.getElementById('gscFile')?.files?.[0],pid=document.getElementById('gscProject')?.value;if(!file||!pid){Utils.toast('Seleziona progetto e CSV.','error');return;}const r=new FileReader();r.onload=()=>{const rows=normalizeGsc(parseCsv(r.result));state.gscImports.push({id:Utils.uid(),projectId:pid,date:Utils.now(),filename:file.name,rows});saveState();renderGsc();};r.readAsText(file);},
+ 'generate-wp-package':()=>{const pid=document.getElementById('wpProject')?.value,p=projectBy(pid),html=document.getElementById('wpHtml')?.value||'',type=document.getElementById('wpType')?.value||'Article';if(!p||html.length<20){Utils.toast('Seleziona progetto e inserisci HTML.','error');return;}const pkg=makeWpPackage(p,html,type);state.wpPackages.push({id:Utils.uid(),projectId:pid,date:Utils.now(),...pkg});saveState(true);document.getElementById('wpOutput').innerHTML=`<h2>Pacchetto WordPress</h2><div class="field"><label>Title SEO</label><input value="${Utils.esc(pkg.title)}"></div><div class="field"><label>Meta description</label><textarea>${Utils.esc(pkg.meta)}</textarea></div><div class="field"><label>Permalink</label><input value="${Utils.esc(pkg.slug)}"></div><h3>Schema JSON-LD</h3><div class="mini-code">${Utils.esc(JSON.stringify(pkg.schema,null,2))}</div><h3>Checklist</h3><div class="checklist">${pkg.checklist.map(x=>`<div class="check-item">□ ${Utils.esc(x)}</div>`).join('')}</div><div class="compact-actions" style="margin-top:12px"><button class="btn" data-action="copy-wp-schema">Copia schema</button><button class="btn" data-action="download-wp-html">Scarica HTML</button></div>`;window.__wpPkg=pkg;},
+ 'copy-wp-schema':()=>copyText(JSON.stringify(window.__wpPkg?.schema||{},null,2)),
+ 'download-wp-html':()=>Utils.download('contenuto-wordpress.html',window.__wpPkg?.html||'','text/html;charset=utf-8'),
+ 'restore-indexeddb':async()=>{const b=await AdvancedStore.restore();if(!b?.state){Utils.toast('Nessun mirror IndexedDB disponibile.','error');return;}state=migrate(b.state);saveState();location.reload();}
+});
+
+// Advanced select handlers
+Object.assign(changeHandlers,{
+ '#pageLabProject':e=>{pageLabProject=e.target.value;renderPageLab();},
+ '#sourceLabCheck':()=>renderSourceLab(),
+ '#knowledgeProject':()=>renderKnowledge(),
+ '#qaProject':e=>{qaProject=e.target.value;qaText='';renderContentQa();},
+ '#taskProject':()=>renderActions(), '#taskStatus':()=>renderActions(),
+ '#gscProject':e=>{gscProject=e.target.value;renderGsc();}, '#wpProject':()=>renderWordpress()
+});
+
+// Backup recovery button injection
+const baseRenderBackup=renderBackup;
+renderBackup=function(){baseRenderBackup();const root=document.getElementById('backup');root.insertAdjacentHTML('beforeend','<div class="card" style="margin-top:16px"><h3>Mirror IndexedDB</h3><p class="help">Copia locale aggiuntiva, utile quando localStorage viene cancellato accidentalmente. Non sostituisce un backup esterno.</p><button class="btn" data-action="restore-indexeddb">Ripristina ultimo mirror</button></div>');};
+
 
 // ============================================================
 // INIT
