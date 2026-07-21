@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
-<title>GEO Citation Monitor 3.0</title>
+<title>GEO Citation Monitor 3.1</title>
 <style>
 :root{
   --bg:#f3f6fb;--surface:#fff;--surface-2:#f7f9fc;--surface-3:#edf2f8;
@@ -65,6 +65,8 @@ input,select,textarea{width:100%;border:1px solid var(--border);border-radius:10
 .selection-panel{border:1px solid var(--border);border-radius:14px;background:var(--surface);padding:16px;margin-bottom:16px}.selection-panel h3{margin:0 0 6px;font-size:16px}.selection-list{display:grid;gap:8px;max-height:340px;overflow:auto;padding-right:4px}.selection-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:start;padding:11px;border:1px solid var(--border);border-radius:10px;background:var(--surface-2)}.selection-row input{width:auto;margin-top:4px}.selection-row .meta{font-size:12px;color:var(--muted)}.action-plan{margin-top:12px;border-top:1px solid var(--border);padding-top:12px}.action-plan ol{margin:8px 0 0;padding-left:22px}.action-plan li{margin:7px 0}.priority-explain{font-size:13px;padding:10px 12px;border-radius:10px;background:var(--surface-2);margin:10px 0}.opportunity.selected{outline:3px solid color-mix(in srgb,var(--accent) 25%,transparent)}.opp-select{width:auto!important;margin:0 4px 0 0}.report-section-title{display:flex;align-items:center;gap:10px;margin:22px 0 10px}.report-section-title h2{margin:0}.compact-actions{display:flex;gap:8px;flex-wrap:wrap}.steps-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}.step-card{border:1px solid var(--border);border-radius:10px;padding:11px;background:var(--surface-2)}.step-card strong{display:block;margin-bottom:4px}.simple-explanation{font-size:15px;line-height:1.65}.report-empty-note{padding:16px;border:1px dashed var(--border);border-radius:10px;color:var(--muted)}.report-search-select{min-width:min(100%,720px);max-width:100%}.implementation-box{margin-top:16px;padding:16px;border:1px solid var(--border);border-radius:12px;background:var(--surface-2)}.implementation-box h4{margin:0 0 10px;font-size:16px}.implementation-box ul{margin:8px 0 0;padding-left:22px}.implementation-box li{margin:7px 0}.deliverables{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}.deliverable{padding:11px;border:1px solid var(--border);border-radius:10px;background:var(--surface)}.report-context{padding:14px;border-left:4px solid var(--accent);background:var(--surface-2);border-radius:10px;margin:14px 0}.timeline-row{display:grid;grid-template-columns:110px 1fr;gap:12px;margin:8px 0}.timeline-row strong{color:var(--text)}
 .geo-summary{display:grid;grid-template-columns:1.3fr .7fr;gap:14px;margin:16px 0}.geo-summary .card{margin:0}.diagnosis-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.diagnosis-item{padding:12px;border:1px solid var(--border);border-radius:10px;background:var(--surface-2)}.diagnosis-item strong{display:block;margin-bottom:4px}.impact-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:12px 0}.impact-box{padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--surface-2);text-align:center}.impact-box strong{display:block;font-size:18px}.roadmap-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.roadmap-card{padding:13px;border:1px solid var(--border);border-radius:12px;background:var(--surface-2)}.roadmap-card h4{margin:0 0 8px}.checklist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}.check-item{padding:9px 10px;border:1px solid var(--border);border-radius:9px;background:var(--surface)}.estimate-bar{height:10px;border-radius:999px;background:var(--surface-2);overflow:hidden;margin-top:8px}.estimate-bar span{display:block;height:100%;background:var(--accent)}.section-kicker{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:800}.action-example{padding:14px;border-left:4px solid var(--accent);background:var(--surface-2);border-radius:10px;margin-top:12px}.kpi-list{display:grid;gap:8px}.kpi-row{display:grid;grid-template-columns:160px 1fr;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}.score-path{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:12px 0}.score-step{padding:9px 12px;border-radius:999px;background:var(--surface-2);border:1px solid var(--border)}
 @media(max-width:900px){.geo-summary,.diagnosis-grid,.roadmap-grid{grid-template-columns:1fr}.impact-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.checklist{grid-template-columns:1fr}.kpi-row{grid-template-columns:1fr}}
+.fact-box{border-left:5px solid var(--success);background:color-mix(in srgb,var(--success) 7%,var(--surface));padding:14px;border-radius:11px;margin:10px 0}.hypothesis-box{border-left:5px solid var(--warning);background:color-mix(in srgb,var(--warning) 7%,var(--surface));padding:14px;border-radius:11px;margin:10px 0}.confidence-breakdown{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:12px}.confidence-part{padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--surface-2);text-align:center}.task-row{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:start;padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--surface)}.task-row input{width:auto;margin-top:4px}.task-row.done{opacity:.72;text-decoration:line-through}.audit-status{display:inline-flex;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:800}.audit-confirmed{background:color-mix(in srgb,var(--success) 14%,transparent);color:var(--success)}.audit-probable{background:color-mix(in srgb,var(--warning) 14%,transparent);color:var(--warning)}.audit-check{background:color-mix(in srgb,var(--info) 14%,transparent);color:var(--info)}
+@media(max-width:900px){.confidence-breakdown{grid-template-columns:1fr 1fr}}
 @media print{.sidebar,.topbar,.toolbar,.no-print,.modal-backdrop,.toast-zone{display:none!important}.app{display:block}.content{padding:0}.section{display:none!important}#reports.section{display:block!important}.card{box-shadow:none;break-inside:avoid}}
 </style>
 </head>
@@ -98,7 +100,7 @@ input,select,textarea{width:100%;border:1px solid var(--border);border-radius:10
     <button class="nav-item" data-section="backup">⇩ <span>Backup e ripristino</span></button>
     <button class="nav-item" data-section="guide">? <span>Guida</span></button>
   </div>
-  <div class="sidebar-footer">Versione 3.0.0<br>I dati restano nel browser.</div>
+  <div class="sidebar-footer">Versione 3.1.0<br>I dati restano nel browser.</div>
 </aside>
 <main class="main" id="mainContent">
   <header class="topbar">
@@ -137,7 +139,7 @@ input,select,textarea{width:100%;border:1px solid var(--border);border-radius:10
 // ============================================================
 const CONFIG = {
   APP_KEY: 'geoCitationMonitor_v3',
-  VERSION: '3.0.0',
+  VERSION: '3.1.0',
   MAX_LOGO_SIZE: 350000,
   MIN_RESPONSE_LENGTH: 120,
   ANOMALY_THRESHOLD: 20,
@@ -369,7 +371,8 @@ function migrate(source) {
     services: p.services || [],
     nearbyLocations: p.nearbyLocations || [],
     homonymExclusions: p.homonymExclusions || [],
-    contextTerms: p.contextTerms || []
+    contextTerms: p.contextTerms || [],
+    pageAudit: { title: '', h1: '', intro: '', hasAuthor: false, hasFaq: false, hasSchema: false, internalLinks: 0, reviews: 0, notes: '', ...(p.pageAudit || {}) }
   }));
   result.prompts = s.prompts || [];
   result.checks = (s.checks || []).map(c => ({
@@ -382,9 +385,20 @@ function migrate(source) {
     locationsPresent: c.locationsPresent || [],
     confidence: c.confidence ?? 0,
     responseType: c.responseType || 'Non classificata',
-    testEnvironment: c.testEnvironment || 'not-verified'
+    testEnvironment: c.testEnvironment || 'not-verified',
+    algorithmVersion: c.algorithmVersion || c.version || 'legacy',
+    scoreWeightsSnapshot: c.scoreWeightsSnapshot || null,
+    analysisSettingsSnapshot: c.analysisSettingsSnapshot || null,
+    confidenceBreakdown: c.confidenceBreakdown || {},
+    rawConfidence: c.rawConfidence ?? c.confidence ?? 0,
+    environmentPenalty: c.environmentPenalty || 0,
+    domainMentionedText: c.domainMentionedText || false,
+    brandSentiment: c.brandSentiment || c.sentiment || 'Neutro',
+    visibilityScore: c.visibilityScore ?? c.score ?? 0,
+    sourceQualityScore: c.sourceQualityScore ?? 0,
+    responseQualityScore: c.responseQualityScore ?? 0
   }));
-  result.opportunities = s.opportunities || [];
+  result.opportunities = (s.opportunities || []).map(o => ({ ...o, type: o.type || Utils.slug(o.title || 'opportunity'), tasks: o.tasks || [], owner: o.owner || '', dueDate: o.dueDate || '', completedAt: o.completedAt || '' }));
   result.savedFilters = s.savedFilters || [];
   result.backups = s.backups || [];
   result.checkDraft = s.checkDraft || {};
@@ -596,17 +610,25 @@ const Analyzer = {
     const low = clean.toLowerCase();
     const brand = this.findVariant(clean, project);
     const domain = Utils.domain(project.domain);
+    const domainPattern = domain ? new RegExp('(?:https?:\\/\\/)?(?:www\\.)?' + domain.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&'), 'i') : null;
+    const domainMentionedText = Boolean(domainPattern && domainPattern.test(clean));
     const urls = Utils.unique([...Utils.urls(clean), ...Utils.urls(sourcesText)]);
     const domains = urls.map(Utils.domain);
     const domainCited = domains.some(d => d === domain || d.endsWith('.' + domain));
-    const domainIndex = domainCited ? clean.toLowerCase().indexOf(domain) : -1;
+    const domainIndex = domainMentionedText ? clean.search(domainPattern) : -1;
 
     const competitors = [];
     const competitorEvidence = {};
     for (const competitor of project.competitors || []) {
-      const candidate = String(competitor);
+      const candidate = String(competitor).trim();
       const cd = Utils.domain(candidate);
-      const index = Math.max(low.indexOf(candidate.toLowerCase()), cd ? low.indexOf(cd) : -1);
+      const nameAlias = candidate.includes('.') ? cd.split('.')[0].replace(/[-_]/g, ' ') : candidate;
+      const aliases = Utils.unique([candidate, cd, nameAlias]).filter(x => x && x.length > 2);
+      let index = -1;
+      for (const alias of aliases) {
+        const i = low.indexOf(alias.toLowerCase());
+        if (i >= 0 && (index < 0 || i < index)) index = i;
+      }
       if (index >= 0 || domains.includes(cd)) {
         competitors.push(candidate);
         competitorEvidence[candidate] = [Utils.excerpt(clean, index >= 0 ? index : 0)];
@@ -614,37 +636,38 @@ const Analyzer = {
     }
 
     const services = (project.services || []).filter(s => low.includes(String(s).toLowerCase()));
-    const locations = [project.location, ...(project.nearbyLocations || [])]
-      .filter(Boolean)
-      .filter(x => low.includes(String(x).toLowerCase()));
-
-    const words = Utils.slug(clean).split(/\s+/);
-    let positive = 0, negative = 0;
-    words.forEach(w => {
-      if (POSITIVE.includes(w)) positive++;
-      if (NEGATIVE.includes(w)) negative++;
-    });
-    const sentiment = positive > negative ? 'Positivo' : negative > positive ? 'Negativo' : 'Neutro';
-
-    let position = 0;
-    if (brand.firstIndex >= 0) {
-      const before = clean.slice(0, brand.firstIndex);
-      position = (before.match(/(?:^|\n)\s*(?:\d+[.)]|[-•*])\s+/g) || []).length + 1;
-      if (position > 30) position = 1;
-    }
-
-    const sourceDetails = urls.map(u => this.classifySource(u, project));
+    const locations = [project.location, ...(project.nearbyLocations || [])].filter(Boolean).filter(x => low.includes(String(x).toLowerCase()));
     const responseType = this.responseType(clean, urls);
 
-    let confidence = 35;
-    if (clean.length >= 300) confidence += 10;
-    if (brand.exact) confidence += 15;
-    if (domainCited) confidence += 15;
-    if (urls.length) confidence += 10;
-    if (brand.contextHit) confidence += 10;
-    if (brand.homonymRisk) confidence -= 25;
-    if (clean.length < state.settings.analysis.minimumResponseLength) confidence -= 20;
-    confidence = Math.max(0, Math.min(100, confidence));
+    const sentimentOf = (text) => {
+      const words = Utils.slug(text).split(/\s+/);
+      let positive = 0, negative = 0;
+      words.forEach(w => { if (POSITIVE.includes(w)) positive++; if (NEGATIVE.includes(w)) negative++; });
+      return positive > negative ? 'Positivo' : negative > positive ? 'Negativo' : 'Neutro';
+    };
+    const sentiment = sentimentOf(clean);
+    const brandWindow = brand.firstIndex >= 0 ? clean.slice(Math.max(0, brand.firstIndex - 180), brand.firstIndex + 260) : '';
+    const brandSentiment = brandWindow ? sentimentOf(brandWindow) : 'Non applicabile';
+
+    let position = 0;
+    const rankedType = ['Elenco editoriale', 'Local Pack / risultati locali'].includes(responseType);
+    if (brand.firstIndex >= 0 && rankedType) {
+      const before = clean.slice(0, brand.firstIndex);
+      const markers = before.match(/(?:^|\n)\s*(?:\d+[.)]|[-•*])\s+/g) || [];
+      position = markers.length + 1;
+    }
+
+    const sourceDetails = urls.map(u => ({ ...this.classifySource(u, project), verificationStatus: 'Da verificare' }));
+    const sourceQualityScore = sourceDetails.length ? Math.round(sourceDetails.reduce((a,b)=>a+b.quality,0)/(sourceDetails.length*5)*100) : 0;
+    const responseQualityScore = Math.min(100, Math.round((clean.length >= 300 ? 35 : clean.length >= 120 ? 20 : 5) + (urls.length ? 30 : 0) + (responseType !== 'Risposta limitata' ? 20 : 0) + (locations.length ? 15 : 0)));
+
+    const completeness = clean.length >= 300 ? 15 : clean.length >= state.settings.analysis.minimumResponseLength ? 10 : 0;
+    const sourcesConfidence = urls.length >= 3 ? 25 : urls.length ? 15 : 0;
+    const entityConfidence = brand.homonymRisk ? 0 : brand.contextHit || domainMentionedText ? 15 : 7;
+    const environment = 25; // penalty applied later
+    const review = 0; // becomes 20 after manual review
+    const confidenceBreakdown = { environment, completeness, sources: sourcesConfidence, review, entity: entityConfidence };
+    const confidence = Object.values(confidenceBreakdown).reduce((a,b)=>a+b,0);
 
     const evidence = {
       brand: brand.evidence,
@@ -655,33 +678,23 @@ const Analyzer = {
     };
 
     const result = {
-      cleanResponse: clean,
-      brandMentioned: brand.mentioned,
-      domainCited,
-      position,
-      mentions: brand.mentions,
-      foundVariant: brand.found,
-      competitors,
-      urls,
-      domains: Utils.unique(domains),
-      sourceDetails,
-      sentiment,
-      responseType,
-      servicesPresent: services,
-      locationsPresent: locations,
-      locationPresent: locations.length > 0,
-      evidence,
-      confidence,
-      homonymRisk: brand.homonymRisk,
-      homonymExcluded: brand.excluded
+      cleanResponse: clean, brandMentioned: brand.mentioned, domainCited, domainMentionedText,
+      position, mentions: brand.mentions, foundVariant: brand.found, competitors, urls,
+      domains: Utils.unique(domains), sourceDetails, sentiment, brandSentiment, responseType,
+      servicesPresent: services, locationsPresent: locations, locationPresent: locations.length > 0,
+      evidence, confidence, rawConfidence: confidence, confidenceBreakdown,
+      homonymRisk: brand.homonymRisk, homonymExcluded: brand.excluded,
+      sourceQualityScore, responseQualityScore
     };
     result.score = this.score(result);
+    result.visibilityScore = result.score;
     return result;
   },
 
   score(data) {
     const w = state.settings.scoreWeights;
     let score = 0;
+    if (!data.brandMentioned && !data.domainCited && !data.domainMentionedText) return 0;
     score += data.brandMentioned ? w.brand : 0;
     score += data.domainCited ? w.domain : 0;
 
@@ -697,7 +710,7 @@ const Analyzer = {
       score += w.competitors * .2;
     }
 
-    score += w.sentiment * (data.sentiment === 'Positivo' ? 1 : data.sentiment === 'Neutro' ? .5 : 0);
+    score += w.sentiment * (data.brandSentiment === 'Positivo' ? 1 : data.brandSentiment === 'Neutro' ? .5 : 0);
     return Math.max(0, Math.min(100, Math.round(score)));
   },
 
@@ -977,7 +990,7 @@ function opportunityMeta(o) {
 }
 
 function generateOpportunities() {
-  const previousStatus = new Map((state.opportunities || []).map(o => [`${o.checkId}|${o.title}`, o.status]));
+  const previous = new Map((state.opportunities || []).map(o => [`${o.checkId}|${o.type || Utils.slug(o.title)}`, o]));
   const output = [];
 
   for (const check of state.checks) {
@@ -985,9 +998,10 @@ function generateOpportunities() {
     const prompt = promptBy(check.promptId);
     if (!project || !prompt) continue;
 
-    const add = (priority, title, why, action, verify, steps, expectedOutcome, notes = '') => {
+    const add = (type, priority, title, why, action, verify, steps, expectedOutcome, notes = '', evidenceLevel = 'Da verificare') => {
       output.push({
-        id: `${check.id}-${Utils.slug(title).slice(0, 30)}`,
+        id: `${check.id}-${type}`,
+        type,
         projectId: check.projectId,
         promptId: check.promptId,
         checkId: check.id,
@@ -999,12 +1013,17 @@ function generateOpportunities() {
         steps,
         expectedOutcome,
         notes,
-        status: previousStatus.get(`${check.id}|${title}`) || 'Da fare'
+        evidenceLevel,
+        tasks: (previous.get(`${check.id}|${type}`)?.tasks || steps.map((text, index) => ({ id: `${type}-${index}`, text, done: false }))),
+        owner: previous.get(`${check.id}|${type}`)?.owner || '',
+        dueDate: previous.get(`${check.id}|${type}`)?.dueDate || '',
+        completedAt: previous.get(`${check.id}|${type}`)?.completedAt || '',
+        status: previous.get(`${check.id}|${type}`)?.status || 'Da fare'
       });
     };
 
     if (!check.brandMentioned) {
-      add('P1', 'Il brand non compare',
+      add('brand_absent', 'P1', 'Il brand non compare',
         `Per il prompt “${prompt.text}” l’AI cita altri soggetti ma non ${project.brand}.`,
         `Costruisci una pagina che risponda in modo diretto alla query e renda verificabile perché il brand è pertinente.`,
         `Ripeti lo stesso prompt in almeno 3 sessioni neutrali e su almeno 2 piattaforme AI dopo l’indicizzazione.`,
@@ -1020,7 +1039,7 @@ function generateOpportunities() {
     }
 
     if (check.brandMentioned && !check.domainCited) {
-      add('P1', 'Brand presente ma sito non citato',
+      add('domain_absent', 'P1', 'Brand presente ma sito non citato',
         'Il nome compare, ma l’utente non riceve un collegamento al sito ufficiale.',
         'Rendi inequivocabile l’associazione tra nome, dominio, servizi e profili esterni.',
         'Controlla se nelle verifiche successive compare il dominio ufficiale tra le fonti o nel testo.',
@@ -1035,7 +1054,7 @@ function generateOpportunities() {
     }
 
     if ((check.competitors || []).length) {
-      add('P2', 'Analizzare i concorrenti citati',
+      add('competitor_gap', 'P2', 'Analizzare i concorrenti citati',
         `Sono presenti: ${check.competitors.join(', ')}.`,
         `Studia perché questi soggetti sono facili da riconoscere e citare, senza copiarne i contenuti.`,
         `Confronta la pagina aggiornata con una checklist e ripeti il prompt identico.`,
@@ -1050,7 +1069,7 @@ function generateOpportunities() {
     }
 
     if (!(check.urls || []).length) {
-      add('P2', 'Fonti non disponibili',
+      add('sources_missing', 'P2', 'Fonti non disponibili',
         'La risposta non contiene URL registrati, quindi non è possibile capire quali fonti abbiano sostenuto la selezione.',
         'Ripeti il test chiedendo esplicitamente fonti verificabili e salva ogni URL.',
         'La verifica è completa quando ogni fonte ha URL, dominio e tipologia.',
@@ -1065,7 +1084,7 @@ function generateOpportunities() {
     }
 
     if (!(check.servicesPresent || []).length && project.services?.length) {
-      add('P2', 'Servizi del brand non riconosciuti',
+      add('services_weak', 'P2', 'Servizi del brand non riconosciuti',
         `Nella risposta non compaiono i servizi configurati: ${project.services.join(', ')}.`,
         `Rendi esplicita e verificabile l’associazione tra brand e servizi prioritari.`,
         `Cerca il brand insieme a ciascun servizio e registra se l’associazione compare.`,
@@ -1080,7 +1099,7 @@ function generateOpportunities() {
     }
 
     if (!(check.locationsPresent || []).length && project.location) {
-      add('P2', 'Segnale geografico debole',
+      add('location_weak', 'P2', 'Segnale geografico debole',
         `La risposta non associa chiaramente il risultato a ${project.location}.`,
         `Rafforza i segnali locali coerenti e verificabili.`,
         `Ripeti il prompt specificando ${project.location} e confronta presenza, posizione e fonti.`,
@@ -1096,7 +1115,7 @@ function generateOpportunities() {
 
     const lowQuality = (check.sourceDetails || []).filter(s => s.quality <= 2);
     if (lowQuality.length) {
-      add('P3', 'Dipendenza da directory o social',
+      add('source_dependency', 'P3', 'Dipendenza da directory o social',
         `Tra le fonti compaiono ${lowQuality.map(s => s.domain).join(', ')}.`,
         `Diversifica le fonti con segnali editoriali, professionali e istituzionali pertinenti.`,
         `Verifica se nelle risposte future aumentano fonti indipendenti di qualità superiore.`,
@@ -1279,7 +1298,7 @@ function renderEvidence(a) {
 function renderSources(details) {
   if (!details?.length) return empty('Nessuna fonte', 'Aggiungi URL reali se la piattaforma mostrava citazioni.');
   return `<div class="source-table">${details.map(s =>
-    `<div class="source-row"><div><strong>${Utils.esc(s.domain)}</strong><div class="help">${Utils.esc(s.reason)}</div></div>${badge(s.type, s.quality >= 4 ? 'success' : s.quality <= 2 ? 'warning' : 'info')}<strong>${s.quality}/5</strong></div>`
+    `<div class="source-row"><div><strong>${Utils.esc(s.domain)}</strong><div class="help">${Utils.esc(s.reason)}</div></div>${badge(s.type, s.quality >= 4 ? 'success' : s.quality <= 2 ? 'warning' : 'info')}<div><strong>${s.quality}/5</strong><div class="help">${Utils.esc(s.verificationStatus || 'Da verificare')}</div></div></div>`
   ).join('')}</div>`;
 }
 
@@ -1342,7 +1361,7 @@ function projectCards() {
 }
 
 function projectForm(p = {}) {
-  return `<form id="projectForm" class="form-grid"><input type="hidden" name="id" value="${Utils.esc(p.id || '')}">${field('name', 'Nome progetto', p.name, true)}${field('client', 'Cliente', p.client || '')}${field('brand', 'Nome brand', p.brand, true, 'Nome esatto da rilevare')}${field('domain', 'Dominio principale', p.domain, true, 'esempio.it')}${field('targetUrl', 'Pagina da ottimizzare', p.targetUrl || '', '', 'https://…', 'url')}${field('location', 'Località principale', p.location || '')}${field('market', 'Mercato', p.market || 'Italia')}${field('language', 'Lingua', p.language || 'Italiano')}${field('sector', 'Settore', p.sector || '')}${textareaField('brandVariants', 'Varianti del brand', (p.brandVariants || []).join('\n'), 'Una per riga: abbreviazioni, nome professionale, dominio senza estensione.', 4)}${textareaField('competitors', 'Concorrenti', (p.competitors || []).join('\n'), 'Nomi o domini, uno per riga.', 5)}${textareaField('services', 'Servizi principali', (p.services || []).join('\n'), 'Usati per analizzare l’associazione tra brand e servizi.', 4)}${textareaField('nearbyLocations', 'Località correlate', (p.nearbyLocations || []).join('\n'), 'Provincia, regione o città vicine, una per riga.', 3)}${textareaField('homonymExclusions', 'Omonimi da escludere', (p.homonymExclusions || []).join('\n'), 'Parole che indicano una persona o attività omonima non pertinente.', 3)}${textareaField('contextTerms', 'Termini di contesto obbligatori', (p.contextTerms || []).join('\n'), 'Esempio: SEO, Bergamo, WordPress. Aumentano la precisione con nomi ambigui.', 3)}${textareaField('description', 'Descrizione attività', p.description || '', 'Solo informazioni reali e verificabili.', 4)}${textareaField('notes', 'Note', p.notes || '', '', 3)}</form>`;
+  return `<form id="projectForm" class="form-grid"><input type="hidden" name="id" value="${Utils.esc(p.id || '')}">${field('name', 'Nome progetto', p.name, true)}${field('client', 'Cliente', p.client || '')}${field('brand', 'Nome brand', p.brand, true, 'Nome esatto da rilevare')}${field('domain', 'Dominio principale', p.domain, true, 'esempio.it')}${field('targetUrl', 'Pagina da ottimizzare', p.targetUrl || '', '', 'https://…', 'url')}${field('location', 'Località principale', p.location || '')}${field('market', 'Mercato', p.market || 'Italia')}${field('language', 'Lingua', p.language || 'Italiano')}${field('sector', 'Settore', p.sector || '')}${textareaField('brandVariants', 'Varianti del brand', (p.brandVariants || []).join('\n'), 'Una per riga: abbreviazioni, nome professionale, dominio senza estensione.', 4)}${textareaField('competitors', 'Concorrenti', (p.competitors || []).join('\n'), 'Nomi o domini, uno per riga.', 5)}${textareaField('services', 'Servizi principali', (p.services || []).join('\n'), 'Usati per analizzare l’associazione tra brand e servizi.', 4)}${textareaField('nearbyLocations', 'Località correlate', (p.nearbyLocations || []).join('\n'), 'Provincia, regione o città vicine, una per riga.', 3)}${textareaField('homonymExclusions', 'Omonimi da escludere', (p.homonymExclusions || []).join('\n'), 'Parole che indicano una persona o attività omonima non pertinente.', 3)}${textareaField('contextTerms', 'Termini di contesto obbligatori', (p.contextTerms || []).join('\n'), 'Esempio: SEO, Bergamo, WordPress. Aumentano la precisione con nomi ambigui.', 3)}${textareaField('description', 'Descrizione attività', p.description || '', 'Solo informazioni reali e verificabili.', 4)}<div class="field full"><h3>Audit manuale pagina target</h3><div class="help">Questi dati rendono i suggerimenti più precisi. Inserisci solo ciò che hai verificato sulla pagina.</div></div>${field('auditTitle', 'Title attuale', p.pageAudit?.title || '')}${field('auditH1', 'H1 attuale', p.pageAudit?.h1 || '')}${textareaField('auditIntro', 'Prime 120–150 parole', p.pageAudit?.intro || '', 'Incolla l’introduzione reale della pagina.', 4)}${field('auditInternalLinks', 'Link interni verso la pagina', p.pageAudit?.internalLinks || 0, '', '', 'number')}${field('auditReviews', 'Recensioni/prove visibili', p.pageAudit?.reviews || 0, '', '', 'number')}<div class="field"><label><input type="checkbox" name="auditHasAuthor" style="width:auto" ${p.pageAudit?.hasAuthor ? 'checked' : ''}> Autore identificabile</label></div><div class="field"><label><input type="checkbox" name="auditHasFaq" style="width:auto" ${p.pageAudit?.hasFaq ? 'checked' : ''}> FAQ presenti</label></div><div class="field"><label><input type="checkbox" name="auditHasSchema" style="width:auto" ${p.pageAudit?.hasSchema ? 'checked' : ''}> Dati strutturati verificati</label></div>${textareaField('auditNotes', 'Note audit pagina', p.pageAudit?.notes || '', 'Segnala elementi già presenti o da controllare.', 3)}${textareaField('notes', 'Note', p.notes || '', '', 3)}</form>`;
 }
 
 // ============================================================
@@ -1403,9 +1422,14 @@ function buildQuickPrompt(keyword, style, project) {
   return `Usa la ricerca web.\n\n${q}${q.endsWith('?') ? '' : '?'}\n\nConsidera esclusivamente informazioni pubbliche, aggiornate e verificabili. Per ogni risultato indica nome, sito web, servizi principali, motivo della selezione e fonti utilizzate. Non basarti su informazioni personali dell’utente o su conversazioni precedenti.`;
 }
 
-function applyEnvironmentConfidence(analysis, environment) {
+function applyEnvironmentConfidence(analysis, environment, manualReviewCompleted = false) {
   const meta = environmentMeta(environment);
-  return { ...analysis, rawConfidence: analysis.confidence, confidence: Math.max(0, analysis.confidence - meta.penalty), environmentPenalty: meta.penalty, testEnvironment: environment };
+  const breakdown = { ...(analysis.confidenceBreakdown || {}) };
+  breakdown.environment = Math.max(0, 25 - meta.penalty);
+  breakdown.review = manualReviewCompleted ? 20 : (breakdown.review || 0);
+  const raw = Object.values({ ...breakdown, environment: 25 }).reduce((a, b) => a + Number(b || 0), 0);
+  const finalConfidence = Math.max(0, Math.min(100, Object.values(breakdown).reduce((a, b) => a + Number(b || 0), 0)));
+  return { ...analysis, testEnvironment: environment, environmentPenalty: meta.penalty, rawConfidence: raw, confidenceBreakdown: breakdown, confidence: finalConfidence };
 }
 
 function neutralTestInstructions() {
@@ -1570,7 +1594,7 @@ function renderAnalysisOutput(project, a) {
   const el = document.getElementById('analysisOutput');
   if (!el) return;
   el.innerHTML = `
-    <div class="grid grid-3"><div class="analysis-item"><small>GEO Visibility Score</small><strong>${a.score}/100</strong></div><div class="analysis-item"><small>Confidence Score</small><strong>${a.confidence}/100</strong></div><div class="analysis-item"><small>Tipo risposta</small><strong>${Utils.esc(a.responseType)}</strong></div><div class="analysis-item"><small>Brand</small><strong>${a.brandMentioned ? 'Presente' : 'Assente'}</strong></div><div class="analysis-item"><small>Dominio</small><strong>${a.domainCited ? 'Citato' : 'Non citato'}</strong></div><div class="analysis-item"><small>Posizione</small><strong>${a.position || '—'}</strong></div><div class="analysis-item"><small>Menzioni</small><strong>${a.mentions}</strong></div><div class="analysis-item"><small>Concorrenti</small><strong>${a.competitors.length}</strong></div><div class="analysis-item"><small>Sentiment stimato</small><strong>${a.sentiment}</strong></div></div>
+    <div class="grid grid-3"><div class="analysis-item"><small>GEO Visibility Score</small><strong>${a.score}/100</strong></div><div class="analysis-item"><small>Confidence Score</small><strong>${a.confidence}/100</strong></div><div class="analysis-item"><small>Tipo risposta</small><strong>${Utils.esc(a.responseType)}</strong></div><div class="analysis-item"><small>Brand</small><strong>${a.brandMentioned ? 'Presente' : 'Assente'}</strong></div><div class="analysis-item"><small>Dominio</small><strong>${a.domainCited ? 'Citato' : 'Non citato'}</strong></div><div class="analysis-item"><small>Posizione</small><strong>${a.position || '—'}</strong></div><div class="analysis-item"><small>Menzioni</small><strong>${a.mentions}</strong></div><div class="analysis-item"><small>Concorrenti</small><strong>${a.competitors.length}</strong></div><div class="analysis-item"><small>Sentiment brand</small><strong>${a.brandSentiment}</strong></div><div class="analysis-item"><small>Qualità fonti</small><strong>${a.sourceQualityScore}/100</strong></div><div class="analysis-item"><small>Qualità risposta</small><strong>${a.responseQualityScore}/100</strong></div></div><div class="confidence-breakdown">${Object.entries(a.confidenceBreakdown || {}).map(([k,v]) => `<div class="confidence-part"><strong>${v}</strong><div class="help">${({environment:'Ambiente',completeness:'Completezza',sources:'Fonti',review:'Revisione',entity:'Entità'})[k] || k}</div></div>`).join('')}</div>
     ${a.environmentPenalty ? `<div class="notice ${environmentMeta(a.testEnvironment).type}" style="margin-top:12px"><strong>Ambiente: ${Utils.esc(environmentMeta(a.testEnvironment).label)}</strong><br>Confidence Score ridotto di ${a.environmentPenalty} punti per possibile personalizzazione o mancata verifica.</div>` : ''}
     ${a.homonymRisk ? '<div class="notice warning" style="margin-top:12px">Possibile rischio di omonimia: controlla l’estratto e il contesto prima di confermare.</div>' : ''}
     <div class="grid grid-2" style="margin-top:15px"><div><h3>Prove rilevate</h3>${renderEvidence(a)}</div><div><h3>Fonti classificate</h3>${renderSources(a.sourceDetails)}</div></div>
@@ -1610,7 +1634,9 @@ function finalAnalysisFromForm() {
   };
   result.sourceDetails = result.urls.map(u => Analyzer.classifySource(u, project));
   result.score = Analyzer.score(result);
-  return result;
+  result.visibilityScore = result.score;
+  const reviewed = applyEnvironmentConfidence(result, d.testEnvironment || 'not-verified', manualReviewValid());
+  return reviewed;
 }
 
 function renderSaveSummary(d, a) {
@@ -1655,6 +1681,17 @@ function saveCheck() {
     locationsPresent: final.locationsPresent,
     evidence: final.evidence,
     confidence: final.confidence,
+    rawConfidence: final.rawConfidence,
+    confidenceBreakdown: final.confidenceBreakdown,
+    environmentPenalty: final.environmentPenalty,
+    domainMentionedText: final.domainMentionedText,
+    brandSentiment: final.brandSentiment,
+    visibilityScore: final.visibilityScore,
+    sourceQualityScore: final.sourceQualityScore,
+    responseQualityScore: final.responseQualityScore,
+    algorithmVersion: CONFIG.VERSION,
+    scoreWeightsSnapshot: structuredClone(state.settings.scoreWeights),
+    analysisSettingsSnapshot: structuredClone(state.settings.analysis),
     homonymRisk: final.homonymRisk,
     relevance: Number(d.relevance),
     reliability: Number(d.reliability),
@@ -1865,6 +1902,22 @@ function renderOpportunities() {
   `;
 }
 
+function auditAssessment(project, opportunity) {
+  const a = project?.pageAudit || {};
+  const rows = [];
+  const title = opportunity.title.toLowerCase();
+  if (title.includes('brand non compare') || title.includes('servizi')) {
+    rows.push(['Title della pagina', a.title ? 'Confermato: dato inserito' : 'Dato mancante', a.title || 'Inserisci il title reale per verificare la coerenza con la query.']);
+    rows.push(['H1 della pagina', a.h1 ? 'Confermato: dato inserito' : 'Dato mancante', a.h1 || 'Inserisci l’H1 reale prima di modificarlo.']);
+    rows.push(['Introduzione', a.intro ? 'Confermato: dato inserito' : 'Dato mancante', a.intro ? `${a.intro.length} caratteri registrati` : 'Incolla le prime 120–150 parole.']);
+    rows.push(['Autore identificabile', a.hasAuthor ? 'Confermato' : 'Da verificare', a.hasAuthor ? 'La pagina dichiara un autore.' : 'Controlla firma, profilo e responsabilità editoriale.']);
+    rows.push(['FAQ', a.hasFaq ? 'Confermato' : 'Da verificare', a.hasFaq ? 'FAQ già presenti: controlla pertinenza e unicità.' : 'Valuta FAQ solo se rispondono a domande reali.']);
+    rows.push(['Dati strutturati', a.hasSchema ? 'Confermato' : 'Da verificare', a.hasSchema ? 'Schema dichiarato come verificato.' : 'Valida lo schema prima di aggiungerne altro.']);
+  }
+  if (!rows.length) return '';
+  return `<div class="implementation-box"><h4>Controllo della pagina target</h4><div class="source-table">${rows.map(([label,status,detail]) => `<div class="source-row"><div><strong>${Utils.esc(label)}</strong><div class="help">${Utils.esc(detail)}</div></div><span class="audit-status ${status.startsWith('Confermato') ? 'audit-confirmed' : status === 'Dato mancante' ? 'audit-check' : 'audit-probable'}">${Utils.esc(status)}</span><span></span></div>`).join('')}</div></div>`;
+}
+
 function renderOpportunityCard(o, selectable = true) {
   const pd = priorityDetails(o.priority);
   const check = state.checks.find(c => c.id === o.checkId);
@@ -1872,11 +1925,11 @@ function renderOpportunityCard(o, selectable = true) {
   return `<article class="opportunity priority-${o.priority} ${selectedOpportunityIds.has(o.id) ? 'selected' : ''}" data-project="${o.projectId}" data-priority="${o.priority}" data-status="${o.status}">
     <div class="flex wrap gap-8">${selectable ? `<input type="checkbox" class="opp-select" value="${o.id}" ${selectedOpportunityIds.has(o.id) ? 'checked' : ''} aria-label="Seleziona opportunità">` : ''}${badge(o.priority, o.priority === 'P1' ? 'danger' : o.priority === 'P2' ? 'warning' : 'info')}<strong>${Utils.esc(o.title)}</strong><div class="spacer"></div><select data-opp-status="${o.id}" style="width:auto"><option ${o.status === 'Da fare' ? 'selected' : ''}>Da fare</option><option ${o.status === 'In corso' ? 'selected' : ''}>In corso</option><option ${o.status === 'Completata' ? 'selected' : ''}>Completata</option></select></div>
     <div class="priority-explain"><strong>${Utils.esc(pd.label)} · ${Utils.esc(pd.when)} · Impegno ${Utils.esc(pd.effort)}</strong><br>${Utils.esc(pd.meaning)}</div>
-    ${renderImpact(o)}${renderDiagnosis(o)}
+    ${renderImpact(o)}${renderDiagnosis(o)}${auditAssessment(projectBy(o.projectId), o)}
     <p class="simple-explanation"><strong>Problema rilevato:</strong> ${Utils.esc(o.why)}</p>
     <p class="simple-explanation"><strong>Obiettivo:</strong> ${Utils.esc(o.expectedOutcome || o.action)}</p>
     <p class="simple-explanation"><strong>Azione consigliata:</strong> ${Utils.esc(o.action)}</p>
-    <div class="action-plan"><strong>Piano di azione, passo per passo</strong><ol>${(o.steps || [o.action]).map(step => `<li>${Utils.esc(step)}</li>`).join('')}</ol></div>
+    <div class="form-grid" style="margin:12px 0"><div class="field"><label>Responsabile</label><input data-opp-owner="${o.id}" value="${Utils.esc(o.owner || '')}" placeholder="Nome o ruolo"></div><div class="field"><label>Scadenza</label><input type="date" data-opp-due="${o.id}" value="${Utils.esc(o.dueDate || '')}"></div></div><div class="action-plan"><strong>Piano di azione, passo per passo</strong><ol>${(o.steps || [o.action]).map(step => `<li>${Utils.esc(step)}</li>`).join('')}</ol></div>
     ${renderChecklist(o)}${check ? renderKpis(check, o) : ''}${o.notes ? `<p class="help"><strong>Nota:</strong> ${Utils.esc(o.notes)}</p>` : ''}
     <button class="btn btn-sm" data-view-check="${o.checkId}">Apri verifica</button>
   </article>`;
@@ -1893,12 +1946,13 @@ function renderDiagnosis(o) {
 }
 
 function renderChecklist(o) {
-  const m = opportunityMeta(o);
-  return `<div class="implementation-box"><h4>Checklist di completamento</h4><div class="checklist">${m.checklist.map(x => `<div class="check-item">□ ${Utils.esc(x)}</div>`).join('')}</div></div>`;
+  const tasks = o.tasks?.length ? o.tasks : opportunityMeta(o).checklist.map((text,index)=>({id:`legacy-${index}`,text,done:false}));
+  const done = tasks.filter(t=>t.done).length;
+  return `<div class="implementation-box"><h4>Checklist di completamento · ${done}/${tasks.length}</h4><div class="progress"><span style="width:${tasks.length ? Math.round(done/tasks.length*100) : 0}%"></span></div><div class="checklist" style="margin-top:10px">${tasks.map(t => `<label class="task-row ${t.done ? 'done' : ''}"><input type="checkbox" data-toggle-task="${o.id}" data-task-id="${t.id}" ${t.done ? 'checked' : ''}><span>${Utils.esc(t.text)}</span><small>${t.done ? 'Completata' : 'Da fare'}</small></label>`).join('')}</div></div>`;
 }
 
 function renderKpis(check, o) {
-  return `<div class="implementation-box"><h4>KPI e verifica successiva</h4><div class="kpi-list"><div class="kpi-row"><strong>Prompt da ripetere</strong><span>${Utils.esc(promptBy(check.promptId)?.text || 'Prompt eliminato')}</span></div><div class="kpi-row"><strong>Quando</strong><span>Dopo indicizzazione delle modifiche, idealmente tra 14 e 30 giorni.</span></div><div class="kpi-row"><strong>Dove</strong><span>Almeno 3 sessioni neutrali e 2 piattaforme AI.</span></div><div class="kpi-row"><strong>Cosa misurare</strong><span>Presenza brand, dominio citato, posizione, fonti, concorrenti e variazione del GEO Score.</span></div><div class="kpi-row"><strong>Criterio di successo</strong><span>${Utils.esc(o.verify)}</span></div></div><div class="score-path"><span class="score-step">Oggi: ${check.score || 0}/100</span><span>→</span><span class="score-step">Dopo P1: stima indicativa</span><span>→</span><span class="score-step">Nuovo test reale</span></div></div>`;
+  return `<div class="implementation-box"><h4>KPI e verifica successiva</h4><div class="kpi-list"><div class="kpi-row"><strong>Prompt da ripetere</strong><span>${Utils.esc(promptBy(check.promptId)?.text || 'Prompt eliminato')}</span></div><div class="kpi-row"><strong>Quando</strong><span>Dopo indicizzazione delle modifiche, idealmente tra 14 e 30 giorni.</span></div><div class="kpi-row"><strong>Dove</strong><span>Almeno 3 sessioni neutrali e 2 piattaforme AI.</span></div><div class="kpi-row"><strong>Cosa misurare</strong><span>Presenza brand, dominio citato, posizione, fonti, concorrenti e variazione del GEO Score.</span></div><div class="kpi-row"><strong>Criterio di successo</strong><span>${Utils.esc(o.verify)}</span></div></div><div class="score-path"><span class="score-step">Oggi: ${check.score || 0}/100</span><span>→</span><span class="score-step">Dopo P1: ripetere il test</span><span>→</span><span class="score-step">Nuovo test reale</span></div></div>`;
 }
 
 // ============================================================
@@ -2049,7 +2103,7 @@ function executiveDiagnosis(check, project, prompt, opp) {
   else text += ', con citazione del dominio ufficiale';
   text += `. La verifica contiene ${competitors} concorrenti e ${sources} fonti registrate. Il risultato indica un problema da approfondire, non una causa certa.`;
 
-  return `<div class="geo-summary"><div class="card"><div class="section-kicker">Executive summary</div><h2 style="margin:6px 0 8px">Perché il risultato è importante</h2><p>${Utils.esc(text)}</p><p class="help">La priorità è rendere più chiara, verificabile e ripetibile l’associazione tra brand, servizio, località e fonte ufficiale.</p></div><div class="card"><div class="section-kicker">Stima operativa</div><div style="font-size:28px;font-weight:900;margin-top:8px">${m.probability}%</div><div class="help">Probabilità indicativa di miglioramento dopo le azioni P1, non una previsione garantita.</div><div class="estimate-bar"><span style="width:${m.probability}%"></span></div></div></div>`;
+  return `<div class="geo-summary"><div class="card"><div class="section-kicker">Executive summary</div><h2 style="margin:6px 0 8px">Perché il risultato è importante</h2><p>${Utils.esc(text)}</p><p class="help">La priorità è rendere più chiara, verificabile e ripetibile l’associazione tra brand, servizio, località e fonte ufficiale.</p></div><div class="card"><div class="section-kicker">Stima operativa</div><div style="font-size:24px;font-weight:900;margin-top:8px">${m.impactGeo >= 4 ? 'Alto' : m.impactGeo >= 3 ? 'Medio' : 'Basso'}</div><div class="help">Potenziale operativo, non previsione statistica. Confidenza: ${opp.some(o => o.evidenceLevel === 'Confermato') ? 'media' : 'bassa'}.</div></div></div>`;
 }
 
 function renderRoadmap(opp) {
@@ -2159,7 +2213,7 @@ function renderReport(projectId) {
     <div class="grid grid-4" style="margin-top:18px">${metric('Verifiche incluse', '1', '')}${metric('GEO Score', avg + '/100', '')}${metric('Presenza brand', brandRate + '%', '')}${metric('Dominio citato', domainRate + '%', '')}</div>
     ${executiveDiagnosis(check, p, prompt, opp)}
     <div class="report-section-title"><h2>Risultato della ricerca selezionata</h2></div>${resultsTable([check], false)}
-    <div class="report-section-title"><h2>Diagnosi e piano operativo</h2></div>${opp.length ? opp.map((o, index) => { const pd = priorityDetails(o.priority); return `<div class="opportunity priority-${o.priority}"><div class="flex wrap gap-8">${badge(o.priority, o.priority === 'P1' ? 'danger' : o.priority === 'P2' ? 'warning' : 'info')}<strong>${index + 1}. ${Utils.esc(o.title)}</strong></div><p><strong>Priorità:</strong> ${Utils.esc(pd.label)} — ${Utils.esc(pd.when)}. Impegno stimato: ${Utils.esc(pd.effort)}.</p>${renderImpact(o)}${renderDiagnosis(o)}<p><strong>Problema rilevato:</strong> ${Utils.esc(o.why)}</p><p><strong>Obiettivo:</strong> ${Utils.esc(o.expectedOutcome || o.action)}</p><p><strong>Azione principale:</strong> ${Utils.esc(o.action)}</p><div class="action-plan"><strong>Step operativi essenziali</strong><ol>${(o.steps || [o.action]).map(step => `<li>${Utils.esc(step)}</li>`).join('')}</ol></div>${opportunityImplementationDetails(o, check, p, prompt)}${renderChecklist(o)}${renderKpis(check, o)}</div>`; }).join('') : '<div class="report-empty-note">Nessuna opportunità selezionata per questa ricerca.</div>'}
+    <div class="report-section-title"><h2>Diagnosi e piano operativo</h2></div>${opp.length ? opp.map((o, index) => { const pd = priorityDetails(o.priority); return `<div class="opportunity priority-${o.priority}"><div class="flex wrap gap-8">${badge(o.priority, o.priority === 'P1' ? 'danger' : o.priority === 'P2' ? 'warning' : 'info')}<strong>${index + 1}. ${Utils.esc(o.title)}</strong></div><p><strong>Priorità:</strong> ${Utils.esc(pd.label)} — ${Utils.esc(pd.when)}. Impegno stimato: ${Utils.esc(pd.effort)}.</p>${renderImpact(o)}${renderDiagnosis(o)}${auditAssessment(projectBy(o.projectId), o)}<p><strong>Problema rilevato:</strong> ${Utils.esc(o.why)}</p><p><strong>Obiettivo:</strong> ${Utils.esc(o.expectedOutcome || o.action)}</p><p><strong>Azione principale:</strong> ${Utils.esc(o.action)}</p><div class="action-plan"><strong>Step operativi essenziali</strong><ol>${(o.steps || [o.action]).map(step => `<li>${Utils.esc(step)}</li>`).join('')}</ol></div>${opportunityImplementationDetails(o, check, p, prompt)}${renderChecklist(o)}${renderKpis(check, o)}</div>`; }).join('') : '<div class="report-empty-note">Nessuna opportunità selezionata per questa ricerca.</div>'}
     ${opp.length ? renderRoadmap(opp) : ''}
     <div class="report-section-title"><h2>Ordine consigliato</h2></div><p>Completa prima le attività P1, verifica che siano realmente online e attendi l’indicizzazione. Ripeti poi lo stesso prompt, nello stesso formato, in sessioni neutrali. Passa alle P2 solo dopo aver confrontato i nuovi risultati con questa verifica iniziale.</p>
     <div class="report-section-title"><h2>Metodologia e limiti</h2></div><p>Il GEO Visibility Score è una metrica proprietaria. Una singola risposta non dimostra una visibilità stabile. Modello, sessione, account, località, data e ricerca web possono cambiare il risultato; per questo ogni miglioramento deve essere verificato con test ripetuti e neutrali. Le percentuali e gli impatti mostrati nel piano sono stime operative, non garanzie.</p><footer>${Utils.esc(state.settings.footer || '')}</footer></div>`;
@@ -2214,7 +2268,7 @@ function renderBackup() {
 // ============================================================
 function renderGuide() {
   document.getElementById('guide').innerHTML = `
-    <div class="card"><h2>Procedura consigliata</h2><ol><li>Crea un progetto completo, includendo varianti del brand, servizi, località, concorrenti e possibili omonimi.</li><li>In “Nuova verifica” puoi usare Ricerca rapida: inserisci la keyword, scegli progetto e formato, quindi premi “Prepara verifica”, copia il prompt e segui le istruzioni per il test neutrale.</li><li>In alternativa salva manualmente prompt neutrali e ripetibili.</li><li>Esegui il test in finestra privata senza login o in chat temporanea; registra ambiente, modello, ricerca web e località.</li><li>Incolla risposta e URL, usa la pulizia automatica e controlla l’anteprima.</li><li>Analizza, verifica gli estratti di prova e completa la checklist manuale.</li><li>Ripeti lo stesso prompt su più AI e in date diverse.</li><li>Usa Matrice, Confronto, Opportunità e Qualità dati prima di creare un report.</li></ol><h2>Avvisi</h2><ul><li>Una singola risposta non dimostra visibilità stabile.</li><li>Il GEO Visibility Score e il Confidence Score sono metriche locali, non standard ufficiali.</li><li>Le cause delle citazioni sono ipotesi da verificare.</li><li>Non inventare recensioni, competenze, risultati o certificazioni.</li></ul></div>
+    <div class="card"><h2>Procedura consigliata</h2><ol><li>Crea un progetto completo, includendo varianti del brand, servizi, località, concorrenti e possibili omonimi.</li><li>In “Nuova verifica” puoi usare Ricerca rapida: inserisci la keyword, scegli progetto e formato, quindi premi “Prepara verifica”, copia il prompt e segui le istruzioni per il test neutrale.</li><li>In alternativa salva manualmente prompt neutrali e ripetibili.</li><li>Esegui il test in finestra privata senza login o in chat temporanea; registra ambiente, modello, ricerca web e località.</li><li>Incolla risposta e URL, usa la pulizia automatica e controlla l’anteprima.</li><li>Analizza, verifica gli estratti di prova e completa la checklist manuale.</li><li>Ripeti lo stesso prompt su più AI e in date diverse.</li><li>Usa Matrice, Confronto, Opportunità e Qualità dati prima di creare un report.</li></ol><h2>Avvisi</h2><ul><li>Una singola risposta non dimostra visibilità stabile.</li><li>Il GEO Visibility Score e il Confidence Score sono metriche locali, non standard ufficiali.</li><li>Il report separa dati osservati, ipotesi operative e dati mancanti.</li><li>Le cause delle citazioni sono ipotesi da verificare.</li><li>Ogni verifica salva la versione dell’algoritmo e i pesi utilizzati.</li><li>Non inventare recensioni, competenze, risultati o certificazioni.</li></ul></div>
   `;
 }
 
@@ -2252,6 +2306,7 @@ const actionHandlers = {
       const promptIds = state.prompts.filter(x => x.projectId === id).map(x => x.id);
       state.prompts = state.prompts.filter(x => x.projectId !== id);
       state.checks = state.checks.filter(x => x.projectId !== id && !promptIds.includes(x.promptId));
+      state.opportunities = state.opportunities.filter(x => x.projectId !== id);
       saveState();
       renderProjects();
     });
@@ -2332,7 +2387,7 @@ const actionHandlers = {
   'reanalyze-check': (e) => {
     const c = state.checks.find(x => x.id === e.target.dataset.reanalyzeCheck);
     const p = projectBy(c.projectId);
-    Object.assign(c, Analyzer.analyze(p, c.response, (c.urls || []).join('\n')), { updatedAt: Utils.now() });
+    Object.assign(c, applyEnvironmentConfidence(Analyzer.analyze(p, c.response, (c.urls || []).join('\n')), c.testEnvironment || 'not-verified', c.manualReview?.completed), { algorithmVersion: CONFIG.VERSION, scoreWeightsSnapshot: structuredClone(state.settings.scoreWeights), analysisSettingsSnapshot: structuredClone(state.settings.analysis), updatedAt: Utils.now() });
     saveState();
     closeModal();
     viewCheck(c.id);
@@ -2527,6 +2582,7 @@ function saveProject() {
     homonymExclusions: Utils.lines(d.homonymExclusions),
     contextTerms: Utils.lines(d.contextTerms),
     description: d.description.trim(),
+    pageAudit: { title: (d.auditTitle || '').trim(), h1: (d.auditH1 || '').trim(), intro: (d.auditIntro || '').trim(), internalLinks: Number(d.auditInternalLinks || 0), reviews: Number(d.auditReviews || 0), hasAuthor: form.elements.auditHasAuthor?.checked || false, hasFaq: form.elements.auditHasFaq?.checked || false, hasSchema: form.elements.auditHasSchema?.checked || false, notes: (d.auditNotes || '').trim() },
     notes: d.notes.trim(),
     archived: false,
     createdAt: Utils.now(),
@@ -2824,6 +2880,28 @@ function bindEvents() {
       return;
     }
 
+    const dynamicMap = {
+      viewCheck:'view-check', editCheck:'edit-check', reanalyzeCheck:'reanalyze-check', duplicateCheck:'duplicate-check', reportCheck:'report-check',
+      editProject:'edit-project', duplicateProject:'duplicate-project', archiveProject:'archive-project', deleteProject:'delete-project', startProject:'start-project',
+      startPrompt:'start-prompt', editPrompt:'edit-prompt', deletePrompt:'delete-prompt', copyText:'copy-text', editPlatform:'edit-platform',
+      viewOpportunity:'view-opportunity', deleteDuplicate:'delete-duplicate'
+    };
+    for (const [key, action] of Object.entries(dynamicMap)) {
+      const el = e.target.closest(`[data-${key.replace(/[A-Z]/g, m => '-' + m.toLowerCase())}]`);
+      if (el && actionHandlers[action]) { actionHandlers[action]({ ...e, target: el }); return; }
+    }
+
+    const matrixStart = e.target.closest('[data-matrix-start]');
+    if (matrixStart && actionHandlers['matrix-start']) { actionHandlers['matrix-start']({ target: matrixStart }); return; }
+
+    const taskToggle = e.target.closest('[data-toggle-task]');
+    if (taskToggle) {
+      const o = state.opportunities.find(x => x.id === taskToggle.dataset.toggleTask);
+      const task = o?.tasks?.find(x => x.id === taskToggle.dataset.taskId);
+      if (task) { task.done = taskToggle.checked; o.status = o.tasks.every(x => x.done) ? 'Completata' : o.tasks.some(x => x.done) ? 'In corso' : 'Da fare'; o.completedAt = o.status === 'Completata' ? Utils.now() : ''; saveState(true); render(window.currentSection || 'opportunities'); }
+      return;
+    }
+
     // Navigazione
     const nav = e.target.closest('[data-section]');
     if (nav) { setSection(nav.dataset.section); return; }
@@ -2846,6 +2924,11 @@ function bindEvents() {
     // Check form changes
     if (target.closest('#checkForm')) { saveDraft(); }
 
+    const ownerEl = target.closest('[data-opp-owner]');
+    if (ownerEl) { const o = state.opportunities.find(x => x.id === ownerEl.dataset.oppOwner); if (o) { o.owner = ownerEl.value.trim(); saveState(true); } }
+    const dueEl = target.closest('[data-opp-due]');
+    if (dueEl) { const o = state.opportunities.find(x => x.id === dueEl.dataset.oppDue); if (o) { o.dueDate = dueEl.value; saveState(true); } }
+
     // Specific handlers
     for (const [selector, handler] of Object.entries(changeHandlers)) {
       if (target.matches(selector)) {
@@ -2859,12 +2942,12 @@ function bindEvents() {
   document.addEventListener('input', Utils.debounce((e) => {
     const target = e.target;
     if (target.closest('#checkForm')) { saveDraft(); }
-    if (target.id === '#quickKeyword' || target.id === '#quickPromptStyle') updateQuickPreview();
-    if (target.id === '#projectSearch' || target.id === '#projectFilter') filterProjects();
-    if (target.id === '#promptSearch' || target.id === '#promptProjectFilter' || target.id === '#promptPriorityFilter') filterPrompts();
-    if (target.id === '#resultSearch' || target.id === '#resultProjectFilter' || target.id === '#resultPlatformFilter' || target.id === '#resultMentionFilter') applyResultFilters();
-    if (target.id === '#oppProject' || target.id === '#oppPriority' || target.id === '#oppStatus') filterOpportunities();
-    if (target.id === '#qualityPriority' || target.id === '#qualityKind') filterQuality();
+    if (target.id === 'quickKeyword' || target.id === 'quickPromptStyle') updateQuickPreview();
+    if (target.id === 'projectSearch' || target.id === 'projectFilter') filterProjects();
+    if (target.id === 'promptSearch' || target.id === 'promptProjectFilter' || target.id === 'promptPriorityFilter') filterPrompts();
+    if (target.id === 'resultSearch' || target.id === 'resultProjectFilter' || target.id === 'resultPlatformFilter' || target.id === 'resultMentionFilter') applyResultFilters();
+    if (target.id === 'oppProject' || target.id === 'oppPriority' || target.id === 'oppStatus') filterOpportunities();
+    if (target.id === 'qualityPriority' || target.id === 'qualityKind') filterQuality();
   }, CONFIG.DEBOUNCE_DELAY));
 
   // Settings tabs
