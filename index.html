@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
-<title>GEO Citation Monitor 3.1</title>
+<title>GEO Citation Monitor 3.2</title>
 <style>
 :root{
   --bg:#f3f6fb;--surface:#fff;--surface-2:#f7f9fc;--surface-3:#edf2f8;
@@ -68,6 +68,8 @@ input,select,textarea{width:100%;border:1px solid var(--border);border-radius:10
 .fact-box{border-left:5px solid var(--success);background:color-mix(in srgb,var(--success) 7%,var(--surface));padding:14px;border-radius:11px;margin:10px 0}.hypothesis-box{border-left:5px solid var(--warning);background:color-mix(in srgb,var(--warning) 7%,var(--surface));padding:14px;border-radius:11px;margin:10px 0}.confidence-breakdown{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:12px}.confidence-part{padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--surface-2);text-align:center}.task-row{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:start;padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--surface)}.task-row input{width:auto;margin-top:4px}.task-row.done{opacity:.72;text-decoration:line-through}.audit-status{display:inline-flex;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:800}.audit-confirmed{background:color-mix(in srgb,var(--success) 14%,transparent);color:var(--success)}.audit-probable{background:color-mix(in srgb,var(--warning) 14%,transparent);color:var(--warning)}.audit-check{background:color-mix(in srgb,var(--info) 14%,transparent);color:var(--info)}
 @media(max-width:900px){.confidence-breakdown{grid-template-columns:1fr 1fr}}
 @media print{.sidebar,.topbar,.toolbar,.no-print,.modal-backdrop,.toast-zone{display:none!important}.app{display:block}.content{padding:0}.section{display:none!important}#reports.section{display:block!important}.card{box-shadow:none;break-inside:avoid}}
+
+.content-decision{border:1px solid var(--border);border-radius:14px;padding:16px;background:var(--surface-2);margin:14px 0}.content-decision h3{margin:0 0 8px}.decision-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.decision-card{border:1px solid var(--border);border-radius:12px;padding:13px;background:var(--surface)}.decision-card.active{outline:3px solid color-mix(in srgb,var(--accent) 22%,transparent);border-color:var(--accent)}.content-output{min-height:560px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px;line-height:1.6}.risk-high{color:var(--danger);font-weight:800}.risk-medium{color:var(--warning);font-weight:800}.risk-low{color:var(--success);font-weight:800}.fact-list{display:grid;gap:8px}.fact-row{padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--surface)}@media(max-width:900px){.decision-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -93,6 +95,7 @@ input,select,textarea{width:100%;border:1px solid var(--border);border-radius:10
   </div>
   <div class="nav-group"><div class="nav-label">Output</div>
     <button class="nav-item" data-section="generator">✦ <span>Generatore prompt</span></button>
+    <button class="nav-item" data-section="content-engine">✎ <span>Content Resolution Engine</span></button>
     <button class="nav-item" data-section="reports">▧ <span>Report</span></button>
   </div>
   <div class="nav-group"><div class="nav-label">Sistema</div>
@@ -100,7 +103,7 @@ input,select,textarea{width:100%;border:1px solid var(--border);border-radius:10
     <button class="nav-item" data-section="backup">⇩ <span>Backup e ripristino</span></button>
     <button class="nav-item" data-section="guide">? <span>Guida</span></button>
   </div>
-  <div class="sidebar-footer">Versione 3.1.0<br>I dati restano nel browser.</div>
+  <div class="sidebar-footer">Versione 3.2.0<br>I dati restano nel browser.</div>
 </aside>
 <main class="main" id="mainContent">
   <header class="topbar">
@@ -122,6 +125,7 @@ input,select,textarea{width:100%;border:1px solid var(--border);border-radius:10
     <section class="section" id="opportunities"></section>
     <section class="section" id="quality"></section>
     <section class="section" id="generator"></section>
+    <section class="section" id="content-engine"></section>
     <section class="section" id="reports"></section>
     <section class="section" id="settings"></section>
     <section class="section" id="backup"></section>
@@ -139,7 +143,7 @@ input,select,textarea{width:100%;border:1px solid var(--border);border-radius:10
 // ============================================================
 const CONFIG = {
   APP_KEY: 'geoCitationMonitor_v3',
-  VERSION: '3.1.0',
+  VERSION: '3.2.0',
   MAX_LOGO_SIZE: 350000,
   MIN_RESPONSE_LENGTH: 120,
   ANOMALY_THRESHOLD: 20,
@@ -351,6 +355,8 @@ function defaultState() {
     savedFilters: [],
     backups: [],
     checkDraft: {},
+    contentPlans: [],
+    contentDraft: {},
     createdAt: Utils.now(),
     updatedAt: Utils.now()
   };
@@ -402,6 +408,8 @@ function migrate(source) {
   result.savedFilters = s.savedFilters || [];
   result.backups = s.backups || [];
   result.checkDraft = s.checkDraft || {};
+  result.contentPlans = s.contentPlans || [];
+  result.contentDraft = s.contentDraft || {};
   return result;
 }
 
@@ -1237,6 +1245,7 @@ const PAGES = {
   opportunities: ['Opportunità GEO', 'Azioni concrete basate sui risultati'],
   quality: ['Qualità dati', 'Problemi, duplicati e verifiche incomplete'],
   generator: ['Generatore prompt', 'Crea istruzioni operative per l’ottimizzazione'],
+  'content-engine': ['Content Resolution Engine', 'Decidi, genera e controlla il contenuto correttivo'],
   reports: ['Report', 'Report stampabili e white label'],
   settings: ['Impostazioni', 'Pesi, piattaforme, analisi e branding'],
   backup: ['Backup e ripristino', 'Proteggi e trasferisci i dati locali'],
@@ -1259,6 +1268,7 @@ function render(id) {
     opportunities: renderOpportunities,
     quality: renderQuality,
     generator: renderGenerator,
+    'content-engine': renderContentEngine,
     reports: renderReports,
     settings: renderSettings,
     backup: renderBackup,
@@ -1931,7 +1941,7 @@ function renderOpportunityCard(o, selectable = true) {
     <p class="simple-explanation"><strong>Azione consigliata:</strong> ${Utils.esc(o.action)}</p>
     <div class="form-grid" style="margin:12px 0"><div class="field"><label>Responsabile</label><input data-opp-owner="${o.id}" value="${Utils.esc(o.owner || '')}" placeholder="Nome o ruolo"></div><div class="field"><label>Scadenza</label><input type="date" data-opp-due="${o.id}" value="${Utils.esc(o.dueDate || '')}"></div></div><div class="action-plan"><strong>Piano di azione, passo per passo</strong><ol>${(o.steps || [o.action]).map(step => `<li>${Utils.esc(step)}</li>`).join('')}</ol></div>
     ${renderChecklist(o)}${check ? renderKpis(check, o) : ''}${o.notes ? `<p class="help"><strong>Nota:</strong> ${Utils.esc(o.notes)}</p>` : ''}
-    <button class="btn btn-sm" data-view-check="${o.checkId}">Apri verifica</button>
+    <button class="btn btn-sm" data-view-check="${o.checkId}">Apri verifica</button><button class="btn btn-sm btn-primary" data-content-opportunity="${o.id}">Genera contenuto correttivo</button>
   </article>`;
 }
 
@@ -2034,6 +2044,145 @@ RICHIESTE
 
   document.getElementById('generatedPrompt').value = generatedPrompt;
 }
+
+// ============================================================
+// CONTENT RESOLUTION ENGINE
+// ============================================================
+let contentEngineOutput = '';
+let contentEngineChoice = { projectId:'', checkId:'', opportunityId:'', mode:'auto', format:'html' };
+
+function contentProblemType(check, opportunity) {
+  const title = String(opportunity?.title || '').toLowerCase();
+  if (title.includes('brand non compare')) return 'brand_absent';
+  if (title.includes('sito non citato') || title.includes('dominio')) return 'domain_absent';
+  if (title.includes('concorrenti')) return 'competitor_gap';
+  if (title.includes('servizi')) return 'service_gap';
+  if (title.includes('local') || title.includes('territ')) return 'local_gap';
+  if (title.includes('font')) return 'source_gap';
+  if (check && !check.brandMentioned) return 'brand_absent';
+  if (check && !check.domainCited) return 'domain_absent';
+  return 'intent_gap';
+}
+
+function contentDecision(project, prompt, check, opportunity) {
+  const keyword = prompt?.text || '';
+  const target = project?.targetUrl || '';
+  const audit = project?.pageAudit || {};
+  const query = Utils.slug(keyword);
+  const targetSlug = Utils.slug(target.replace(/^https?:\/\/[^/]+/i,''));
+  const commercial = /consulent|servizi|preventiv|prezzo|freelance|agenzia|corso|studio|dentist|avvocat|realizzazione/.test(query);
+  const targetConfigured = Boolean(target);
+  const pageSubstantial = Boolean(audit.title || audit.h1 || audit.intro);
+  const overlap = targetSlug && query.split(' ').filter(x=>x.length>3).some(x=>targetSlug.includes(x));
+  let recommendation = 'support_article';
+  let reason = 'La query può essere coperta con un contenuto informativo di supporto collegato alla pagina principale.';
+  let cannibalization = 'Basso';
+  if (targetConfigured && (commercial || overlap)) {
+    recommendation = 'update_page';
+    reason = 'Esiste una pagina target e la query appare commerciale o molto vicina al suo tema: creare un duplicato aumenterebbe il rischio di cannibalizzazione.';
+    cannibalization = 'Alto';
+  } else if (targetConfigured && pageSubstantial) {
+    recommendation = 'support_article';
+    reason = 'La pagina target è già definita; conviene creare un articolo con intento informativo distinto e collegarlo alla pagina commerciale.';
+    cannibalization = 'Medio';
+  } else if (!targetConfigured) {
+    recommendation = commercial ? 'service_page' : 'support_article';
+    reason = commercial ? 'La query appare commerciale e non è stata configurata una pagina target: serve prima una pagina servizio dedicata.' : 'Non è presente una pagina target: il contenuto può diventare la prima risorsa informativa del cluster.';
+    cannibalization = 'Basso';
+  }
+  return { recommendation, reason, cannibalization };
+}
+
+function contentLabels(type) {
+  const map = {
+    update_page:'Aggiorna pagina esistente', support_article:'Genera articolo di supporto', service_page:'Crea pagina servizio', brief:'Genera solo brief'
+  };
+  return map[type] || type;
+}
+
+function contentFacts(project, check) {
+  return [
+    ['Brand', project?.brand || '[DA INSERIRE]'],
+    ['Dominio', project?.domain || '[DA INSERIRE]'],
+    ['Pagina target', project?.targetUrl || '[DA DEFINIRE]'],
+    ['Località', project?.location || '[DA DEFINIRE]'],
+    ['Servizi verificati', (project?.services || []).join(', ') || '[DA INSERIRE]'],
+    ['Descrizione verificata', project?.description || '[DA INSERIRE]'],
+    ['Concorrenti rilevati', (check?.competitors || []).join(', ') || 'Nessuno rilevato'],
+    ['Fonti registrate', (check?.urls || []).join(', ') || 'Nessuna fonte registrata']
+  ];
+}
+
+function supportTitle(prompt, project) {
+  const q = String(prompt?.text || '').replace(/[?]+$/,'').trim();
+  const loc = project?.location ? ` a ${project.location}` : '';
+  if (/miglior|migliore|top|consigliat/i.test(q)) return `Come scegliere ${q.replace(/miglior[ei]?|top|consigliat[oi]/ig,'').trim()}${loc}: criteri, costi e domande utili`;
+  if (/quanto costa|prezzo|costo/i.test(q)) return `${q}: prezzi, fattori di costo e cosa verificare`;
+  return `${q}: guida pratica, criteri di scelta e domande frequenti`;
+}
+
+function buildContentPrompt(project, prompt, check, opportunity, decision, mode) {
+  const problem = contentProblemType(check, opportunity);
+  const facts = contentFacts(project, check).map(([k,v])=>`${k}: ${v}`).join('\n');
+  const title = mode === 'update_page' ? (project.pageAudit?.h1 || prompt?.text || 'Pagina da ottimizzare') : supportTitle(prompt, project);
+  const placeholders = ['anni di esperienza','numero clienti','risultati','certificazioni','prezzi','recensioni','case study'];
+  return `Agisci come SEO copywriter e consulente GEO senior. Devi creare un contenuto correttivo basato esclusivamente sui dati forniti. Non inventare nulla.\n\nDECISIONE EDITORIALE\nIntervento: ${contentLabels(mode)}\nMotivo: ${decision.reason}\nRischio cannibalizzazione: ${decision.cannibalization}\nProblema GEO: ${problem}\n\nQUERY/PROMPT TESTATO\n${prompt?.text || '[NON DISPONIBILE]'}\n\nPAGINA O TITOLO DI LAVORO\n${title}\n\nDATI VERIFICATI\n${facts}\n\nESITO DEL TEST\nBrand presente: ${check?.brandMentioned ? 'Sì' : 'No'}\nDominio citato: ${check?.domainCited ? 'Sì' : 'No'}\nTipo risposta: ${check?.responseType || 'Non disponibile'}\nGEO Score: ${check?.score ?? 0}/100\nConfidence: ${check?.confidence ?? 0}/100\n\nREGOLE OBBLIGATORIE\n1. Distingui dati verificati, dati mancanti e informazioni da ricercare.\n2. Per ogni dato non fornito usa un segnaposto esplicito, ad esempio [INSERIRE CASE STUDY VERIFICATO].\n3. Non dichiarare ${placeholders.join(', ')} senza prova.\n4. Mantieni un intento diverso dalla pagina target quando generi un articolo di supporto.\n5. Evita keyword stuffing, frasi promozionali generiche e confronti non dimostrati.\n6. Inserisci un link interno alla pagina target con anchor naturale.\n7. Suggerisci fonti solo come elementi da verificare, senza inventare URL.\n\nOUTPUT RICHIESTO\nA. Decisione editoriale e rischio cannibalizzazione.\nB. Keyword principale, secondarie, intento e pubblico.\nC. SEO title, meta description, permalink e H1.\nD. Struttura H2/H3.\nE. Contenuto completo in HTML pulito per WordPress, senza CSS inline.\nF. FAQ utili e non duplicate.\nG. Link interni consigliati con anchor.\nH. Schema consigliato, senza generare dati falsi.\nI. Checklist finale: accuratezza, fonti, cannibalizzazione, CTA e revisione umana.\nJ. Elenco di tutti i segnaposto rimasti.\n\nLUNGHEZZA\nDetermina la lunghezza in base all’intento e alla complessità; evita testo riempitivo.`;
+}
+
+function buildLocalHtmlDraft(project, prompt, decision, mode) {
+  const title = mode === 'update_page' ? (project?.pageAudit?.h1 || prompt?.text || 'Titolo pagina') : supportTitle(prompt, project);
+  const service = (project?.services || [])[0] || '[SERVIZIO PRINCIPALE]';
+  const location = project?.location || '[LOCALITÀ]';
+  const brand = project?.brand || '[BRAND]';
+  const target = project?.targetUrl || '#';
+  return `<article>\n  <header>\n    <h1>${Utils.esc(title)}</h1>\n    <p><strong>${Utils.esc(brand)}</strong> opera nell’ambito ${Utils.esc(service)}${location ? ` a ${Utils.esc(location)}` : ''}. Questa guida spiega criteri, processo e verifiche utili senza promesse non dimostrate.</p>\n  </header>\n  <section>\n    <h2>Che cosa valutare prima di scegliere</h2>\n    <p>[INSERIRE SPIEGAZIONE BASATA SU DATI REALI E SULLE ESIGENZE DEL PUBBLICO]</p>\n  </section>\n  <section>\n    <h2>Servizi e metodo di lavoro</h2>\n    <p>[DESCRIVERE SOLO SERVIZI E PROCESSO EFFETTIVAMENTE OFFERTI]</p>\n    <ul>\n      ${(project?.services || ['[SERVIZIO 1]','[SERVIZIO 2]']).map(x=>`<li>${Utils.esc(x)}</li>`).join('\n      ')}\n    </ul>\n  </section>\n  <section>\n    <h2>Prove e risultati verificabili</h2>\n    <p>[INSERIRE CASE STUDY, RECENSIONE AUTORIZZATA O RISULTATO DOCUMENTATO]</p>\n  </section>\n  <section>\n    <h2>Domande frequenti</h2>\n    <h3>Come capire se il servizio è adatto?</h3>\n    <p>[RISPOSTA VERIFICATA]</p>\n    <h3>Quali dati servono per iniziare?</h3>\n    <p>[RISPOSTA VERIFICATA]</p>\n  </section>\n  <p><a href="${Utils.esc(target)}">Scopri ${Utils.esc(service)} di ${Utils.esc(brand)}</a></p>\n</article>`;
+}
+
+function renderContentEngine() {
+  const projectId = contentEngineChoice.projectId || state.projects[0]?.id || '';
+  const checks = state.checks.filter(c=>c.projectId===projectId).sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const checkId = checks.some(c=>c.id===contentEngineChoice.checkId) ? contentEngineChoice.checkId : (checks[0]?.id || '');
+  const check = state.checks.find(c=>c.id===checkId);
+  const opportunities = generateOpportunities().filter(o=>o.checkId===checkId);
+  const opportunityId = opportunities.some(o=>o.id===contentEngineChoice.opportunityId) ? contentEngineChoice.opportunityId : (opportunities[0]?.id || '');
+  const project = projectBy(projectId), prompt = promptBy(check?.promptId), opportunity = opportunities.find(o=>o.id===opportunityId);
+  const decision = contentDecision(project,prompt,check,opportunity);
+  const mode = contentEngineChoice.mode === 'auto' ? decision.recommendation : contentEngineChoice.mode;
+  document.getElementById('content-engine').innerHTML = `
+    <div class="notice"><strong>Funzione senza API:</strong> l’app può decidere l’intervento, creare brief, prompt completo e bozza HTML con segnaposto. Il contenuto finale deve sempre essere verificato prima della pubblicazione.</div>
+    <div class="grid grid-2"><div class="card"><div class="card-header"><div><div class="card-title">1. Seleziona il problema</div><div class="card-sub">Usa una verifica reale e una sua opportunità GEO.</div></div></div>
+      <div class="field"><label>Progetto</label><select id="contentProject"><option value="">Seleziona</option>${options(state.projects,projectId)}</select></div>
+      <div class="field"><label>Verifica</label><select id="contentCheck"><option value="">Seleziona</option>${checks.map(c=>`<option value="${c.id}" ${c.id===checkId?'selected':''}>${Utils.esc(platformBy(c.platformId).name)} · ${Utils.date(c.date,true)} · ${Utils.esc(promptBy(c.promptId)?.text||'')}</option>`).join('')}</select></div>
+      <div class="field"><label>Opportunità GEO</label><select id="contentOpportunity"><option value="">Analisi generale</option>${opportunities.map(o=>`<option value="${o.id}" ${o.id===opportunityId?'selected':''}>${Utils.esc(o.priority)} · ${Utils.esc(o.title)}</option>`).join('')}</select></div>
+      <div class="field"><label>Intervento</label><select id="contentMode"><option value="auto" ${contentEngineChoice.mode==='auto'?'selected':''}>Automatico</option><option value="update_page" ${contentEngineChoice.mode==='update_page'?'selected':''}>Aggiorna pagina esistente</option><option value="support_article" ${contentEngineChoice.mode==='support_article'?'selected':''}>Articolo di supporto</option><option value="service_page" ${contentEngineChoice.mode==='service_page'?'selected':''}>Pagina servizio</option><option value="brief" ${contentEngineChoice.mode==='brief'?'selected':''}>Solo brief</option></select></div>
+      ${project&&check?`<div class="content-decision"><h3>Decisione consigliata: ${Utils.esc(contentLabels(decision.recommendation))}</h3><p>${Utils.esc(decision.reason)}</p><p>Rischio cannibalizzazione: <span class="risk-${decision.cannibalization.toLowerCase()}">${Utils.esc(decision.cannibalization)}</span></p><p>Intervento selezionato: <strong>${Utils.esc(contentLabels(mode))}</strong></p></div>`:empty('Dati insufficienti','Seleziona un progetto con almeno una verifica.')}
+      <div class="compact-actions"><button class="btn btn-primary" data-action="generate-content-prompt">Genera prompt articolo</button><button class="btn" data-action="generate-content-brief">Genera brief</button><button class="btn" data-action="generate-local-html">Genera bozza HTML</button></div>
+    </div><div class="card"><div class="card-header"><div><div class="card-title">2. Output pronto</div><div class="card-sub">Copia il prompt in un’AI oppure usa la bozza come struttura editoriale.</div></div><div class="spacer"></div><button class="btn btn-sm" data-action="copy-content-output">Copia</button><button class="btn btn-sm" data-action="download-content-output">Scarica</button></div><textarea id="contentEngineOutput" class="content-output">${Utils.esc(contentEngineOutput)}</textarea></div></div>
+    ${project&&check?`<div class="card" style="margin-top:16px"><div class="card-header"><div><div class="card-title">Dati usati e limiti</div><div class="card-sub">I valori mancanti resteranno come segnaposto.</div></div></div><div class="fact-list">${contentFacts(project,check).map(([k,v])=>`<div class="fact-row"><strong>${Utils.esc(k)}</strong><div>${Utils.esc(v)}</div></div>`).join('')}</div></div>`:''}`;
+}
+
+function currentContentContext() {
+  const projectId=document.getElementById('contentProject')?.value||contentEngineChoice.projectId;
+  const checkId=document.getElementById('contentCheck')?.value||contentEngineChoice.checkId;
+  const opportunityId=document.getElementById('contentOpportunity')?.value||contentEngineChoice.opportunityId;
+  const selectedMode=document.getElementById('contentMode')?.value||contentEngineChoice.mode||'auto';
+  const project=projectBy(projectId), check=state.checks.find(c=>c.id===checkId), prompt=promptBy(check?.promptId), opportunity=generateOpportunities().find(o=>o.id===opportunityId);
+  const decision=contentDecision(project,prompt,check,opportunity);
+  const mode=selectedMode==='auto'?decision.recommendation:selectedMode;
+  contentEngineChoice={projectId,checkId,opportunityId,mode:selectedMode,format:'html'};
+  return {project,check,prompt,opportunity,decision,mode};
+}
+
+function generateContentPrompt() {
+  const c=currentContentContext(); if(!c.project||!c.check){Utils.toast('Seleziona progetto e verifica.','error');return;}
+  contentEngineOutput=buildContentPrompt(c.project,c.prompt,c.check,c.opportunity,c.decision,c.mode); renderContentEngine();
+}
+function generateContentBrief() {
+  const c=currentContentContext(); if(!c.project||!c.check){Utils.toast('Seleziona progetto e verifica.','error');return;}
+  const title=c.mode==='update_page'?(c.project.pageAudit?.h1||c.prompt?.text):supportTitle(c.prompt,c.project);
+  contentEngineOutput=`BRIEF EDITORIALE GEO\n\nIntervento: ${contentLabels(c.mode)}\nMotivo: ${c.decision.reason}\nRischio cannibalizzazione: ${c.decision.cannibalization}\nTitolo di lavoro: ${title}\nIntento: ${c.prompt?.intent||'Da verificare'}\nPagina target: ${c.project.targetUrl||'[DA DEFINIRE]'}\nLink interno obbligatorio: ${c.project.targetUrl||'[DA DEFINIRE]'}\n\nOBIETTIVO\nRisolvere il problema: ${c.opportunity?.why||'visibilità GEO insufficiente'}\n\nSTRUTTURA\n1. Risposta diretta alla query\n2. Criteri verificabili\n3. Metodo/processo reale\n4. Prove e casi documentati\n5. Domande frequenti\n6. CTA coerente\n\nDATI DA INSERIRE\n${contentFacts(c.project,c.check).map(([k,v])=>`- ${k}: ${v}`).join('\n')}\n\nDATI MANCANTI DA NON INVENTARE\n- [CASE STUDY VERIFICATO]\n- [RECENSIONE AUTORIZZATA]\n- [RISULTATO DOCUMENTATO]\n- [PREZZI CONFERMATI, SE PUBBLICI]\n\nCHECK FINALE\n- Intento distinto dalla pagina commerciale\n- Nessuna affermazione non provata\n- Link interno naturale\n- FAQ non duplicate\n- Revisione umana`; renderContentEngine();
+}
+function generateLocalHtml() { const c=currentContentContext(); if(!c.project||!c.check){Utils.toast('Seleziona progetto e verifica.','error');return;} contentEngineOutput=buildLocalHtmlDraft(c.project,c.prompt,c.decision,c.mode); renderContentEngine(); }
 
 // ============================================================
 // REPORTS
@@ -2268,7 +2417,7 @@ function renderBackup() {
 // ============================================================
 function renderGuide() {
   document.getElementById('guide').innerHTML = `
-    <div class="card"><h2>Procedura consigliata</h2><ol><li>Crea un progetto completo, includendo varianti del brand, servizi, località, concorrenti e possibili omonimi.</li><li>In “Nuova verifica” puoi usare Ricerca rapida: inserisci la keyword, scegli progetto e formato, quindi premi “Prepara verifica”, copia il prompt e segui le istruzioni per il test neutrale.</li><li>In alternativa salva manualmente prompt neutrali e ripetibili.</li><li>Esegui il test in finestra privata senza login o in chat temporanea; registra ambiente, modello, ricerca web e località.</li><li>Incolla risposta e URL, usa la pulizia automatica e controlla l’anteprima.</li><li>Analizza, verifica gli estratti di prova e completa la checklist manuale.</li><li>Ripeti lo stesso prompt su più AI e in date diverse.</li><li>Usa Matrice, Confronto, Opportunità e Qualità dati prima di creare un report.</li></ol><h2>Avvisi</h2><ul><li>Una singola risposta non dimostra visibilità stabile.</li><li>Il GEO Visibility Score e il Confidence Score sono metriche locali, non standard ufficiali.</li><li>Il report separa dati osservati, ipotesi operative e dati mancanti.</li><li>Le cause delle citazioni sono ipotesi da verificare.</li><li>Ogni verifica salva la versione dell’algoritmo e i pesi utilizzati.</li><li>Non inventare recensioni, competenze, risultati o certificazioni.</li></ul></div>
+    <div class="card"><h2>Procedura consigliata</h2><ol><li>Crea un progetto completo, includendo varianti del brand, servizi, località, concorrenti e possibili omonimi.</li><li>In “Nuova verifica” puoi usare Ricerca rapida: inserisci la keyword, scegli progetto e formato, quindi premi “Prepara verifica”, copia il prompt e segui le istruzioni per il test neutrale.</li><li>In alternativa salva manualmente prompt neutrali e ripetibili.</li><li>Esegui il test in finestra privata senza login o in chat temporanea; registra ambiente, modello, ricerca web e località.</li><li>Incolla risposta e URL, usa la pulizia automatica e controlla l’anteprima.</li><li>Analizza, verifica gli estratti di prova e completa la checklist manuale.</li><li>Ripeti lo stesso prompt su più AI e in date diverse.</li><li>Usa Matrice, Confronto, Opportunità e Qualità dati prima di creare un report.</li><li>Nel Content Resolution Engine seleziona una verifica: l’app decide se aggiornare la pagina esistente o creare un contenuto di supporto, segnala il rischio di cannibalizzazione e genera brief, prompt o bozza HTML con segnaposto.</li></ol><h2>Avvisi</h2><ul><li>Una singola risposta non dimostra visibilità stabile.</li><li>Il GEO Visibility Score e il Confidence Score sono metriche locali, non standard ufficiali.</li><li>Il report separa dati osservati, ipotesi operative e dati mancanti.</li><li>Le cause delle citazioni sono ipotesi da verificare.</li><li>Ogni verifica salva la versione dell’algoritmo e i pesi utilizzati.</li><li>Non inventare recensioni, competenze, risultati o certificazioni.</li></ul></div>
   `;
 }
 
@@ -2421,6 +2570,7 @@ const actionHandlers = {
     reportSelectedOpportunityIds = new Set(reportAvailableOpportunities(c.projectId, [c.id]).map(o => o.id));
     setSection('reports');
   },
+  'content-opportunity': (e) => { const o=generateOpportunities().find(x=>x.id===e.target.dataset.contentOpportunity); if(!o){Utils.toast('Opportunità non trovata.','error');return;} contentEngineChoice={projectId:o.projectId,checkId:o.checkId,opportunityId:o.id,mode:'auto',format:'html'}; contentEngineOutput=''; setSection('content-engine'); },
   'matrix-start': (e) => {
     const p = promptBy(e.target.dataset.prompt);
     state.checkDraft = { projectId: p.projectId, promptId: p.id, platformId: e.target.dataset.platform, wizardStep: 1 };
@@ -2514,6 +2664,11 @@ const actionHandlers = {
     });
   },
   'generate-prompt': buildGeneratedPrompt,
+  'generate-content-prompt': generateContentPrompt,
+  'generate-content-brief': generateContentBrief,
+  'generate-local-html': generateLocalHtml,
+  'copy-content-output': () => copyText(document.getElementById('contentEngineOutput')?.value || ''),
+  'download-content-output': () => { const text=document.getElementById('contentEngineOutput')?.value||''; if(!text){Utils.toast('Nessun contenuto da scaricare.','error');return;} Utils.download(text.trim().startsWith('<')?'contenuto-correttivo.html':'contenuto-correttivo.txt',text,text.trim().startsWith('<')?'text/html;charset=utf-8':'text/plain;charset=utf-8'); },
   'copy-generated': () => copyText(document.getElementById('generatedPrompt')?.value || ''),
   'print-report': () => window.print(),
   'export-report': () => {
@@ -2736,6 +2891,10 @@ const changeHandlers = {
   '#qualityKind': (e) => filterQuality(),
   '#generatorProject': (e) => renderGenerator(),
   '#generatorCheck': (e) => renderGenerator(),
+  '#contentProject': (e) => { contentEngineChoice.projectId=e.target.value; contentEngineChoice.checkId=''; contentEngineChoice.opportunityId=''; contentEngineOutput=''; renderContentEngine(); },
+  '#contentCheck': (e) => { contentEngineChoice.checkId=e.target.value; contentEngineChoice.opportunityId=''; contentEngineOutput=''; renderContentEngine(); },
+  '#contentOpportunity': (e) => { contentEngineChoice.opportunityId=e.target.value; contentEngineOutput=''; renderContentEngine(); },
+  '#contentMode': (e) => { contentEngineChoice.mode=e.target.value; renderContentEngine(); },
   '#reportProject': (e) => {
     reportProjectChoice = e.target.value;
     resetReportSelections(reportProjectChoice, reportRangeChoice);
@@ -2884,7 +3043,7 @@ function bindEvents() {
       viewCheck:'view-check', editCheck:'edit-check', reanalyzeCheck:'reanalyze-check', duplicateCheck:'duplicate-check', reportCheck:'report-check',
       editProject:'edit-project', duplicateProject:'duplicate-project', archiveProject:'archive-project', deleteProject:'delete-project', startProject:'start-project',
       startPrompt:'start-prompt', editPrompt:'edit-prompt', deletePrompt:'delete-prompt', copyText:'copy-text', editPlatform:'edit-platform',
-      viewOpportunity:'view-opportunity', deleteDuplicate:'delete-duplicate'
+      viewOpportunity:'view-opportunity', deleteDuplicate:'delete-duplicate', contentOpportunity:'content-opportunity'
     };
     for (const [key, action] of Object.entries(dynamicMap)) {
       const el = e.target.closest(`[data-${key.replace(/[A-Z]/g, m => '-' + m.toLowerCase())}]`);
