@@ -99,7 +99,7 @@ input,select,textarea{width:100%;border:1px solid var(--border);border-radius:10
   </div>
   <div class="nav-group"><div class="nav-label">Diagnosi avanzata</div>
     <button class="nav-item" data-section="page-lab">⌁ <span>Analisi pagina</span></button>
-    <button class="nav-item" data-section="source-lab">⌕ <span>Validazione fonti</span></button>
+    <button class="nav-item" data-section="source-lab">⌕ <span>Revisione manuale fonti</span></button>
     <button class="nav-item" data-section="campaigns">◉ <span>Campagne e stabilità</span></button>
     <button class="nav-item" data-section="knowledge">▰ <span>Knowledge Base</span></button>
     <button class="nav-item" data-section="content-qa">✓ <span>Controllo contenuti</span></button>
@@ -115,9 +115,10 @@ input,select,textarea{width:100%;border:1px solid var(--border);border-radius:10
   <div class="nav-group"><div class="nav-label">Sistema</div>
     <button class="nav-item" data-section="settings">⚙ <span>Impostazioni</span></button>
     <button class="nav-item" data-section="backup">⇩ <span>Backup e ripristino</span></button>
+    <button class="nav-item" data-section="diagnostics">⚕ <span>Diagnostica sistema</span></button>
     <button class="nav-item" data-section="guide">? <span>Guida</span></button>
   </div>
-  <div class="sidebar-footer">Versione 4.0.0<br>I dati restano nel browser.</div>
+  <div class="sidebar-footer">Versione 4.2.0<br>I dati restano nel browser.</div>
 </aside>
 <main class="main" id="mainContent">
   <header class="topbar">
@@ -151,6 +152,7 @@ input,select,textarea{width:100%;border:1px solid var(--border);border-radius:10
     <section class="section" id="reports"></section>
     <section class="section" id="settings"></section>
     <section class="section" id="backup"></section>
+    <section class="section" id="diagnostics"></section>
     <section class="section" id="guide"></section>
   </div>
 </main>
@@ -164,8 +166,10 @@ input,select,textarea{width:100%;border:1px solid var(--border);border-radius:10
 // CONFIGURAZIONE
 // ============================================================
 const CONFIG = {
-  APP_KEY: 'geoCitationMonitor_v3',
-  VERSION: '4.0.0',
+  APP_KEY: 'geoCitationMonitor_v42',
+  LEGACY_APP_KEYS: ['geoCitationMonitor_v3'],
+  VERSION: '4.2.0',
+  DATA_SCHEMA_VERSION: 7,
   MAX_LOGO_SIZE: 350000,
   MIN_RESPONSE_LENGTH: 120,
   ANOMALY_THRESHOLD: 20,
@@ -373,12 +377,23 @@ function defaultState() {
     prompts: [],
     checks: [],
     opportunities: [],
-    platforms: DEFAULT_PLATFORMS,
+    platforms: DEFAULT_PLATFORMS.map(p => ({ ...p })),
     savedFilters: [],
     backups: [],
     checkDraft: {},
     contentPlans: [],
     contentDraft: {},
+    pageSnapshots: [],
+    campaigns: [],
+    knowledge: [],
+    tasks: [],
+    gscImports: [],
+    contentAudits: [],
+    sourceValidations: {},
+    wpPackages: [],
+    dismissedOpportunityIds: [],
+    activityLog: [],
+    schemaVersion: CONFIG.DATA_SCHEMA_VERSION,
     createdAt: Utils.now(),
     updatedAt: Utils.now()
   };
@@ -391,7 +406,7 @@ function migrate(source) {
   result.settings = { ...base.settings, ...(s.settings || {}) };
   result.settings.analysis = { ...base.settings.analysis, ...(s.settings?.analysis || {}) };
   result.settings.scoreWeights = { ...base.settings.scoreWeights, ...(s.settings?.scoreWeights || {}) };
-  result.platforms = s.platforms?.length ? s.platforms : DEFAULT_PLATFORMS;
+  result.platforms = (s.platforms?.length ? s.platforms : DEFAULT_PLATFORMS).map(p => ({ ...p }));
   result.projects = (s.projects || []).map(p => ({
     ...p,
     brandVariants: p.brandVariants || [],
@@ -432,6 +447,17 @@ function migrate(source) {
   result.checkDraft = s.checkDraft || {};
   result.contentPlans = s.contentPlans || [];
   result.contentDraft = s.contentDraft || {};
+  result.pageSnapshots = Array.isArray(s.pageSnapshots) ? s.pageSnapshots : [];
+  result.campaigns = Array.isArray(s.campaigns) ? s.campaigns : [];
+  result.knowledge = Array.isArray(s.knowledge) ? s.knowledge : [];
+  result.tasks = Array.isArray(s.tasks) ? s.tasks : [];
+  result.gscImports = Array.isArray(s.gscImports) ? s.gscImports : [];
+  result.contentAudits = Array.isArray(s.contentAudits) ? s.contentAudits : [];
+  result.sourceValidations = s.sourceValidations && typeof s.sourceValidations === 'object' && !Array.isArray(s.sourceValidations) ? { ...s.sourceValidations } : {};
+  result.wpPackages = Array.isArray(s.wpPackages) ? s.wpPackages : [];
+  result.dismissedOpportunityIds = Array.isArray(s.dismissedOpportunityIds) ? s.dismissedOpportunityIds : [];
+  result.activityLog = Array.isArray(s.activityLog) ? s.activityLog : [];
+  result.schemaVersion = CONFIG.DATA_SCHEMA_VERSION;
   return result;
 }
 
@@ -439,9 +465,20 @@ let state = null;
 
 function loadState() {
   try {
-    const raw = localStorage.getItem(CONFIG.APP_KEY);
+    let raw = localStorage.getItem(CONFIG.APP_KEY);
+    let migratedFrom = '';
+    if (!raw) {
+      for (const legacyKey of CONFIG.LEGACY_APP_KEYS || []) {
+        const legacyRaw = localStorage.getItem(legacyKey);
+        if (legacyRaw) { raw = legacyRaw; migratedFrom = legacyKey; break; }
+      }
+    }
     const parsed = raw ? JSON.parse(raw) : null;
     state = parsed ? migrate(parsed) : defaultState();
+    if (migratedFrom) {
+      localStorage.setItem(CONFIG.APP_KEY, JSON.stringify(state));
+      state.activityLog.push({ id: Utils.uid(), at: Utils.now(), action: 'legacy-migration', detail: `Dati copiati da ${migratedFrom}` });
+    }
   } catch (e) {
     console.error(e);
     state = defaultState();
@@ -1691,6 +1728,8 @@ function saveCheck() {
     id: Utils.uid(),
     projectId: d.projectId,
     promptId: d.promptId,
+    promptTextSnapshot: promptBy(d.promptId)?.text || '',
+    promptHash: hashText(promptBy(d.promptId)?.text || ''),
     platformId: d.platformId,
     model: d.model,
     date: new Date(d.date).toISOString(),
@@ -2428,10 +2467,23 @@ function platformForm(p = {}) {
 // ============================================================
 function renderBackup() {
   const storage = Utils.storage();
+  const lastBackup = state.backups?.slice().sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt))[0];
   document.getElementById('backup').innerHTML = `
-    <div class="grid grid-2"><div class="card"><div class="card-header"><div><div class="card-title">Backup completo</div><div class="card-sub">Esporta tutti i dati in JSON.</div></div></div><button class="btn btn-primary" data-action="export-json">Esporta JSON</button><button class="btn" data-action="import-json">Importa JSON</button></div><div class="card"><div class="card-header"><div><div class="card-title">Spazio locale</div><div class="card-sub">Stima sul limite tipico del browser.</div></div></div><div class="score-large">${storage.kb} KB</div><div class="progress"><span style="width:${storage.pct}%"></span></div><div class="help" style="margin-top:8px">${storage.pct.toFixed(1)}% di circa ${CONFIG.STORAGE_LIMIT_MB} MB</div><button class="btn btn-danger" data-action="clear-all" style="margin-top:15px">Cancella tutti i dati</button></div></div>
-    <div class="notice warning" style="margin-top:16px">I dati restano nel browser utilizzato. Esegui periodicamente un backup JSON.</div>
-  `;
+    <div class="grid grid-2">
+      <div class="card"><div class="card-header"><div><div class="card-title">Backup completo</div><div class="card-sub">Esporta, importa o ripristina i dati in sicurezza.</div></div></div>
+        <button class="btn btn-primary" data-action="export-json">Esporta JSON</button>
+        <button class="btn" data-action="import-json">Importa JSON</button>
+        <button class="btn" data-action="restore-rollback">Ripristina ultima operazione</button>
+        <div class="help" style="margin-top:10px">Ultima esportazione registrata: ${lastBackup ? Utils.date(lastBackup.createdAt, true) : 'mai'}</div>
+      </div>
+      <div class="card"><div class="card-header"><div><div class="card-title">Spazio locale</div><div class="card-sub">Stima sul limite tipico del browser.</div></div></div>
+        <div class="score-large">${storage.kb} KB</div><div class="progress"><span style="width:${storage.pct}%"></span></div>
+        <div class="help" style="margin-top:8px">${storage.pct.toFixed(1)}% di circa ${CONFIG.STORAGE_LIMIT_MB} MB</div>
+        <button class="btn" data-action="inspect-orphans" style="margin-top:15px">Analizza e pulisci dati orfani</button>
+        <button class="btn btn-danger" data-action="clear-all" style="margin-top:15px">Cancella tutti i dati</button>
+      </div>
+    </div>
+    <div class="notice warning" style="margin-top:16px">I dati restano nel browser utilizzato. Prima di importazioni o eliminazioni viene creato uno snapshot locale di sicurezza.</div>`;
 }
 
 // ============================================================
@@ -2725,9 +2777,10 @@ const actionHandlers = {
     document.getElementById('savePlatform').onclick = savePlatform;
   },
   'save-branding': saveBranding,
-  'export-json': () => Utils.download(`geo-citation-monitor-${new Date().toISOString().slice(0, 10)}.json`, JSON.stringify(state, null, 2), 'application/json'),
+  'export-json': () => exportJsonBackup(),
   'import-json': () => document.getElementById('jsonImport').click(),
   'clear-all': () => {
+    createSafetySnapshot('clear-all');
     deleteConfirm('Cancellare definitivamente tutti i dati locali?', () => {
       state = defaultState();
       localStorage.removeItem(CONFIG.APP_KEY);
@@ -3001,37 +3054,86 @@ function settingsTabs(e) {
   else panel.innerHTML = settingsBranding();
 }
 
+function validateImportedState(candidate) {
+  const errors = [], warnings = [];
+  if (!candidate || typeof candidate !== 'object' || Array.isArray(candidate)) errors.push('Il file non contiene un oggetto JSON valido.');
+  for (const key of ['projects','prompts','checks']) if (!Array.isArray(candidate?.[key])) errors.push(`Campo obbligatorio non valido: ${key}`);
+  const maxRecords = 100000;
+  const total = Object.values(candidate || {}).reduce((n,v)=>n+(Array.isArray(v)?v.length:0),0);
+  if (total > maxRecords) errors.push('Il backup contiene troppi record.');
+  const duplicateIds = [];
+  for (const key of ['projects','prompts','checks','opportunities','campaigns','knowledge','tasks']) {
+    const ids=(candidate?.[key]||[]).map(x=>x?.id).filter(Boolean), unique=new Set(ids);
+    if (ids.length !== unique.size) duplicateIds.push(key);
+  }
+  if (duplicateIds.length) errors.push(`ID duplicati in: ${duplicateIds.join(', ')}`);
+  if (candidate?.version && String(candidate.version) > CONFIG.VERSION) warnings.push(`Backup creato con versione ${candidate.version}, più recente dell'app ${CONFIG.VERSION}.`);
+  return { valid: errors.length===0, errors, warnings };
+}
+
+function mergeCollection(localItems=[], importedItems=[]) {
+  const map = new Map(localItems.map(x=>[x.id, structuredClone(x)]));
+  let added=0, updated=0, conflicts=0;
+  for (const item of importedItems || []) {
+    if (!item?.id) continue;
+    if (!map.has(item.id)) { map.set(item.id, structuredClone(item)); added++; continue; }
+    const current=map.get(item.id), a=new Date(current.updatedAt||current.createdAt||0).getTime(), b=new Date(item.updatedAt||item.createdAt||0).getTime();
+    if (JSON.stringify(current)!==JSON.stringify(item)) conflicts++;
+    if (b>a) { map.set(item.id, structuredClone(item)); updated++; }
+  }
+  return {items:[...map.values()],added,updated,conflicts};
+}
+
+function createSafetySnapshot(reason='operazione') {
+  try {
+    localStorage.setItem(`${CONFIG.APP_KEY}_rollback`, JSON.stringify({createdAt:Utils.now(),reason,state}));
+    return true;
+  } catch(e) { Utils.toast('Impossibile creare lo snapshot di sicurezza. Esporta un backup prima di continuare.','error'); return false; }
+}
+
+function exportJsonBackup() {
+  const content=JSON.stringify(state,null,2), size=new Blob([content]).size;
+  state.backups ||= [];
+  state.backups.push({id:Utils.uid(),createdAt:Utils.now(),type:'json-export',version:CONFIG.VERSION,size});
+  state.activityLog ||= [];
+  state.activityLog.push({id:Utils.uid(),at:Utils.now(),action:'export-json',detail:`${size} byte`});
+  saveState(true);
+  Utils.download(`geo-citation-monitor-${new Date().toISOString().slice(0,10)}.json`,content,'application/json');
+  renderBackup();
+  Utils.toast('Backup JSON esportato.','success');
+}
+
 function importJson(file) {
+  if (!file || file.size > 20 * 1024 * 1024) { Utils.toast('File assente o superiore a 20 MB.','error'); return; }
   const reader = new FileReader();
   reader.onload = () => {
     try {
-      const parsed = JSON.parse(reader.result);
-      if (!Array.isArray(parsed.projects) || !Array.isArray(parsed.prompts) || !Array.isArray(parsed.checks)) {
-        throw new Error('Struttura non valida');
-      }
-      modal('Importa backup', '<div class="notice warning">Scegli se unire i dati o sostituire tutto.</div>',
-        '<button class="btn" data-close-modal>Annulla</button><button class="btn" id="mergeImport">Unisci</button><button class="btn btn-primary" id="replaceImport">Sostituisci</button>'
-      );
+      const parsed = JSON.parse(String(reader.result).replace(/^\uFEFF/,''));
+      const validation=validateImportedState(parsed);
+      if (!validation.valid) throw new Error(validation.errors.join(' '));
+      const warningHtml=validation.warnings.length?`<div class="notice warning">${validation.warnings.map(Utils.esc).join('<br>')}</div>`:'';
+      modal('Importa backup', `${warningHtml}<div class="notice warning"><strong>Sostituisci tutto</strong> sovrascrive progetti, verifiche, campagne, Knowledge Base, attività, Search Console, audit, pacchetti WordPress e impostazioni. Verrà creato uno snapshot locale di sicurezza.</div><div class="field"><label>Per sostituire digita SOSTITUISCI</label><input id="replaceConfirm" autocomplete="off" placeholder="SOSTITUISCI"></div>`,
+        '<button class="btn" data-close-modal>Annulla</button><button class="btn" id="mergeImport">Unisci</button><button class="btn btn-danger" id="replaceImport">Sostituisci tutto</button>');
       document.getElementById('replaceImport').onclick = () => {
-        state = migrate(parsed);
-        saveState();
-        closeModal();
-        render(window.currentSection || 'dashboard');
+        if (document.getElementById('replaceConfirm').value.trim() !== 'SOSTITUISCI') { Utils.toast('Digita SOSTITUISCI per confermare.','error'); return; }
+        if (!createSafetySnapshot('import-replace')) return;
+        const candidate=migrate(parsed);
+        state=candidate;
+        state.activityLog.push({id:Utils.uid(),at:Utils.now(),action:'import-replace',detail:file.name});
+        saveState(); closeModal(); render(window.currentSection||'dashboard');
       };
       document.getElementById('mergeImport').onclick = () => {
-        for (const key of ['projects', 'prompts', 'checks', 'opportunities', 'savedFilters']) {
-          const ids = new Set(state[key].map(x => x.id));
-          (parsed[key] || []).forEach(x => {
-            if (!ids.has(x.id)) state[key].push(x);
-          });
-        }
-        saveState();
-        closeModal();
-        render(window.currentSection || 'dashboard');
+        if (!createSafetySnapshot('import-merge')) return;
+        const imported=migrate(parsed), keys=['projects','prompts','checks','opportunities','savedFilters','contentPlans','pageSnapshots','campaigns','knowledge','tasks','gscImports','contentAudits','wpPackages'];
+        let summary={added:0,updated:0,conflicts:0};
+        for (const key of keys) { const r=mergeCollection(state[key]||[], imported[key]||[]); state[key]=r.items; summary.added+=r.added; summary.updated+=r.updated; summary.conflicts+=r.conflicts; }
+        state.sourceValidations={...(state.sourceValidations||{}),...(imported.sourceValidations||{})};
+        state.dismissedOpportunityIds=Utils.unique([...(state.dismissedOpportunityIds||[]),...(imported.dismissedOpportunityIds||[])]);
+        state.activityLog.push({id:Utils.uid(),at:Utils.now(),action:'import-merge',detail:`Aggiunti ${summary.added}, aggiornati ${summary.updated}, conflitti ${summary.conflicts}`});
+        cleanupOrphans(); normalizeAdvancedState(); saveState(); closeModal(); render(window.currentSection||'dashboard');
+        Utils.toast(`Import completato: ${summary.added} aggiunti, ${summary.updated} aggiornati, ${summary.conflicts} conflitti mantenuti/locali.`, 'success');
       };
-    } catch (e) {
-      Utils.toast('File JSON non valido o incompatibile.', 'error');
-    }
+    } catch(e) { console.error(e); Utils.toast(`File JSON non valido: ${e.message}`,'error'); }
   };
   reader.readAsText(file);
 }
@@ -3321,6 +3423,270 @@ Object.assign(changeHandlers,{
 const baseRenderBackup=renderBackup;
 renderBackup=function(){baseRenderBackup();const root=document.getElementById('backup');root.insertAdjacentHTML('beforeend','<div class="card" style="margin-top:16px"><h3>Mirror IndexedDB</h3><p class="help">Copia locale aggiuntiva, utile quando localStorage viene cancellato accidentalmente. Non sostituisce un backup esterno.</p><button class="btn" data-action="restore-indexeddb">Ripristina ultimo mirror</button></div>');};
 
+
+
+
+// ============================================================
+// STABILIZATION & DATA INTEGRITY 4.1
+// ============================================================
+Object.assign(PAGES, {
+  diagnostics:['Diagnostica sistema','Controlli automatici su dati, funzioni e coerenza']
+});
+
+function hashText(value='') {
+  let h = 2166136261;
+  const str = String(value).trim().replace(/\s+/g,' ');
+  for (let i=0;i<str.length;i++) { h ^= str.charCodeAt(i); h = Math.imul(h,16777619); }
+  return (h>>>0).toString(16).padStart(8,'0');
+}
+
+function normalizeAdvancedState(target=state) {
+  target.pageSnapshots ||= [];
+  target.campaigns ||= [];
+  target.knowledge ||= [];
+  target.tasks ||= [];
+  target.gscImports ||= [];
+  target.contentAudits ||= [];
+  target.sourceValidations ||= {};
+  target.wpPackages ||= [];
+  target.dismissedOpportunityIds ||= [];
+  target.activityLog ||= [];
+  target.schemaVersion = CONFIG.DATA_SCHEMA_VERSION;
+  target.knowledge = target.knowledge.map(f=>({
+    verifiedAt:'', verifiedBy:'', internalEvidence:'', expiresAt:'', notes:'', updatedAt:f.createdAt||Utils.now(), ...f
+  }));
+  target.campaigns = target.campaigns.map(c=>({
+    environment:'', promptTextSnapshot:promptBy(c.promptId)?.text||'', promptHash:hashText(promptBy(c.promptId)?.text||''), ...c
+  }));
+  target.checks = target.checks.map(c=>({
+    promptTextSnapshot: c.promptTextSnapshot || promptBy(c.promptId)?.text || '',
+    promptHash: c.promptHash || hashText(c.promptTextSnapshot || promptBy(c.promptId)?.text || ''),
+    ...c
+  }));
+  return target;
+}
+normalizeAdvancedState();
+
+const migrateBefore41 = migrate;
+migrate = function(source) { return normalizeAdvancedState(migrateBefore41(source)); };
+
+function cleanupOrphans() {
+  const projectIds=new Set(state.projects.map(x=>x.id));
+  const promptIds=new Set(state.prompts.map(x=>x.id));
+  const checkIds=new Set(state.checks.map(x=>x.id));
+  const opportunityIds=new Set(state.opportunities.map(x=>x.id));
+  state.pageSnapshots=state.pageSnapshots.filter(x=>projectIds.has(x.projectId));
+  state.campaigns=state.campaigns.filter(x=>projectIds.has(x.projectId)&&promptIds.has(x.promptId));
+  state.knowledge=state.knowledge.filter(x=>projectIds.has(x.projectId));
+  state.tasks=state.tasks.filter(x=>projectIds.has(x.projectId)&&(!x.checkId||checkIds.has(x.checkId))&&(!x.beforeCheckId||checkIds.has(x.beforeCheckId))&&(!x.afterCheckId||checkIds.has(x.afterCheckId)));
+  state.gscImports=state.gscImports.filter(x=>projectIds.has(x.projectId));
+  state.contentAudits=state.contentAudits.filter(x=>projectIds.has(x.projectId));
+  state.wpPackages=state.wpPackages.filter(x=>projectIds.has(x.projectId));
+  for(const id of Object.keys(state.sourceValidations)) if(!checkIds.has(id)) delete state.sourceValidations[id];
+  state.dismissedOpportunityIds=state.dismissedOpportunityIds.filter(id=>opportunityIds.has(id));
+}
+
+const saveStateBefore41=saveState;
+saveState=function(silent=false){ cleanupOrphans(); normalizeAdvancedState(); return saveStateBefore41(silent); };
+
+function authorSignals(project,doc,text,schemas=[]) {
+  const names=Utils.unique([
+    project.brand,
+    state.settings.consultant,
+    ...projectKnowledge(project.id).filter(f=>/autore|biografia|fondatore|consulente/i.test(`${f.category} ${f.label}`)).map(f=>f.value)
+  ].filter(Boolean));
+  const low=String(text||'').toLowerCase();
+  const structured=schemas.some(x=>/"author"|"founder"|"employee"/i.test(x));
+  const htmlSignal=doc && !!doc.querySelector('[rel="author"],[class*="author" i],[id*="author" i],[itemprop="author"]');
+  const textual=/\bautore\b|scritto da|a cura di|about the author/i.test(text||'') || names.some(n=>n.length>2&&low.includes(String(n).toLowerCase()));
+  return structured||htmlSignal||textual;
+}
+
+function analyzeManualAudit(project,a={}) {
+  const checks=[
+    {key:'title',label:'Title presente e descrittivo',status:a.title?(a.title.length>=25?'confirmed':'probable'):'verify',detail:a.title||'Non registrato'},
+    {key:'h1',label:'Un solo H1',status:a.h1?'confirmed':'verify',detail:a.h1||'Non registrato'},
+    {key:'intro',label:'Risposta iniziale sostanziale',status:a.intro?(a.intro.trim().split(/\s+/).length>=50?'confirmed':'probable'):'verify',detail:a.intro?`${a.intro.trim().split(/\s+/).length} parole registrate`:'Non registrata'},
+    {key:'brand',label:'Brand esplicito',status:[a.title,a.h1,a.intro].some(x=>String(x||'').toLowerCase().includes(String(project.brand||'').toLowerCase()))?'confirmed':'verify',detail:project.brand||'Brand non configurato'},
+    {key:'faq',label:'FAQ presenti',status:a.hasFaq?'confirmed':'verify',detail:a.hasFaq?'Confermato nell’audit':'Non confermato'},
+    {key:'schema',label:'Dati strutturati',status:a.hasSchema?'confirmed':'verify',detail:a.hasSchema?'Confermato nell’audit':'Non confermato'},
+    {key:'author',label:'Autore identificabile',status:a.hasAuthor?'confirmed':'verify',detail:a.hasAuthor?'Confermato nell’audit':'Non confermato'},
+    {key:'links',label:'Link interni presenti',status:Number(a.internalLinks||0)>=3?'confirmed':Number(a.internalLinks||0)>0?'probable':'verify',detail:`${Number(a.internalLinks||0)} link registrati`},
+    {key:'reviews',label:'Prove o recensioni visibili',status:a.hasProof?'confirmed':'verify',detail:a.hasProof?'Confermato nell’audit':'Non confermato'}
+  ];
+  return {mode:'manual-audit',isHtml:false,title:a.title||'',meta:a.meta||'',h1s:a.h1?[a.h1]:[],headings:[],links:Array(Number(a.internalLinks||0)).fill('audit'),schemas:a.hasSchema?['audit']:[],services:[],locations:[],hasFaq:!!a.hasFaq,hasAuthor:!!a.hasAuthor,hasSchema:!!a.hasSchema,wordCount:(a.intro||'').trim().split(/\s+/).filter(Boolean).length,text:a.intro||'',checks};
+}
+
+const analyzePageInputBefore41=analyzePageInput;
+analyzePageInput=function(project,raw){
+  const out=analyzePageInputBefore41(project,raw);
+  if(out.isHtml){
+    const doc=document.implementation.createHTMLDocument('audit'); doc.documentElement.innerHTML=raw;
+    out.hasAuthor=authorSignals(project,doc,out.text,out.schemas);
+    const c=out.checks.find(x=>x.key==='author'); if(c){c.status=out.hasAuthor?'confirmed':'verify';c.detail=out.hasAuthor?'Segnale autore rilevato':'Non rilevato';}
+  } else {
+    out.hasAuthor=authorSignals(project,null,out.text,[]);
+    const c=out.checks.find(x=>x.key==='author'); if(c){c.status=out.hasAuthor?'confirmed':'verify';c.detail=out.hasAuthor?'Segnale autore rilevato':'Non rilevato';}
+  }
+  out.mode=out.isHtml?'html':'plain-text';
+  return out;
+};
+
+// Audit manuale: analisi diretta e non conversione in falso HTML/testo.
+actionHandlers['use-project-audit']=()=>{
+  const p=projectBy(pageLabProject); if(!p){Utils.toast('Seleziona un progetto.','error');return;}
+  const analysis=analyzeManualAudit(p,p.pageAudit||{});
+  const snap={id:Utils.uid(),projectId:p.id,date:Utils.now(),raw:'',sourceMode:'manual-audit',analysis,algorithmVersion:CONFIG.VERSION};
+  state.pageSnapshots.push(snap); saveState(); renderPageLab();
+};
+
+function detectDelimiter(text='') {
+  const line=String(text).replace(/^\uFEFF/,'').split(/\r?\n/).find(Boolean)||'';
+  const candidates=[',',';','\t'];
+  return candidates.sort((a,b)=>(line.split(b).length-line.split(a).length))[0];
+}
+function parseCsvRobust(text='') {
+  text=String(text).replace(/^\uFEFF/,''); const delimiter=detectDelimiter(text);
+  const rows=[]; let row=[],cell='',quoted=false;
+  for(let i=0;i<text.length;i++){
+    const ch=text[i],next=text[i+1];
+    if(ch==='"'&&quoted&&next==='"'){cell+='"';i++;continue;}
+    if(ch==='"'){quoted=!quoted;continue;}
+    if(ch===delimiter&&!quoted){row.push(cell);cell='';continue;}
+    if((ch==='\n'||ch==='\r')&&!quoted){if(ch==='\r'&&next==='\n')i++;row.push(cell);if(row.some(x=>x.trim()))rows.push(row);row=[];cell='';continue;}
+    cell+=ch;
+  }
+  row.push(cell);if(row.some(x=>x.trim()))rows.push(row);
+  return rows;
+}
+parseCsv=parseCsvRobust;
+
+function campaignEligibleChecks(cam,{afterBaseline=false}={}) {
+  const start=afterBaseline&&cam.baselineDate?cam.baselineDate:cam.createdAt;
+  const end=cam.completedAt||null;
+  const expectedHash=cam.promptHash||hashText(cam.promptTextSnapshot||promptBy(cam.promptId)?.text||'');
+  return state.checks.filter(c=>{
+    const date=new Date(c.date||c.createdAt).getTime();
+    const currentHash=c.promptHash||hashText(c.promptTextSnapshot||promptBy(c.promptId)?.text||'');
+    return c.projectId===cam.projectId && c.promptId===cam.promptId && (!cam.platformIds?.length||cam.platformIds.includes(c.platformId)) && (!start||date>=new Date(start).getTime()) && (!end||date<=new Date(end).getTime()) && (!cam.environment||c.testEnvironment===cam.environment) && currentHash===expectedHash;
+  });
+}
+campaignMetrics=function(cam,opts={}){const checks=campaignEligibleChecks(cam,opts);const n=checks.length;const brand=checks.filter(c=>c.brandMentioned).length;const domain=checks.filter(c=>c.domainCited||c.domainMentionedText).length;const positions=checks.filter(c=>c.position>0).map(c=>c.position);return {checks:n,checkIds:checks.map(c=>c.id),brand,domain,brandRate:n?Math.round(brand/n*100):0,domainRate:n?Math.round(domain/n*100):0,avgPosition:positions.length?(positions.reduce((a,b)=>a+b,0)/positions.length).toFixed(1):'—',platforms:new Set(checks.map(c=>c.platformId)).size,environments:Utils.unique(checks.map(c=>c.testEnvironment)),promptHash:cam.promptHash};};
+
+const oldNewCampaign=actionHandlers['new-campaign'];
+actionHandlers['new-campaign']=()=>{
+  oldNewCampaign();
+  setTimeout(()=>{
+    const form=document.getElementById('campaignForm'); if(!form)return;
+    const projectSel=form.elements.projectId, promptSel=form.elements.promptId;
+    const wrap=document.createElement('div'); wrap.className='field full'; wrap.innerHTML='<label>Ambiente obbligatorio</label><select name="environment" required><option value="">Seleziona</option><option value="anonymous">Anonimo senza login</option><option value="temporary">Chat temporanea</option><option value="memory-off">Memoria disattivata</option></select><div class="help">La campagna confronterà solo test eseguiti nello stesso ambiente.</div>';
+    form.appendChild(wrap);
+    const save=document.getElementById('saveCampaign');
+    save.onclick=()=>{if(!form.reportValidity())return;const d=Utils.form(form);const prompt=promptBy(d.promptId);state.campaigns.push({id:Utils.uid(),name:d.name,projectId:d.projectId,promptId:d.promptId,targetRuns:Number(d.targetRuns||6),platformIds:[...form.querySelectorAll('[name="platformIds"]:checked')].map(x=>x.value),environment:d.environment,promptTextSnapshot:prompt?.text||'',promptHash:hashText(prompt?.text||''),status:'Attiva',createdAt:Utils.now()});saveState();closeModal();renderCampaigns();};
+  },0);
+};
+actionHandlers['campaign-baseline']=e=>{const c=state.campaigns.find(x=>x.id===e.target.dataset.id);const m=campaignMetrics(c);c.baseline=m;c.baselineCheckIds=m.checkIds;c.baselineSnapshot=structuredClone(m);c.baselineDate=Utils.now();c.algorithmVersion=CONFIG.VERSION;c.scoreWeightsSnapshot=structuredClone(state.settings.scoreWeights);saveState();renderCampaigns();};
+actionHandlers['campaign-complete']=e=>{const c=state.campaigns.find(x=>x.id===e.target.dataset.id);c.completedAt=Utils.now();c.status='Completata';c.final=campaignMetrics(c);c.finalCheckIds=c.final.checkIds;c.finalSnapshot=structuredClone(c.final);c.algorithmVersion=CONFIG.VERSION;saveState();renderCampaigns();};
+
+function usableKnowledge(projectId){return state.knowledge.filter(f=>f.projectId===projectId&&f.verified&&(f.source||f.internalEvidence)&&(!f.expiresAt||new Date(f.expiresAt)>=new Date()));}
+projectKnowledge=usableKnowledge;
+
+function factForm41(f={}){return `<form id="factForm41" class="form-grid"><input type="hidden" name="id" value="${Utils.esc(f.id||'')}">${field('projectId','Progetto',f.projectId||state.projects[0]?.id||'',true,'','select',state.projects)}${field('category','Categoria',f.category||'Identità',true,'','select',['Identità','Biografia','Servizio','Esperienza','Case study','Risultato','Recensione','Certificazione','Prezzo','Contatto','Altro'])}${field('label','Etichetta',f.label||'',true)}${field('value','Valore approvato',f.value||'',true,'','textarea')}${field('source','URL fonte',f.source||'',false,'https://…','url')}${field('internalEvidence','Evidenza interna',f.internalEvidence||'',false,'Documento, contratto o nota verificabile')}${field('verifiedBy','Verificato da',f.verifiedBy||state.settings.consultant||'')}${field('verifiedAt','Data verifica',f.verifiedAt?String(f.verifiedAt).slice(0,10):'','','','date')}${field('expiresAt','Scadenza dato',f.expiresAt?String(f.expiresAt).slice(0,10):'','','','date')}${field('notes','Note',f.notes||'','','','textarea')}<label class="field full"><span><input type="checkbox" name="verified" style="width:auto" ${f.verified?'checked':''}> Dato verificato</span><span class="help">Per essere usabile nei contenuti serve anche una fonte o un’evidenza interna.</span></label></form>`;}
+function openFactEditor(f={}){modal(f.id?'Modifica dato':'Nuovo dato verificato',factForm41(f),'<button class="btn" data-close-modal>Annulla</button><button class="btn btn-primary" id="saveFact41">Salva</button>');document.getElementById('saveFact41').onclick=()=>{const form=document.getElementById('factForm41');if(!form.reportValidity())return;const d=Utils.form(form);const verified=form.elements.verified.checked;if(verified&&!d.source&&!d.internalEvidence){Utils.toast('Un dato verificato richiede una fonte o un’evidenza interna.','error');return;}const item={id:d.id||Utils.uid(),projectId:d.projectId,category:d.category,label:d.label,value:d.value,source:d.source,internalEvidence:d.internalEvidence,verifiedBy:d.verifiedBy,verifiedAt:d.verifiedAt,expiresAt:d.expiresAt,notes:d.notes,verified,createdAt:d.id?(state.knowledge.find(x=>x.id===d.id)?.createdAt||Utils.now()):Utils.now(),updatedAt:Utils.now()};const idx=state.knowledge.findIndex(x=>x.id===item.id);if(idx>=0)state.knowledge[idx]=item;else state.knowledge.push(item);saveState();closeModal();renderKnowledge();};}
+actionHandlers['new-fact']=()=>openFactEditor({projectId:document.getElementById('knowledgeProject')?.value||state.projects[0]?.id||''});
+actionHandlers['edit-fact']=e=>openFactEditor(state.knowledge.find(x=>x.id===e.target.dataset.id));
+
+const renderKnowledgeBefore41=renderKnowledge;
+renderKnowledge=function(){renderKnowledgeBefore41();document.querySelectorAll('#knowledge .fact-row').forEach(row=>{const del=row.querySelector('[data-action="delete-fact"]');if(del&&!row.querySelector('[data-action="edit-fact"]'))del.insertAdjacentHTML('beforebegin',`<button class="btn btn-sm" data-action="edit-fact" data-id="${del.dataset.id}">Modifica</button>`);});};
+advancedRenderers.knowledge=renderKnowledge;
+
+const syncTasksBefore41=syncTasks;
+syncTasks=function(){generateOpportunities();for(const o of state.opportunities){if(state.dismissedOpportunityIds.includes(o.id))continue;if(!state.tasks.some(t=>t.opportunityId===o.id))state.tasks.push({id:Utils.uid(),opportunityId:o.id,projectId:o.projectId,checkId:o.checkId,title:o.title,priority:o.priority,status:'Da verificare',owner:'',due:'',url:projectBy(o.projectId)?.targetUrl||'',notes:'',evidence:'',implementationDate:'',beforeCheckId:o.checkId,afterCheckId:'',createdAt:Utils.now()});}};
+const renderActionsBefore41=renderActions;
+renderActions=function(){
+  // Rendering read-only: nessuna sincronizzazione implicita.
+  const original=syncTasks; syncTasks=()=>{}; try{renderActionsBefore41();}finally{syncTasks=original;}
+  document.querySelectorAll('#actions [data-task-id]').forEach(row=>{
+    const notes=row.querySelector('.task-notes'); if(notes&& !row.querySelector('.task-evidence')) notes.insertAdjacentHTML('afterend','<textarea class="task-evidence" placeholder="Evidenza separata: URL, screenshot o prova" style="min-height:60px"></textarea><input class="task-implementation" type="date" title="Data implementazione">');
+  });
+};
+advancedRenderers.actions=renderActions;
+actionHandlers['save-task']=e=>{const row=e.target.closest('[data-task-id]'),t=state.tasks.find(x=>x.id===e.target.dataset.id);Object.assign(t,{owner:row.querySelector('.task-owner').value,status:row.querySelector('.task-status').value,due:row.querySelector('.task-due').value,url:row.querySelector('.task-url').value,notes:row.querySelector('.task-notes').value,evidence:row.querySelector('.task-evidence')?.value||t.evidence||'',implementationDate:row.querySelector('.task-implementation')?.value||t.implementationDate||'',afterCheckId:row.querySelector('.task-after').value,completedAt:row.querySelector('.task-status').value==='Completata'?Utils.now():t.completedAt||''});saveState();renderActions();};
+actionHandlers['delete-task']=e=>{const t=state.tasks.find(x=>x.id===e.target.dataset.id);if(t?.opportunityId)state.dismissedOpportunityIds=Utils.unique([...state.dismissedOpportunityIds,t.opportunityId]);state.tasks=state.tasks.filter(x=>x.id!==e.target.dataset.id);saveState();renderActions();};
+
+function qaContent41(project,raw){
+  const html=/<[a-z][\s\S]*>/i.test(raw),doc=document.implementation.createHTMLDocument('qa');if(html)doc.documentElement.innerHTML=raw;else doc.body.textContent=raw;
+  const text=(doc.body?.innerText||doc.body?.textContent||raw).replace(/\s+/g,' ').trim(),low=text.toLowerCase();
+  const title=doc.querySelector('title')?.textContent?.trim()||''; const meta=doc.querySelector('meta[name="description"]')?.content||'';
+  const h1=[...doc.querySelectorAll('h1')].map(x=>x.textContent.trim()).filter(Boolean); const emptyHeadings=[...doc.querySelectorAll('h1,h2,h3')].filter(x=>!x.textContent.trim()).length;
+  const links=[...doc.querySelectorAll('a[href]')].map(x=>x.getAttribute('href')); const target=project.targetUrl||'';
+  const services=(project.services||[]).filter(s=>low.includes(String(s).toLowerCase())); const location=project.location&&low.includes(project.location.toLowerCase());
+  const placeholders=/\[[^\]]*(INSERIRE|DATO|VERIFICARE|NON PUBBLICARE)[^\]]*\]/i.test(raw); const riskyClaims=(text.match(/\b(migliore|numero uno|leader|garantito|garantisce|sempre|senza rischi|risultati certi)\b/gi)||[]);
+  const numericClaims=(text.match(/\b\d+(?:[.,]\d+)?\s*(?:%|anni|clienti|progetti|euro|€)?\b/gi)||[]);
+  const facts=usableKnowledge(project.id); const unsupportedNumeric=numericClaims.filter(n=>!facts.some(f=>String(f.value).toLowerCase().includes(n.toLowerCase())));
+  const checks=[
+    ['H1 unico',h1.length===1,h1.length?`${h1.length} rilevato/i`:'Assente','blocking'],['Title SEO',title.length>=25&&title.length<=60,title||'Non rilevato','warning'],['Meta description',meta.length>=110&&meta.length<=165,meta||'Non rilevata','warning'],['Brand presente',low.includes(String(project.brand||'').toLowerCase()),project.brand||'Non configurato','blocking'],['Località presente',!!location,project.location||'Non configurata','warning'],['Servizi presenti',services.length>0,services.join(', ')||'Nessuno','warning'],['Link pagina target',!target||links.some(l=>String(l).includes(Utils.domain(target))||l===target),target||'Nessuna target configurata','warning'],['Heading non vuoti',emptyHeadings===0,`${emptyHeadings} vuoti`,'warning'],['Segnaposto rimossi',!placeholders,placeholders?'Presenti':'Assenti','blocking'],['Claim assoluti',riskyClaims.length===0,riskyClaims.join(', ')||'Nessuno','blocking'],['Dati numerici supportati',unsupportedNumeric.length===0,unsupportedNumeric.join(', ')||'Supportati o assenti','blocking'],['CTA presente',/contatt|prenot|richied|scopri|chiama|scriv/i.test(text),'Controllo testuale','warning'],['FAQ presenti',/faq|domande frequenti/i.test(text)||[...doc.querySelectorAll('h2,h3')].some(x=>x.textContent.includes('?')),'Controllo testuale','warning']
+  ].map(([label,pass,detail,severity])=>({label,pass,detail,severity}));
+  const blockers=checks.filter(x=>!x.pass&&x.severity==='blocking');const warnings=checks.filter(x=>!x.pass&&x.severity==='warning');const score=Math.max(0,100-blockers.length*18-warnings.length*7);
+  return {score,blockers,warnings,checks,title,meta,h1,services,unsupportedNumeric,riskyClaims,ready:blockers.length===0};
+}
+qaContent=qaContent41;
+
+function makeWpPackage41(p,html,type){
+  const text=stripHtml(html),doc=document.implementation.createHTMLDocument('wp');doc.body.innerHTML=html;
+  const h1=doc.querySelector('h1')?.textContent?.trim()||promptBy(state.checks.filter(c=>c.projectId===p.id).sort((a,b)=>new Date(b.date)-new Date(a.date))[0]?.promptId)?.text||p.brand;
+  const title=(h1+' | '+p.brand).slice(0,60); const firstSentence=(text.match(/^.{60,180}?[.!?](?:\s|$)/)||[])[0]||text.slice(0,155); const meta=firstSentence.trim().slice(0,160);
+  const slug=Utils.slug(h1).replace(/\s+/g,'-'); const faq=[...html.matchAll(/<h[23][^>]*>([^<]*\?[^<]*)<\/h[23]>\s*<p[^>]*>([\s\S]*?)<\/p>/gi)].map(m=>({q:stripHtml(m[1]),a:stripHtml(m[2])}));
+  const base={'@context':'https://schema.org'}; let schema;
+  if(type==='FAQPage') schema={...base,'@type':'FAQPage',mainEntity:faq.map(x=>({'@type':'Question',name:x.q,acceptedAnswer:{'@type':'Answer',text:x.a}}))};
+  else if(type==='Service') schema={...base,'@type':'Service',name:h1,provider:{'@type':'Organization',name:p.brand,url:p.domain||p.targetUrl||undefined},areaServed:p.location||undefined,url:p.targetUrl||undefined,description:meta};
+  else if(type==='LocalBusiness') schema={...base,'@type':'LocalBusiness',name:p.brand,url:p.domain||p.targetUrl||undefined,areaServed:p.location||undefined,description:meta};
+  else schema={...base,'@type':'Article',headline:h1,description:meta,author:{'@type':'Person',name:state.settings.consultant||p.brand},publisher:{'@type':'Organization',name:p.brand},dateModified:new Date().toISOString().slice(0,10),mainEntityOfPage:p.targetUrl||undefined};
+  return {title,meta,slug,html,schema,checklist:['H1 unico','Title 25–60 caratteri','Meta 110–165 caratteri','URL leggibile','Link interno alla pagina target','Alt immagini compilati','Schema specifico validato','Dati verificati nella Knowledge Base','Salva come bozza','Revisione umana finale']};
+}
+makeWpPackage=makeWpPackage41;
+
+function diagnosticsRun(){
+ const tests=[];const add=(name,pass,detail,priority='P2')=>tests.push({name,pass,detail,priority});
+ add('Versione e schema',CONFIG.VERSION==='4.2.0'&&Number(state.schemaVersion)===CONFIG.DATA_SCHEMA_VERSION,`App ${CONFIG.VERSION} · schema ${state.schemaVersion}`,'P1');
+ add('Relazioni progetti',state.prompts.every(x=>state.projects.some(p=>p.id===x.projectId)),'Prompt collegati a progetti esistenti','P1');
+ add('Relazioni verifiche',state.checks.every(x=>state.projects.some(p=>p.id===x.projectId)&&state.prompts.some(p=>p.id===x.promptId)),'Verifiche collegate','P1');
+ add('Snapshot prompt',state.checks.every(x=>x.promptTextSnapshot&&x.promptHash),'Ogni verifica conserva testo e hash del prompt','P1');
+ add('Campagne comparabili',state.campaigns.every(x=>x.createdAt&&x.environment&&x.promptHash),'Periodo, ambiente e prompt bloccati','P1');
+ add('Knowledge Base affidabile',state.knowledge.filter(x=>x.verified).every(x=>x.source||x.internalEvidence),'Dati verificati con fonte/evidenza','P1');
+ add('Task senza orfani',state.tasks.every(x=>state.projects.some(p=>p.id===x.projectId)),'Attività collegate','P2');
+ add('Fonti senza orfani',Object.keys(state.sourceValidations).every(id=>state.checks.some(c=>c.id===id)),'Revisioni fonti collegate','P2');
+ add('Pesi GEO Score',Object.values(state.settings.scoreWeights).reduce((a,b)=>a+Number(b),0)===100,`Totale ${Object.values(state.settings.scoreWeights).reduce((a,b)=>a+Number(b),0)}%`,'P2');
+ add('Backup esterno',state.backups.length>0||false,state.backups.length?'Backup registrato':'Esporta periodicamente un JSON','P3');
+ return tests;
+}
+function renderDiagnostics(){const tests=diagnosticsRun();const failed=tests.filter(x=>!x.pass);document.getElementById('diagnostics').innerHTML=`<div class="grid grid-4">${metric('Test eseguiti',tests.length,'Diagnostica locale')}${metric('Superati',tests.length-failed.length,'Controlli validi')}${metric('Da correggere',failed.length,'Problemi rilevati')}${metric('Versione',CONFIG.VERSION,'Release stabilizzata')}</div><div class="toolbar" style="margin-top:16px"><button class="btn btn-primary" data-action="run-diagnostics">Esegui di nuovo</button><button class="btn" data-action="repair-data">Ripara dati orfani</button><button class="btn" data-action="export-diagnostics">Esporta diagnostica</button></div><div class="card">${tests.map(t=>`<div class="diagnosis-item"><div class="flex gap-8 wrap"><strong>${Utils.esc(t.name)}</strong>${badge(t.pass?'Superato':t.priority,t.pass?'success':t.priority==='P1'?'danger':'warning')}</div><div class="help">${Utils.esc(t.detail)}</div></div>`).join('')}</div><div class="notice warning" style="margin-top:16px">Questi test controllano struttura e coerenza locale. Non sostituiscono test end-to-end su tutti i browser.</div>`;}
+advancedRenderers.diagnostics=renderDiagnostics;
+actionHandlers['run-diagnostics']=()=>renderDiagnostics();
+actionHandlers['repair-data']=()=>{cleanupOrphans();normalizeAdvancedState();saveState();renderDiagnostics();Utils.toast('Dati riparati e normalizzati.','success');};
+actionHandlers['export-diagnostics']=()=>Utils.download(`diagnostica-geo-${new Date().toISOString().slice(0,10)}.json`,JSON.stringify({date:Utils.now(),version:CONFIG.VERSION,tests:diagnosticsRun()},null,2),'application/json');
+
+
+function orphanReport() {
+  const projectIds=new Set(state.projects.map(x=>x.id)), promptIds=new Set(state.prompts.map(x=>x.id)), checkIds=new Set(state.checks.map(x=>x.id));
+  return {
+    pageSnapshots:(state.pageSnapshots||[]).filter(x=>!projectIds.has(x.projectId)),
+    campaigns:(state.campaigns||[]).filter(x=>!projectIds.has(x.projectId)||!promptIds.has(x.promptId)),
+    knowledge:(state.knowledge||[]).filter(x=>!projectIds.has(x.projectId)),
+    tasks:(state.tasks||[]).filter(x=>!projectIds.has(x.projectId)||x.checkId&&!checkIds.has(x.checkId)||x.beforeCheckId&&!checkIds.has(x.beforeCheckId)||x.afterCheckId&&!checkIds.has(x.afterCheckId)),
+    gscImports:(state.gscImports||[]).filter(x=>!projectIds.has(x.projectId)),
+    contentAudits:(state.contentAudits||[]).filter(x=>!projectIds.has(x.projectId)),
+    wpPackages:(state.wpPackages||[]).filter(x=>!projectIds.has(x.projectId)),
+    sourceValidations:Object.keys(state.sourceValidations||{}).filter(id=>!checkIds.has(id))
+  };
+}
+actionHandlers['inspect-orphans']=()=>{const report=orphanReport(), counts=Object.fromEntries(Object.entries(report).map(([k,v])=>[k,v.length])), total=Object.values(counts).reduce((a,b)=>a+b,0);modal('Pulizia dati orfani',`<div class="notice ${total?'warning':'success'}">${total?`Sono stati trovati ${total} record orfani.`:'Nessun dato orfano rilevato.'}</div><div class="card">${Object.entries(counts).map(([k,v])=>`<div class="kpi-row"><strong>${Utils.esc(k)}</strong><span>${v}</span></div>`).join('')}</div>`,total?'<button class="btn" data-close-modal>Annulla</button><button class="btn btn-danger" id="confirmOrphanCleanup">Crea snapshot e pulisci</button>':'<button class="btn" data-close-modal>Chiudi</button>');if(total)document.getElementById('confirmOrphanCleanup').onclick=()=>{if(!createSafetySnapshot('orphan-cleanup'))return;cleanupOrphans();state.activityLog.push({id:Utils.uid(),at:Utils.now(),action:'cleanup-orphans',detail:`${total} record`});saveState();closeModal();renderBackup();Utils.toast(`${total} record orfani rimossi.`,'success');};};
+actionHandlers['restore-rollback']=()=>{const raw=localStorage.getItem(`${CONFIG.APP_KEY}_rollback`);if(!raw){Utils.toast('Nessuno snapshot disponibile.','error');return;}deleteConfirm('Ripristinare lo snapshot precedente? I dati attuali verranno sostituiti.',()=>{try{const payload=JSON.parse(raw);state=migrate(payload.state);state.activityLog.push({id:Utils.uid(),at:Utils.now(),action:'rollback-restore',detail:payload.reason||''});saveState();render(window.currentSection||'dashboard');Utils.toast('Snapshot ripristinato.','success');}catch(e){Utils.toast('Snapshot non valido.','error');}});};
+
+// Source lab is manual by design.
+PAGES['source-lab']=['Revisione manuale fonti','Controlla pertinenza e supporto delle fonti registrate'];
+
+// Ensure advanced renderer wrapper sees diagnostics.
 
 // ============================================================
 // INIT
