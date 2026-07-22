@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
-<title>GEO Citation Monitor 4.0</title>
+<title>GEO Citation Monitor 4.3</title>
 <style>
 :root{
   --bg:#f3f6fb;--surface:#fff;--surface-2:#f7f9fc;--surface-3:#edf2f8;
@@ -74,6 +74,8 @@ input,select,textarea{width:100%;border:1px solid var(--border);border-radius:10
 .advanced-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.status-confirmed{border-left:5px solid var(--success)}.status-probable{border-left:5px solid var(--warning)}.status-verify{border-left:5px solid var(--info)}.status-resolved{border-left:5px solid var(--muted)}.fact-row{display:grid;grid-template-columns:150px 1fr 130px 90px;gap:8px;align-items:start;padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--surface-2);margin-bottom:8px}.task-row{display:grid;grid-template-columns:90px minmax(220px,1.5fr) 150px 145px minmax(180px,1fr);gap:9px;align-items:start;padding:12px;border-bottom:1px solid var(--border)}.qa-score{font-size:54px;font-weight:900;letter-spacing:-.05em}.mini-code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;white-space:pre-wrap;word-break:break-word;background:var(--surface-3);padding:12px;border-radius:10px}.source-validation{display:grid;grid-template-columns:minmax(220px,1.2fr) repeat(4,minmax(110px,.55fr));gap:8px;padding:11px;border-bottom:1px solid var(--border)}.campaign-card{border:1px solid var(--border);border-radius:14px;padding:16px;background:var(--surface);margin-bottom:12px}.stability-number{font-size:36px;font-weight:900}.evidence-label{display:inline-flex;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:850}.evidence-confirmed{background:color-mix(in srgb,var(--success) 15%,transparent);color:var(--success)}.evidence-probable{background:color-mix(in srgb,var(--warning) 15%,transparent);color:var(--warning)}.evidence-verify{background:color-mix(in srgb,var(--info) 15%,transparent);color:var(--info)}
 @media(max-width:1050px){.task-row,.source-validation,.fact-row{grid-template-columns:1fr}.advanced-grid{grid-template-columns:1fr}}
 
+.implementation-tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}.implementation-tab{border:1px solid var(--border);background:var(--surface);padding:9px 13px;border-radius:10px;font-weight:800;color:var(--muted)}.implementation-tab.active{background:var(--accent);border-color:var(--accent);color:#fff}.score-duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.score-card{padding:18px;border:1px solid var(--border);border-radius:14px;background:var(--surface-2)}.score-card .value{font-size:48px;font-weight:900;line-height:1}.score-card .label{font-weight:850;margin-top:8px}.score-card .grade{font-size:13px;color:var(--muted);margin-top:4px}.audit-requirement{display:grid;grid-template-columns:minmax(220px,1.3fr) 150px minmax(240px,1fr) 75px;gap:10px;align-items:start;padding:12px;border-bottom:1px solid var(--border)}.audit-requirement:last-child{border-bottom:0}.status-pill{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:12px;font-weight:850}.status-completed{background:color-mix(in srgb,var(--success) 14%,transparent);color:var(--success)}.status-partial{background:color-mix(in srgb,var(--warning) 15%,transparent);color:var(--warning)}.status-missing{background:color-mix(in srgb,var(--danger) 14%,transparent);color:var(--danger)}.status-unverifiable{background:color-mix(in srgb,var(--info) 14%,transparent);color:var(--info)}.audit-priority{border-left:5px solid var(--danger);padding:12px 14px;background:var(--surface-2);border-radius:0 10px 10px 0;margin:8px 0}.audit-priority.p2{border-left-color:var(--warning)}.audit-priority.p3{border-left-color:var(--info)}@media(max-width:900px){.score-duo{grid-template-columns:1fr}.audit-requirement{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -118,7 +120,7 @@ input,select,textarea{width:100%;border:1px solid var(--border);border-radius:10
     <button class="nav-item" data-section="diagnostics">⚕ <span>Diagnostica sistema</span></button>
     <button class="nav-item" data-section="guide">? <span>Guida</span></button>
   </div>
-  <div class="sidebar-footer">Versione 4.2.0<br>I dati restano nel browser.</div>
+  <div class="sidebar-footer">Versione 4.3.0<br>I dati restano nel browser.</div>
 </aside>
 <main class="main" id="mainContent">
   <header class="topbar">
@@ -168,8 +170,8 @@ input,select,textarea{width:100%;border:1px solid var(--border);border-radius:10
 const CONFIG = {
   APP_KEY: 'geoCitationMonitor_v42',
   LEGACY_APP_KEYS: ['geoCitationMonitor_v3'],
-  VERSION: '4.2.0',
-  DATA_SCHEMA_VERSION: 7,
+  VERSION: '4.3.0',
+  DATA_SCHEMA_VERSION: 8,
   MAX_LOGO_SIZE: 350000,
   MIN_RESPONSE_LENGTH: 120,
   ANOMALY_THRESHOLD: 20,
@@ -389,6 +391,7 @@ function defaultState() {
     tasks: [],
     gscImports: [],
     contentAudits: [],
+    implementationAudits: [],
     sourceValidations: {},
     wpPackages: [],
     dismissedOpportunityIds: [],
@@ -453,6 +456,7 @@ function migrate(source) {
   result.tasks = Array.isArray(s.tasks) ? s.tasks : [];
   result.gscImports = Array.isArray(s.gscImports) ? s.gscImports : [];
   result.contentAudits = Array.isArray(s.contentAudits) ? s.contentAudits : [];
+  result.implementationAudits = Array.isArray(s.implementationAudits) ? s.implementationAudits : [];
   result.sourceValidations = s.sourceValidations && typeof s.sourceValidations === 'object' && !Array.isArray(s.sourceValidations) ? { ...s.sourceValidations } : {};
   result.wpPackages = Array.isArray(s.wpPackages) ? s.wpPackages : [];
   result.dismissedOpportunityIds = Array.isArray(s.dismissedOpportunityIds) ? s.dismissedOpportunityIds : [];
@@ -3124,7 +3128,7 @@ function importJson(file) {
       };
       document.getElementById('mergeImport').onclick = () => {
         if (!createSafetySnapshot('import-merge')) return;
-        const imported=migrate(parsed), keys=['projects','prompts','checks','opportunities','savedFilters','contentPlans','pageSnapshots','campaigns','knowledge','tasks','gscImports','contentAudits','wpPackages'];
+        const imported=migrate(parsed), keys=['projects','prompts','checks','opportunities','savedFilters','contentPlans','pageSnapshots','campaigns','knowledge','tasks','gscImports','contentAudits','implementationAudits','wpPackages'];
         let summary={added:0,updated:0,conflicts:0};
         for (const key of keys) { const r=mergeCollection(state[key]||[], imported[key]||[]); state[key]=r.items; summary.added+=r.added; summary.updated+=r.updated; summary.conflicts+=r.conflicts; }
         state.sourceValidations={...(state.sourceValidations||{}),...(imported.sourceValidations||{})};
@@ -3302,6 +3306,7 @@ state.knowledge ||= [];
 state.tasks ||= [];
 state.gscImports ||= [];
 state.contentAudits ||= [];
+state.implementationAudits ||= [];
 state.sourceValidations ||= {};
 state.wpPackages ||= [];
 
@@ -3447,6 +3452,7 @@ function normalizeAdvancedState(target=state) {
   target.tasks ||= [];
   target.gscImports ||= [];
   target.contentAudits ||= [];
+  target.implementationAudits ||= [];
   target.sourceValidations ||= {};
   target.wpPackages ||= [];
   target.dismissedOpportunityIds ||= [];
@@ -3481,6 +3487,7 @@ function cleanupOrphans() {
   state.tasks=state.tasks.filter(x=>projectIds.has(x.projectId)&&(!x.checkId||checkIds.has(x.checkId))&&(!x.beforeCheckId||checkIds.has(x.beforeCheckId))&&(!x.afterCheckId||checkIds.has(x.afterCheckId)));
   state.gscImports=state.gscImports.filter(x=>projectIds.has(x.projectId));
   state.contentAudits=state.contentAudits.filter(x=>projectIds.has(x.projectId));
+  state.implementationAudits=state.implementationAudits.filter(x=>projectIds.has(x.projectId));
   state.wpPackages=state.wpPackages.filter(x=>projectIds.has(x.projectId));
   for(const id of Object.keys(state.sourceValidations)) if(!checkIds.has(id)) delete state.sourceValidations[id];
   state.dismissedOpportunityIds=state.dismissedOpportunityIds.filter(id=>opportunityIds.has(id));
@@ -3648,7 +3655,7 @@ makeWpPackage=makeWpPackage41;
 
 function diagnosticsRun(){
  const tests=[];const add=(name,pass,detail,priority='P2')=>tests.push({name,pass,detail,priority});
- add('Versione e schema',CONFIG.VERSION==='4.2.0'&&Number(state.schemaVersion)===CONFIG.DATA_SCHEMA_VERSION,`App ${CONFIG.VERSION} · schema ${state.schemaVersion}`,'P1');
+ add('Versione e schema',CONFIG.VERSION==='4.3.0'&&Number(state.schemaVersion)===CONFIG.DATA_SCHEMA_VERSION,`App ${CONFIG.VERSION} · schema ${state.schemaVersion}`,'P1');
  add('Relazioni progetti',state.prompts.every(x=>state.projects.some(p=>p.id===x.projectId)),'Prompt collegati a progetti esistenti','P1');
  add('Relazioni verifiche',state.checks.every(x=>state.projects.some(p=>p.id===x.projectId)&&state.prompts.some(p=>p.id===x.promptId)),'Verifiche collegate','P1');
  add('Snapshot prompt',state.checks.every(x=>x.promptTextSnapshot&&x.promptHash),'Ogni verifica conserva testo e hash del prompt','P1');
@@ -3676,6 +3683,7 @@ function orphanReport() {
     tasks:(state.tasks||[]).filter(x=>!projectIds.has(x.projectId)||x.checkId&&!checkIds.has(x.checkId)||x.beforeCheckId&&!checkIds.has(x.beforeCheckId)||x.afterCheckId&&!checkIds.has(x.afterCheckId)),
     gscImports:(state.gscImports||[]).filter(x=>!projectIds.has(x.projectId)),
     contentAudits:(state.contentAudits||[]).filter(x=>!projectIds.has(x.projectId)),
+    implementationAudits:(state.implementationAudits||[]).filter(x=>!projectIds.has(x.projectId)),
     wpPackages:(state.wpPackages||[]).filter(x=>!projectIds.has(x.projectId)),
     sourceValidations:Object.keys(state.sourceValidations||{}).filter(id=>!checkIds.has(id))
   };
@@ -3687,6 +3695,67 @@ actionHandlers['restore-rollback']=()=>{const raw=localStorage.getItem(`${CONFIG
 PAGES['source-lab']=['Revisione manuale fonti','Controlla pertinenza e supporto delle fonti registrate'];
 
 // Ensure advanced renderer wrapper sees diagnostics.
+
+
+// ============================================================
+// POST-IMPLEMENTATION VERIFICATION 4.3
+// ============================================================
+let contentQaMode='draft', implementationProject='', implementationPlan='', implementationPage='';
+function scoreGrade(n){return n>=90?'Ottimo · pronto':n>=75?'Buono · piccoli interventi':n>=60?'Da migliorare':n>=40?'Insufficiente':'Critico';}
+function normalizeRequirementLine(line){return String(line||'').replace(/^\s*(?:[-•*]|\d+[.)]|\[[ xX]?\])\s*/,'').trim();}
+function extractRequirements(plan){
+  const lines=String(plan||'').split(/\r?\n/).map(normalizeRequirementLine).filter(x=>x.length>=8);
+  return Utils.unique(lines).slice(0,40);
+}
+function requirementTest(req,analysis,raw,project){
+  const q=Utils.slug(req), text=Utils.slug(analysis.text||raw), html=String(raw||'');
+  const tests=[]; const add=(hit,evidence)=>tests.push({hit,evidence});
+  if(/\bh1\b/.test(q)) add(analysis.h1s.length===1,analysis.h1s.length?`${analysis.h1s.length} H1: ${analysis.h1s.join(' | ')}`:'H1 non rilevato');
+  if(/title|titolo seo/.test(q)) add(analysis.title.length>=25&&analysis.title.length<=65,analysis.title||'Title non rilevato');
+  if(/meta description|descrizione meta/.test(q)) add(analysis.meta.length>=90&&analysis.meta.length<=170,analysis.meta||'Meta description non rilevata');
+  if(/faq|domande frequenti/.test(q)) add(analysis.hasFaq,analysis.hasFaq?'FAQ rilevate':'FAQ non rilevate');
+  if(/schema|json ld|dati strutturati/.test(q)) add(analysis.hasSchema,`${analysis.schemas.length} blocchi JSON-LD`);
+  if(/autore|author|eeat|e e a t/.test(q)) add(analysis.hasAuthor,analysis.hasAuthor?'Segnale autore rilevato':'Autore non rilevato');
+  if(/link intern/.test(q)) add(analysis.links.some(l=>!/^https?:\/\//i.test(l)||Utils.domain(l)===Utils.domain(project.domain)),`${analysis.links.length} link totali`);
+  if(/cta|call to action|contatt|prenot|richied/.test(q)) add(/contatt|prenot|richied|chiama|scriv|preventiv/i.test(analysis.text),'CTA cercata nel testo');
+  if(/brand|marchio|nome azienda/.test(q)) add(text.includes(Utils.slug(project.brand)),project.brand||'Brand non configurato');
+  if(/localit|citt|bergamo|milano|cinisello|area served/.test(q)&&project.location) add(text.includes(Utils.slug(project.location)),project.location);
+  if(/servizi|servizio/.test(q)&&project.services?.length) add(project.services.some(x=>text.includes(Utils.slug(x))),analysis.services.join(', ')||'Servizi non rilevati');
+  if(/recension|testimonian/.test(q)) add(/recension|testimonian|review|rating/i.test(analysis.text),'Ricerca testuale recensioni');
+  if(/prezz|costo|tariff/.test(q)) add(/€|euro|prezz|costo|tariff/i.test(analysis.text),'Ricerca testuale prezzi');
+  if(/immagin|alt text|testo alternativo/.test(q)) {const d=document.implementation.createHTMLDocument('img');d.documentElement.innerHTML=html;const imgs=[...d.querySelectorAll('img')];add(imgs.length>0&&imgs.every(i=>i.getAttribute('alt')?.trim()),imgs.length?`${imgs.filter(i=>i.getAttribute('alt')?.trim()).length}/${imgs.length} immagini con alt`:'Immagini non rilevate');}
+  if(!tests.length){const words=q.split(' ').filter(x=>x.length>4);const hits=words.filter(w=>text.includes(w));const ratio=words.length?hits.length/words.length:0;return {status:ratio>=.7?'completed':ratio>=.35?'partial':'unverifiable',evidence:ratio?`Corrispondenza terminologica ${Math.round(ratio*100)}%`:'Richiede verifica manuale',points:ratio>=.7?5:ratio>=.35?3:0};}
+  const passed=tests.filter(x=>x.hit).length;const status=passed===tests.length?'completed':passed?'partial':'missing';return {status,evidence:tests.map(x=>x.evidence).join(' · '),points:status==='completed'?5:status==='partial'?3:0};
+}
+function runImplementationAudit(project,plan,raw){
+  const analysis=analyzePageInput(project,raw); const requirements=extractRequirements(plan);
+  const evaluated=requirements.map((r,i)=>({id:i+1,requirement:r,...requirementTest(r,analysis,raw,project)}));
+  const implementationScore=requirements.length?Math.round(evaluated.reduce((a,x)=>a+x.points,0)/(requirements.length*5)*100):0;
+  const qa=qaContent(project,raw); const structural=Math.round(analysis.checks.reduce((a,x)=>a+(x.status==='confirmed'?10:x.status==='probable'?6:0),0)/analysis.checks.length*10);
+  const pageQualityScore=Math.round(qa.score*.65+structural*.35);
+  const missing=evaluated.filter(x=>x.status==='missing'); const partial=evaluated.filter(x=>x.status==='partial'); const unverifiable=evaluated.filter(x=>x.status==='unverifiable');
+  const priorities=[...missing.map(x=>({priority:'P1',title:x.requirement,reason:'Indicazione non implementata',action:`Implementare e verificare: ${x.requirement}`})),...partial.map(x=>({priority:'P2',title:x.requirement,reason:'Implementazione parziale',action:`Completare: ${x.requirement}`})),...qa.blockers.map(x=>({priority:'P1',title:x.label,reason:x.detail||'Problema bloccante',action:`Correggere ${x.label.toLowerCase()}`})),...qa.warnings.slice(0,5).map(x=>({priority:'P3',title:x.label,reason:x.detail||'Miglioramento consigliato',action:`Ottimizzare ${x.label.toLowerCase()}`}))];
+  return {implementationScore,pageQualityScore,requirements:evaluated,analysis,qa,priorities:priorities.slice(0,15),summary:{completed:evaluated.filter(x=>x.status==='completed').length,partial:partial.length,missing:missing.length,unverifiable:unverifiable.length},ready:implementationScore>=75&&pageQualityScore>=75&&qa.blockers.length===0};
+}
+function implementationStatusLabel(s){return {completed:'Completato',partial:'Parziale',missing:'Non completato',unverifiable:'Non verificabile'}[s]||s;}
+function renderImplementationResult(a){const r=a.result;return `<div class="score-duo"><div class="score-card"><div class="value">${r.implementationScore}/100</div><div class="label">Implementation Score</div><div class="grade">${scoreGrade(r.implementationScore)}</div></div><div class="score-card"><div class="value">${r.pageQualityScore}/100</div><div class="label">Page Quality Score</div><div class="grade">${scoreGrade(r.pageQualityScore)}</div></div></div><div class="notice ${r.ready?'success':'warning'}" style="margin-top:14px"><strong>${r.ready?'Verifica superata':'Sono necessarie correzioni'}</strong><br>${r.summary.completed} completate · ${r.summary.partial} parziali · ${r.summary.missing} mancanti · ${r.summary.unverifiable} da verificare manualmente.</div><h3>Confronto indicazioni–implementazione</h3><div class="table-wrap">${r.requirements.length?r.requirements.map(x=>`<div class="audit-requirement"><strong>${Utils.esc(x.requirement)}</strong><span><span class="status-pill status-${x.status}">${implementationStatusLabel(x.status)}</span></span><span class="help">${Utils.esc(x.evidence)}</span><strong>${x.points}/5</strong></div>`).join(''):'<div class="empty">Nessuna indicazione riconoscibile nel piano.</div>'}</div><h3>Correzioni prioritarie</h3>${r.priorities.length?r.priorities.map(x=>`<div class="audit-priority ${x.priority==='P2'?'p2':x.priority==='P3'?'p3':''}"><div class="flex gap-8 wrap"><strong>${Utils.esc(x.title)}</strong>${badge(x.priority,x.priority==='P1'?'danger':x.priority==='P2'?'warning':'info')}</div><div class="help">${Utils.esc(x.reason)}. ${Utils.esc(x.action)}</div></div>`).join(''):'<div class="notice success">Nessuna correzione automatica prioritaria rilevata.</div>'}<div class="compact-actions" style="margin-top:14px"><button class="btn btn-primary" data-action="create-implementation-tasks" data-id="${a.id}">Crea attività correttive</button><button class="btn" data-action="download-implementation-report" data-id="${a.id}">Esporta report JSON</button><button class="btn" data-action="start-post-geo-test" data-id="${a.id}">Avvia nuovo test GEO</button></div>`;}
+function renderImplementationPanel(){
+ const pid=document.getElementById('implementationProject')?.value||implementationProject||qaProject||state.projects[0]?.id||'';implementationProject=pid;const p=projectBy(pid);const last=state.implementationAudits.filter(x=>x.projectId===pid).sort((a,b)=>new Date(b.date)-new Date(a.date))[0];
+ return `${!p?empty('Seleziona un progetto','Serve un progetto per confrontare indicazioni e pagina.'):`<div class="form-grid"><div class="field full"><label>Indicazioni o piano correttivo</label><textarea id="implementationPlan" placeholder="Incolla le indicazioni generate dal tool, una per riga…">${Utils.esc(implementationPlan||last?.plan||'')}</textarea><span class="help">Ogni riga significativa viene trasformata in un requisito verificabile.</span></div><div class="field full"><label>HTML o testo della pagina realizzata</label><textarea id="implementationPage" class="response-text" placeholder="Incolla il sorgente HTML o il testo completo della pagina pubblicata…">${Utils.esc(implementationPage||last?.raw||'')}</textarea></div></div><div class="compact-actions" style="margin-top:12px"><button class="btn btn-primary" data-action="run-implementation-audit">Verifica implementazione</button><button class="btn" data-action="load-latest-page-snapshot">Usa ultimo snapshot pagina</button><button class="btn" data-action="clear-implementation-form">Svuota</button></div><div class="card" style="margin-top:16px" id="implementationResults">${last?renderImplementationResult(last):empty('Nessuna verifica post-implementazione','Incolla il piano e la pagina realizzata, quindi avvia il confronto.')}</div>`}`;
+}
+renderContentQa=function(){
+ const pid=document.getElementById('qaProject')?.value||qaProject||state.projects[0]?.id||'';qaProject=pid;const p=projectBy(pid);const last=state.contentAudits.filter(x=>x.projectId===pid).sort((a,b)=>new Date(b.date)-new Date(a.date))[0];
+ document.getElementById('content-qa').innerHTML=`<div class="toolbar"><select id="qaProject"><option value="">Seleziona progetto</option>${options(state.projects,pid)}</select><div class="spacer"></div>${badge(contentQaMode==='implementation'?'Verifica dopo la pubblicazione':'Controllo prima della pubblicazione','info')}</div><div class="implementation-tabs"><button class="implementation-tab ${contentQaMode==='draft'?'active':''}" data-action="set-content-qa-mode" data-mode="draft">Controllo bozza</button><button class="implementation-tab ${contentQaMode==='implementation'?'active':''}" data-action="set-content-qa-mode" data-mode="implementation">Verifica implementazione</button></div>${contentQaMode==='implementation'?renderImplementationPanel():`<div class="advanced-grid"><div class="card"><textarea id="qaText" class="response-text" placeholder="Incolla HTML o testo della bozza…">${Utils.esc(qaText||'')}</textarea><div style="margin-top:12px"><button class="btn btn-primary" data-action="run-content-qa">Controlla contenuto</button></div></div><div class="card" id="qaResults">${last?renderQa(last.result):empty('Nessun controllo','Incolla una bozza e avvia il controllo.')}</div></div>`}`;
+};
+advancedRenderers['content-qa']=renderContentQa;
+actionHandlers['set-content-qa-mode']=e=>{contentQaMode=e.target.dataset.mode||'draft';renderContentQa();};
+actionHandlers['run-implementation-audit']=()=>{const p=projectBy(implementationProject||qaProject),plan=document.getElementById('implementationPlan')?.value||'',raw=document.getElementById('implementationPage')?.value||'';if(!p||plan.trim().length<20||raw.trim().length<40){Utils.toast('Seleziona progetto e inserisci piano e pagina completa.','error');return;}implementationPlan=plan;implementationPage=raw;const item={id:Utils.uid(),projectId:p.id,date:Utils.now(),plan:plan.slice(0,100000),raw:raw.slice(0,200000),result:runImplementationAudit(p,plan,raw),algorithmVersion:CONFIG.VERSION};state.implementationAudits.push(item);saveState();renderContentQa();};
+actionHandlers['load-latest-page-snapshot']=()=>{const s=latestPageSnapshot(implementationProject||qaProject);if(!s){Utils.toast('Nessuno snapshot pagina disponibile.','error');return;}implementationPage=s.raw;document.getElementById('implementationPage').value=s.raw;Utils.toast('Ultimo snapshot caricato.','success');};
+actionHandlers['clear-implementation-form']=()=>{implementationPlan='';implementationPage='';renderContentQa();};
+actionHandlers['create-implementation-tasks']=e=>{const a=state.implementationAudits.find(x=>x.id===e.target.dataset.id);if(!a)return;let added=0;a.result.priorities.forEach(x=>{if(!state.tasks.some(t=>t.implementationAuditId===a.id&&t.title===x.title)){state.tasks.push({id:Utils.uid(),implementationAuditId:a.id,projectId:a.projectId,title:x.title,priority:x.priority,status:'Da fare',owner:'',due:'',url:projectBy(a.projectId)?.targetUrl||'',notes:`${x.reason}. ${x.action}`,evidence:'',createdAt:Utils.now()});added++;}});saveState();Utils.toast(`${added} attività correttive create.`,'success');};
+actionHandlers['download-implementation-report']=e=>{const a=state.implementationAudits.find(x=>x.id===e.target.dataset.id);if(a)Utils.download(`verifica-implementazione-${new Date(a.date).toISOString().slice(0,10)}.json`,JSON.stringify(a,null,2),'application/json');};
+actionHandlers['start-post-geo-test']=e=>{const a=state.implementationAudits.find(x=>x.id===e.target.dataset.id),p=projectBy(a?.projectId);if(!p)return;const latestPrompt=state.prompts.filter(x=>x.projectId===p.id).slice().sort((x,y)=>new Date(y.createdAt||0)-new Date(x.createdAt||0))[0];state.checkDraft={projectId:p.id,promptId:latestPrompt?.id||'',platformId:'chatgpt',wizardStep:1};saveState(true);setSection('new-check');};
+changeHandlers['#qaProject']=e=>{qaProject=e.target.value;implementationProject=e.target.value;qaText='';implementationPlan='';implementationPage='';renderContentQa();};
 
 // ============================================================
 // INIT
