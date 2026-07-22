@@ -120,7 +120,7 @@ input,select,textarea{width:100%;border:1px solid var(--border);border-radius:10
     <button class="nav-item" data-section="diagnostics">⚕ <span>Diagnostica sistema</span></button>
     <button class="nav-item" data-section="guide">? <span>Guida</span></button>
   </div>
-  <div class="sidebar-footer">Versione 4.3.0<br>I dati restano nel browser.</div>
+  <div class="sidebar-footer">Versione 4.3.1<br>I dati restano nel browser.</div>
 </aside>
 <main class="main" id="mainContent">
   <header class="topbar">
@@ -170,7 +170,7 @@ input,select,textarea{width:100%;border:1px solid var(--border);border-radius:10
 const CONFIG = {
   APP_KEY: 'geoCitationMonitor_v42',
   LEGACY_APP_KEYS: ['geoCitationMonitor_v3'],
-  VERSION: '4.3.0',
+  VERSION: '4.3.1',
   DATA_SCHEMA_VERSION: 8,
   MAX_LOGO_SIZE: 350000,
   MIN_RESPONSE_LENGTH: 120,
@@ -3371,7 +3371,26 @@ function factForm(pid){return `<form id="factForm" class="form-grid"><input type
 function qaContent(project,text){const low=text.toLowerCase();const h1=(text.match(/<h1\b/gi)||[]).length;const placeholders=(text.match(/\[[^\]]{4,}\]/g)||[]);const urls=Utils.urls(text);const numericClaims=(text.match(/\b\d+(?:[.,]\d+)?\s*(?:%|anni|clienti|progetti|euro|€)\b/gi)||[]);const facts=projectKnowledge(project.id);const unsupported=numericClaims.filter(cl=>!facts.some(f=>String(f.value).toLowerCase().includes(cl.toLowerCase())));const checks=[['H1 unico',h1===1,h1?`${h1} H1`:'Nessun H1 HTML'],['Brand presente',low.includes(String(project.brand||'').toLowerCase()),project.brand],['Località presente',!project.location||low.includes(project.location.toLowerCase()),project.location||'Non configurata'],['Servizi presenti',(project.services||[]).some(s=>low.includes(s.toLowerCase())),(project.services||[]).join(', ')],['Nessun segnaposto',placeholders.length===0,placeholders.join(', ')],['Nessuna promessa numerica non supportata',unsupported.length===0,unsupported.join(', ')],['Link presenti',urls.length>0,`${urls.length} URL`],['FAQ o domande',/faq|domande frequenti|<h2[^>]*>[^<]*(domande|faq)/i.test(text),'Sezione rilevata']];const score=Math.round(checks.filter(x=>x[1]).length/checks.length*100);return {score,checks,placeholders,unsupported,blockers:checks.filter(x=>!x[1]&&['Nessun segnaposto','Nessuna promessa numerica non supportata'].includes(x[0]))};}
 let qaProject='',qaText='';
 function renderContentQa(){const pid=document.getElementById('qaProject')?.value||qaProject||state.projects[0]?.id||'';qaProject=pid;const p=projectBy(pid);const last=state.contentAudits.filter(x=>x.projectId===pid).sort((a,b)=>new Date(b.date)-new Date(a.date))[0];document.getElementById('content-qa').innerHTML=`<div class="toolbar"><select id="qaProject"><option value="">Seleziona progetto</option>${options(state.projects,pid)}</select><button class="btn btn-primary" data-action="run-content-qa">Controlla contenuto</button></div><div class="advanced-grid"><div class="card"><textarea id="qaText" class="response-text" placeholder="Incolla HTML o testo della bozza…">${Utils.esc(qaText||'')}</textarea></div><div class="card" id="qaResults">${last?renderQa(last.result):empty('Nessun controllo','Incolla una bozza e avvia il controllo.')}</div></div>`;}
-function renderQa(r){return `<div class="qa-score">${r.score}/100</div><div class="help">Prontezza editoriale indicativa</div>${r.blockers.length?`<div class="notice danger" style="margin-top:12px"><strong>Problemi bloccanti:</strong> ${r.blockers.map(x=>Utils.esc(x[0])).join(', ')}</div>`:'<div class="notice success" style="margin-top:12px">Nessun problema bloccante automatico.</div>'}<div style="margin-top:12px">${r.checks.map(x=>`<div class="diagnosis-item ${x[1]?'status-confirmed':'status-verify'}"><strong>${x[1]?'✓':'!'} ${Utils.esc(x[0])}</strong><div class="help">${Utils.esc(x[2]||'')}</div></div>`).join('')}</div>`;}
+function normalizeQaCheck(x){
+  if(Array.isArray(x)) return {label:x[0]||'Controllo senza nome',pass:!!x[1],detail:x[2]||'',severity:x[3]||'warning'};
+  return {label:x?.label||x?.title||'Controllo senza nome',pass:!!(x?.pass??x?.passed??x?.ok),detail:x?.detail||x?.evidence||x?.message||'',severity:x?.severity||'warning'};
+}
+function renderQa(r){
+  const checks=(r?.checks||[]).map(normalizeQaCheck);
+  const blockers=(r?.blockers||[]).map(normalizeQaCheck);
+  const warnings=(r?.warnings||[]).map(normalizeQaCheck);
+  const score=Number.isFinite(Number(r?.score))?Number(r.score):0;
+  const blockingHtml=blockers.length
+    ? `<div class="notice danger" style="margin-top:12px"><strong>Problemi bloccanti:</strong><ul style="margin:8px 0 0;padding-left:20px">${blockers.map(x=>`<li><strong>${Utils.esc(x.label)}</strong>${x.detail?` — ${Utils.esc(x.detail)}`:''}</li>`).join('')}</ul></div>`
+    : '<div class="notice success" style="margin-top:12px">Nessun problema bloccante automatico.</div>';
+  const warningHtml=warnings.length
+    ? `<div class="notice warning" style="margin-top:12px"><strong>Miglioramenti consigliati:</strong> ${warnings.length}</div>`
+    : '';
+  const checksHtml=checks.length
+    ? checks.map(x=>`<div class="diagnosis-item ${x.pass?'status-confirmed':'status-verify'}"><strong>${x.pass?'✓':'!'} ${Utils.esc(x.label)}</strong><div class="help">${Utils.esc(x.detail|| (x.pass?'Controllo superato':'Intervento richiesto'))}</div></div>`).join('')
+    : '<div class="empty"><strong>Nessun dettaglio disponibile</strong>Ripeti il controllo per rigenerare le indicazioni.</div>';
+  return `<div class="qa-score">${score}/100</div><div class="help">Prontezza editoriale indicativa</div>${blockingHtml}${warningHtml}<div style="margin-top:12px">${checksHtml}</div>`;
+}
 
 function syncTasks(){generateOpportunities();for(const o of state.opportunities){if(!state.tasks.some(t=>t.opportunityId===o.id))state.tasks.push({id:Utils.uid(),opportunityId:o.id,projectId:o.projectId,checkId:o.checkId,title:o.title,priority:o.priority,status:'Da verificare',owner:'',due:'',url:projectBy(o.projectId)?.targetUrl||'',notes:'',evidence:'',beforeCheckId:o.checkId,afterCheckId:'',createdAt:Utils.now()});}}
 function renderActions(){syncTasks();const pid=document.getElementById('taskProject')?.value||'';const status=document.getElementById('taskStatus')?.value||'';const tasks=state.tasks.filter(t=>(!pid||t.projectId===pid)&&(!status||t.status===status));document.getElementById('actions').innerHTML=`<div class="toolbar"><button class="btn btn-primary" data-action="new-task">＋ Nuova attività</button><button class="btn" data-action="sync-tasks">Sincronizza opportunità</button><select id="taskProject"><option value="">Tutti i progetti</option>${options(state.projects,pid)}</select><select id="taskStatus"><option value="">Tutti gli stati</option>${['Da verificare','Confermata','Da fare','In corso','Completata','Non applicabile','Da ritestare'].map(x=>`<option ${x===status?'selected':''}>${x}</option>`).join('')}</select></div><div class="card" style="padding:0;overflow:auto"><div class="task-row"><strong>Priorità</strong><strong>Attività</strong><strong>Stato</strong><strong>Scadenza</strong><strong>Gestione</strong></div>${tasks.map(t=>`<div class="task-row" data-task-id="${t.id}"><div>${badge(t.priority,t.priority==='P1'?'danger':t.priority==='P2'?'warning':'info')}</div><div><strong>${Utils.esc(t.title)}</strong><div class="help">${Utils.esc(projectBy(t.projectId)?.name||'')}</div><input class="task-owner" placeholder="Responsabile" value="${Utils.esc(t.owner||'')}"></div><select class="task-status">${['Da verificare','Confermata','Da fare','In corso','Completata','Non applicabile','Da ritestare'].map(x=>`<option ${x===t.status?'selected':''}>${x}</option>`).join('')}</select><input class="task-due" type="date" value="${Utils.esc(t.due||'')}"><div><input class="task-url" placeholder="URL interessato" value="${Utils.esc(t.url||'')}"><textarea class="task-notes" placeholder="Note / evidenza" style="min-height:70px">${Utils.esc(t.notes||'')}</textarea><select class="task-after"><option value="">Verifica dopo intervento</option>${state.checks.filter(c=>c.projectId===t.projectId).map(c=>`<option value="${c.id}" ${c.id===t.afterCheckId?'selected':''}>${Utils.date(c.date)} · ${c.score}/100</option>`).join('')}</select><div class="compact-actions"><button class="btn btn-sm" data-action="save-task" data-id="${t.id}">Salva</button><button class="btn btn-sm btn-danger" data-action="delete-task" data-id="${t.id}">Elimina</button></div>${taskDelta(t)}</div></div>`).join('')}</div>`;}
