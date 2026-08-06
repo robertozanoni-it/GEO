@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
-<title>GEO Citation Monitor 4.3</title>
+<title>GEO Citation Monitor 5.0</title>
 <style>
 :root{
   --bg:#f3f6fb;--surface:#fff;--surface-2:#f7f9fc;--surface-3:#edf2f8;
@@ -76,59 +76,84 @@ input,select,textarea{width:100%;border:1px solid var(--border);border-radius:10
 
 .implementation-tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}.implementation-tab{border:1px solid var(--border);background:var(--surface);padding:9px 13px;border-radius:10px;font-weight:800;color:var(--muted)}.implementation-tab.active{background:var(--accent);border-color:var(--accent);color:#fff}.score-duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.score-card{padding:18px;border:1px solid var(--border);border-radius:14px;background:var(--surface-2)}.score-card .value{font-size:48px;font-weight:900;line-height:1}.score-card .label{font-weight:850;margin-top:8px}.score-card .grade{font-size:13px;color:var(--muted);margin-top:4px}.audit-requirement{display:grid;grid-template-columns:minmax(220px,1.3fr) 150px minmax(240px,1fr) 75px;gap:10px;align-items:start;padding:12px;border-bottom:1px solid var(--border)}.audit-requirement:last-child{border-bottom:0}.status-pill{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:12px;font-weight:850}.status-completed{background:color-mix(in srgb,var(--success) 14%,transparent);color:var(--success)}.status-partial{background:color-mix(in srgb,var(--warning) 15%,transparent);color:var(--warning)}.status-missing{background:color-mix(in srgb,var(--danger) 14%,transparent);color:var(--danger)}.status-unverifiable{background:color-mix(in srgb,var(--info) 14%,transparent);color:var(--info)}.audit-priority{border-left:5px solid var(--danger);padding:12px 14px;background:var(--surface-2);border-radius:0 10px 10px 0;margin:8px 0}.audit-priority.p2{border-left-color:var(--warning)}.audit-priority.p3{border-left-color:var(--info)}@media(max-width:900px){.score-duo{grid-template-columns:1fr}.audit-requirement{grid-template-columns:1fr}}
 
+/* ============================================================
+   UI SYSTEM 5.0 — clarity, accessibility and responsive polish
+   ============================================================ */
+:root{--bg:#f7f9fc;--surface:#fff;--surface-2:#f6f8fb;--surface-3:#eef2f7;--text:#111827;--muted:#667085;--border:#dfe4ec;--accent:#155eef;--accent-2:#004eeb;--shadow:0 1px 2px rgba(16,24,40,.04),0 8px 24px rgba(16,24,40,.06);--radius:12px;--radius-sm:8px;--sidebar:224px}
+[data-theme="dark"]{--bg:#0b1220;--surface:#111a2b;--surface-2:#172235;--surface-3:#202d42;--text:#f3f6fb;--muted:#aab7ca;--border:#2a3a52;--accent:#7da5ff;--accent-2:#9bb8ff}
+body{font-size:14px;line-height:1.5;letter-spacing:-.006em}
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+.app{grid-template-columns:var(--sidebar) minmax(0,1fr)}
+.sidebar{background:#082a57;padding:18px 12px 12px;overflow-x:hidden;box-shadow:inset -1px 0 rgba(255,255,255,.07)}
+.brand{padding:4px 8px 22px;gap:10px}.brand-mark{width:34px;height:34px;border-radius:9px;background:#155eef;color:#fff;box-shadow:none}.brand-mark svg{width:24px;height:24px;fill:currentColor}.brand-name{font-size:15px;letter-spacing:-.02em}.brand-sub{font-size:10px;color:#a8c0df}
+.sidebar nav{min-height:0}.nav-group{margin:2px 0 14px}.nav-label{font-size:10px;letter-spacing:.1em;color:#8fb0d4;padding:0 10px 5px}.nav-item{gap:10px;padding:9px 10px;border-radius:7px;color:#d6e2f1;font-size:13px;font-weight:650;margin:1px 0;min-height:38px}.nav-item:hover{background:rgba(255,255,255,.075)}.nav-item.active{background:#155eef;color:#fff;box-shadow:0 4px 12px rgba(0,45,140,.28)}.nav-icon{width:18px;height:18px;display:grid;place-items:center;flex:0 0 18px;font-size:16px;line-height:1}.nav-icon svg,.icon-btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.nav-icon-text{font-size:12px;font-weight:900;border:1px solid currentColor;border-radius:50%}
+.nav-more{margin:0 0 10px}.nav-more summary{list-style:none;display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:7px;color:#d6e2f1;font-size:13px;font-weight:650;cursor:pointer}.nav-more summary::-webkit-details-marker{display:none}.nav-more summary:hover{background:rgba(255,255,255,.075)}.nav-chevron{margin-left:auto;transition:transform .18s}.nav-more[open] .nav-chevron{transform:rotate(180deg)}.nav-more-body{padding:4px 0 4px 28px;max-height:38vh;overflow:auto}.nav-more-body .nav-item{font-size:12px;padding:7px 9px;min-height:32px}.sidebar-system{margin-top:auto;border-top:1px solid rgba(255,255,255,.1);padding-top:8px}.sidebar-footer{margin-top:6px;padding:9px 8px 1px;font-size:10px;border:0;display:flex;align-items:center;gap:5px}.sidebar-footer strong{margin-left:auto}.status-dot{width:7px;height:7px;border-radius:50%;background:#32d583;box-shadow:0 0 0 3px rgba(50,213,131,.12)}
+.topbar{height:68px;padding:0 22px;gap:10px;background:color-mix(in srgb,var(--surface) 97%,transparent)}.page-title{font-size:19px;letter-spacing:-.025em}.page-subtitle{font-size:11px}.topbar-project{width:190px;margin-left:12px}.topbar-project select{height:38px;min-height:38px;padding:7px 30px 7px 10px;font-size:12px;background-color:var(--surface-2)}.global-search{width:min(430px,34vw)}.global-search input{height:40px;padding:9px 52px 9px 38px;background:var(--surface-2)}.global-search svg{top:11px}.global-search kbd{position:absolute;right:9px;top:9px;border:1px solid var(--border);background:var(--surface);color:var(--muted);border-radius:5px;padding:2px 6px;font:600 10px var(--font)}.mobile-search-btn{display:none}.topbar-cta{white-space:nowrap;min-height:40px;height:40px}.search-popover{display:none;position:absolute;top:48px;left:0;right:0;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:0 18px 45px rgba(16,24,40,.16);padding:6px;max-height:390px;overflow:auto;z-index:50}.search-popover.show{display:block}.search-result{width:100%;display:grid;grid-template-columns:76px minmax(0,1fr);gap:10px;text-align:left;border:0;background:transparent;color:var(--text);padding:9px 10px;border-radius:7px}.search-result:hover,.search-result:focus{background:var(--surface-2);outline:none}.search-result-type{font-size:10px;text-transform:uppercase;color:var(--muted);letter-spacing:.05em}.search-result-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.search-empty{padding:18px;text-align:center;color:var(--muted)}
+.content{max-width:1480px;padding:22px 24px 42px}.toolbar{margin-bottom:16px}.btn{border-radius:8px;font-size:13px;min-height:38px;padding:8px 12px;box-shadow:0 1px 1px rgba(16,24,40,.03)}.btn:hover{transform:none;border-color:color-mix(in srgb,var(--accent) 34%,var(--border));box-shadow:0 2px 8px rgba(16,24,40,.08)}.icon-btn{width:40px;height:40px;border-radius:8px}.card{border-radius:10px;box-shadow:0 1px 2px rgba(16,24,40,.035);padding:17px}.card:hover{border-color:color-mix(in srgb,var(--accent) 15%,var(--border))}.table-wrap{border-radius:10px}th,td{padding:11px 12px;font-size:13px}th{font-size:10px;letter-spacing:.055em}.badge{padding:3px 7px;font-size:10px;border-radius:5px}.metric:after{display:none}
+.dashboard-head{display:flex;align-items:flex-start;gap:16px;margin-bottom:18px}.dashboard-head h1{font-size:24px;line-height:1.25;letter-spacing:-.035em;margin:0 0 4px}.dashboard-head p{margin:0;color:var(--muted)}.dashboard-head .dashboard-date{margin-left:auto}.dashboard-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--border);border-radius:10px;background:var(--surface);margin-bottom:16px}.dashboard-kpi{min-width:0;padding:17px 18px;border-right:1px solid var(--border)}.dashboard-kpi:last-child{border-right:0}.dashboard-kpi-top{display:flex;align-items:center;gap:8px;color:var(--muted);font-weight:700;font-size:12px}.dashboard-kpi-icon{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#eef4ff;color:var(--accent);font-size:15px}.dashboard-kpi-value{font-size:27px;line-height:1.15;font-weight:850;letter-spacing:-.04em;margin:10px 0 3px}.dashboard-kpi-meta{font-size:11px;color:var(--muted)}
+.dashboard-main{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(340px,.85fr);gap:16px}.dashboard-lower{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:16px;margin-top:16px}.panel{background:var(--surface);border:1px solid var(--border);border-radius:10px;min-width:0}.panel-head{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--border)}.panel-head h2{font-size:14px;margin:0;letter-spacing:-.01em}.panel-head p{font-size:11px;color:var(--muted);margin:1px 0 0}.panel-head .spacer{flex:1}.panel-body{padding:16px}.trend-chart{width:100%;height:auto;display:block;overflow:visible}.chart-grid{stroke:var(--border);stroke-width:1}.chart-line{fill:none;stroke:var(--accent);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.chart-area{fill:color-mix(in srgb,var(--accent) 9%,transparent)}.chart-dot{fill:var(--surface);stroke:var(--accent);stroke-width:2}.chart-label{font:10px var(--font);fill:var(--muted)}
+.action-list{display:grid}.action-row{display:grid;grid-template-columns:50px minmax(0,1fr) auto;gap:10px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border)}.action-row:last-child{border-bottom:0}.action-title{font-weight:750;font-size:12px}.action-meta{font-size:10px;color:var(--muted);margin-top:2px}.priority-tag{display:inline-flex;justify-content:center;width:42px;padding:3px 5px;border-radius:4px;font-size:10px;font-weight:800}.priority-tag.p1{color:#b42318;background:#fef3f2}.priority-tag.p2{color:#b54708;background:#fffaeb}.priority-tag.p3{color:#175cd3;background:#eff8ff}.quality-stack{padding:4px 16px 12px}.quality-row{padding:12px 0;border-bottom:1px solid var(--border)}.quality-row:last-child{border-bottom:0}.quality-row-head{display:flex;font-size:11px;margin-bottom:7px}.quality-row-head strong{margin-left:auto}.quality-row .progress{height:6px}.dashboard-empty{padding:42px 18px;text-align:center}.dashboard-empty strong{display:block;font-size:14px;margin-bottom:4px}.dashboard-empty p{color:var(--muted);font-size:12px;margin:0 0 12px}
+.modal{border-radius:12px}.modal-backdrop{backdrop-filter:blur(2px)}:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 35%,transparent);outline-offset:2px}.nav-item:focus-visible{outline-color:#fff}
+@media(max-width:1180px){.topbar-project{display:none}.dashboard-main{grid-template-columns:1fr}.dashboard-lower{grid-template-columns:1fr}.quality-panel{order:-1}.dashboard-kpis{grid-template-columns:repeat(2,1fr)}.dashboard-kpi:nth-child(2){border-right:0}.dashboard-kpi:nth-child(-n+2){border-bottom:1px solid var(--border)}}
+@media(max-width:900px){.app{grid-template-columns:minmax(0,1fr)}.main{grid-column:1}.topbar{height:64px}.global-search{display:block;width:min(360px,45vw)}.global-search kbd{display:none}.topbar-cta span:last-child{display:none}.sidebar{left:calc(-1 * var(--sidebar) - 20px);width:var(--sidebar)}.sidebar.open{left:0}.menu-toggle{display:grid!important}.content{padding:18px 16px 90px}}
+@media(max-width:680px){.page-subtitle,.global-search,.topbar-cta{display:none}.mobile-search-btn{display:grid}.topbar-spacer{flex:1}.dashboard-head{display:block}.dashboard-head .dashboard-date{margin-top:10px}.dashboard-kpis{grid-template-columns:1fr 1fr}.dashboard-kpi{padding:14px}.dashboard-kpi-value{font-size:23px}.dashboard-main,.dashboard-lower{display:block}.dashboard-main>.panel+.panel,.dashboard-lower>.panel+.panel{margin-top:14px}.action-row{grid-template-columns:44px minmax(0,1fr)}.action-row .btn{grid-column:2;justify-self:start}.panel-body{padding:12px}.content{padding-left:12px;padding-right:12px}.topbar{padding:0 12px}.page-title{font-size:17px}.modal-backdrop{padding:0}.modal{height:100%;max-height:100%;border-radius:0}.toast-zone{left:12px;right:12px}.toast{max-width:none}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
 <div class="mobile-overlay" id="mobileOverlay"></div>
 <div class="app" id="app">
-<aside class="sidebar" id="sidebar">
-  <div class="brand"><div class="brand-mark">G</div><div><div class="brand-name">GEO Citation Monitor</div><div class="brand-sub">Standalone · Analisi locale</div></div></div>
-  <div class="nav-group"><div class="nav-label">Avvio</div>
-    <button class="nav-item active" data-section="dashboard">◫ <span>Dashboard</span></button>
-    <button class="nav-item" data-section="onboarding">◎ <span>Configurazione guidata</span></button>
-  </div>
-  <div class="nav-group"><div class="nav-label">Dati</div>
-    <button class="nav-item" data-section="projects">▣ <span>Progetti</span></button>
-    <button class="nav-item" data-section="prompts">▤ <span>Prompt</span></button>
-  </div>
-  <div class="nav-group"><div class="nav-label">Monitoraggio</div>
-    <button class="nav-item" data-section="new-check">＋ <span>Nuova verifica</span></button>
-    <button class="nav-item" data-section="results">▥ <span>Risultati</span></button>
-    <button class="nav-item" data-section="matrix">▦ <span>Matrice Prompt–AI</span></button>
-    <button class="nav-item" data-section="compare">⇄ <span>Confronto</span></button>
-    <button class="nav-item" data-section="opportunities">◇ <span>Opportunità GEO</span></button>
-    <button class="nav-item" data-section="quality">✓ <span>Qualità dati</span></button>
-  </div>
-  <div class="nav-group"><div class="nav-label">Diagnosi avanzata</div>
-    <button class="nav-item" data-section="page-lab">⌁ <span>Analisi pagina</span></button>
-    <button class="nav-item" data-section="source-lab">⌕ <span>Revisione manuale fonti</span></button>
-    <button class="nav-item" data-section="campaigns">◉ <span>Campagne e stabilità</span></button>
-    <button class="nav-item" data-section="knowledge">▰ <span>Knowledge Base</span></button>
-    <button class="nav-item" data-section="content-qa">✓ <span>Controllo contenuti</span></button>
-    <button class="nav-item" data-section="actions">☑ <span>Action Manager</span></button>
-    <button class="nav-item" data-section="gsc">G <span>Search Console</span></button>
-    <button class="nav-item" data-section="wordpress">W <span>WordPress Assistant</span></button>
-  </div>
-  <div class="nav-group"><div class="nav-label">Output</div>
-    <button class="nav-item" data-section="generator">✦ <span>Generatore prompt</span></button>
-    <button class="nav-item" data-section="content-engine">✎ <span>Content Resolution Engine</span></button>
-    <button class="nav-item" data-section="reports">▧ <span>Report</span></button>
-  </div>
-  <div class="nav-group"><div class="nav-label">Sistema</div>
-    <button class="nav-item" data-section="settings">⚙ <span>Impostazioni</span></button>
-    <button class="nav-item" data-section="backup">⇩ <span>Backup e ripristino</span></button>
-    <button class="nav-item" data-section="diagnostics">⚕ <span>Diagnostica sistema</span></button>
-    <button class="nav-item" data-section="guide">? <span>Guida</span></button>
-  </div>
-  <div class="sidebar-footer">Versione 4.3.1<br>I dati restano nel browser.</div>
+<aside class="sidebar" id="sidebar" aria-label="Navigazione principale">
+  <div class="brand"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2 3.5 7v10L12 22l8.5-5V7L12 2Zm0 4.2 4.9 2.9-4.9 2.8-4.9-2.8L12 6.2Zm-5.5 6 3.8 2.2v4.1l-3.8-2.3v-4Zm7.2 6.3v-4.1l3.8-2.2v4l-3.8 2.3Z"/></svg></div><div><div class="brand-name">GEO Monitor</div><div class="brand-sub">Citation intelligence</div></div></div>
+  <nav>
+    <div class="nav-group"><div class="nav-label">Panoramica</div>
+      <button class="nav-item active" data-section="dashboard"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg></span><span>Dashboard</span></button>
+      <button class="nav-item" data-section="projects"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 7h7l2 2h9v10H3z"/></svg></span><span>Progetti</span></button>
+    </div>
+    <div class="nav-group"><div class="nav-label">Monitoraggio</div>
+      <button class="nav-item" data-section="prompts"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></span><span>Prompt</span></button>
+      <button class="nav-item" data-section="new-check"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg></span><span>Nuova verifica</span></button>
+      <button class="nav-item" data-section="results"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 19V9M12 19V5M19 19v-7"/></svg></span><span>Risultati</span></button>
+    </div>
+    <div class="nav-group"><div class="nav-label">Ottimizzazione</div>
+      <button class="nav-item" data-section="opportunities"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 22h4M8 14c-2-1.4-3-3.2-3-5a7 7 0 0 1 14 0c0 1.8-1 3.6-3 5-.7.5-1 1.2-1 2H9c0-.8-.3-1.5-1-2Z"/></svg></span><span>Opportunità GEO</span></button>
+      <button class="nav-item" data-section="actions"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 9l2 2 5-5M8 15h8"/></svg></span><span>Azioni</span></button>
+      <button class="nav-item" data-section="gsc"><span class="nav-icon nav-icon-text" aria-hidden="true">G</span><span>Search Console</span></button>
+      <button class="nav-item" data-section="reports"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6zM9 11h6M9 15h6"/></svg></span><span>Report</span></button>
+    </div>
+    <details class="nav-more" id="navMore"><summary><span class="nav-icon" aria-hidden="true">•••</span><span>Altri strumenti</span><span class="nav-chevron" aria-hidden="true">⌄</span></summary>
+      <div class="nav-more-body">
+        <button class="nav-item" data-section="onboarding"><span>Configurazione guidata</span></button>
+        <button class="nav-item" data-section="matrix"><span>Matrice Prompt–AI</span></button>
+        <button class="nav-item" data-section="compare"><span>Confronto</span></button>
+        <button class="nav-item" data-section="quality"><span>Qualità dati</span></button>
+        <button class="nav-item" data-section="page-lab"><span>Analisi pagina</span></button>
+        <button class="nav-item" data-section="source-lab"><span>Revisione fonti</span></button>
+        <button class="nav-item" data-section="campaigns"><span>Campagne e stabilità</span></button>
+        <button class="nav-item" data-section="knowledge"><span>Knowledge Base</span></button>
+        <button class="nav-item" data-section="content-qa"><span>Controllo contenuti</span></button>
+        <button class="nav-item" data-section="generator"><span>Generatore prompt</span></button>
+        <button class="nav-item" data-section="content-engine"><span>Content Resolution</span></button>
+        <button class="nav-item" data-section="wordpress"><span>WordPress Assistant</span></button>
+        <button class="nav-item" data-section="backup"><span>Backup e ripristino</span></button>
+        <button class="nav-item" data-section="diagnostics"><span>Diagnostica sistema</span></button>
+        <button class="nav-item" data-section="guide"><span>Guida</span></button>
+      </div>
+    </details>
+  </nav>
+  <div class="sidebar-system"><button class="nav-item" data-section="settings"><span class="nav-icon" aria-hidden="true">⚙</span><span>Impostazioni</span></button></div>
+  <div class="sidebar-footer"><span class="status-dot" aria-hidden="true"></span> Dati salvati nel browser <strong>v5.0</strong></div>
 </aside>
 <main class="main" id="mainContent">
   <header class="topbar">
-    <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Apri menu">☰</button>
+    <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Apri menu" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     <div><div class="page-title" id="pageTitle">Dashboard</div><div class="page-subtitle" id="pageSubtitle">Panoramica della visibilità GEO</div></div>
+    <div class="topbar-project"><label class="sr-only" for="globalProject">Progetto attivo</label><select id="globalProject" aria-label="Progetto attivo"><option value="">Tutti i progetti</option></select></div>
     <div class="topbar-spacer"></div>
-    <div class="global-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="globalSearch" placeholder="Cerca progetti, prompt, risposte…" aria-label="Ricerca globale"></div>
-    <button class="icon-btn" id="themeToggle" aria-label="Cambia tema">◐</button>
+    <div class="global-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="globalSearch" placeholder="Cerca in tutto…" aria-label="Ricerca globale" autocomplete="off"><kbd>/</kbd><div class="search-popover" id="searchPopover" role="listbox" aria-label="Risultati ricerca"></div></div>
+    <button class="icon-btn mobile-search-btn" id="mobileSearchBtn" aria-label="Apri ricerca"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
+    <button class="icon-btn" id="themeToggle" aria-label="Cambia tema" title="Cambia tema"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+    <button class="btn btn-primary topbar-cta" data-go="new-check"><span aria-hidden="true">＋</span><span>Nuova verifica</span></button>
   </header>
   <div class="content">
     <section class="section active" id="dashboard"></section>
@@ -170,7 +195,7 @@ input,select,textarea{width:100%;border:1px solid var(--border);border-radius:10
 const CONFIG = {
   APP_KEY: 'geoCitationMonitor_v42',
   LEGACY_APP_KEYS: ['geoCitationMonitor_v3'],
-  VERSION: '4.3.1',
+  VERSION: '5.0.0',
   DATA_SCHEMA_VERSION: 8,
   MAX_LOGO_SIZE: 350000,
   MIN_RESPONSE_LENGTH: 120,
@@ -1238,6 +1263,7 @@ function loadingSpinner() {
 }
 
 function modal(title, body, actions = '') {
+  window.__modalReturnFocus = document.activeElement;
   document.getElementById('modalTitle').textContent = title;
   document.getElementById('modalBody').innerHTML = body;
   document.getElementById('modalActions').innerHTML = actions;
@@ -1249,21 +1275,36 @@ function modal(title, body, actions = '') {
 function closeModal() {
   document.getElementById('modalBackdrop').classList.remove('show');
   document.getElementById('app').removeAttribute('aria-hidden');
+  if (window.__modalReturnFocus?.isConnected) window.__modalReturnFocus.focus();
 }
 
 function setSection(id) {
+  if (!PAGES[id]) id = 'dashboard';
   window.currentSection = id;
   document.querySelectorAll('.section').forEach(s => s.classList.toggle('active', s.id === id));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.section === id));
+  const activeNav=document.querySelector(`.nav-item[data-section="${id}"]`);
+  if(activeNav?.closest('.nav-more'))document.getElementById('navMore').open=true;
   document.getElementById('pageTitle').textContent = PAGES[id][0];
   document.getElementById('pageSubtitle').textContent = PAGES[id][1];
   render(id);
+  document.querySelector('.content')?.scrollTo?.({top:0,behavior:'auto'});
+  window.scrollTo({top:0,behavior:'auto'});
   closeMobile();
 }
 
 function closeMobile() {
   document.getElementById('sidebar').classList.remove('open');
   document.getElementById('mobileOverlay').classList.remove('show');
+  document.getElementById('menuToggle')?.setAttribute('aria-expanded','false');
+}
+
+function syncGlobalProjectSelect() {
+  const el=document.getElementById('globalProject');
+  if(!el)return;
+  const value=dashboardProjectId||'';
+  el.innerHTML=`<option value="">Tutti i progetti</option>${options(state.projects.filter(p=>!p.archived),value)}`;
+  el.value=value;
 }
 
 function applyTheme() {
@@ -1350,6 +1391,36 @@ function renderCoverageSummary() {
   return `<div class="score-large">${pct}%</div><div class="progress"><span style="width:${pct}%"></span></div><div class="help" style="margin-top:8px">${covered} combinazioni testate su ${total}</div>`;
 }
 
+let dashboardProjectId = '';
+
+function dashboardMetric(label, value, meta, icon) {
+  return `<div class="dashboard-kpi"><div class="dashboard-kpi-top"><span class="dashboard-kpi-icon" aria-hidden="true">${icon}</span><span>${Utils.esc(label)}</span></div><div class="dashboard-kpi-value">${Utils.esc(value)}</div><div class="dashboard-kpi-meta">${Utils.esc(meta)}</div></div>`;
+}
+
+function dashboardTrend(checks) {
+  const ordered = checks.slice().sort((a,b) => new Date(a.date)-new Date(b.date)).slice(-14);
+  if (ordered.length < 2) return `<div class="dashboard-empty"><strong>Il trend apparirà dopo due verifiche</strong><p>Esegui verifiche comparabili per visualizzare l’andamento reale.</p><button class="btn btn-primary" data-go="new-check">Avvia verifica</button></div>`;
+  const w=720,h=260,pad={l:38,r:18,t:16,b:30}, innerW=w-pad.l-pad.r,innerH=h-pad.t-pad.b;
+  const points=ordered.map((c,i)=>({x:pad.l+(i/(ordered.length-1))*innerW,y:pad.t+(1-Math.max(0,Math.min(100,c.score||0))/100)*innerH,c}));
+  const line=points.map(p=>`${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+  const area=`${pad.l},${pad.t+innerH} ${line} ${pad.l+innerW},${pad.t+innerH}`;
+  const labels=[0,25,50,75,100];
+  return `<svg class="trend-chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="Andamento GEO Score delle ultime ${ordered.length} verifiche">${labels.map(v=>{const y=pad.t+(1-v/100)*innerH;return `<line class="chart-grid" x1="${pad.l}" x2="${w-pad.r}" y1="${y}" y2="${y}"/><text class="chart-label" x="2" y="${y+3}">${v}</text>`}).join('')}<polygon class="chart-area" points="${area}"/><polyline class="chart-line" points="${line}"/>${points.map(p=>`<circle class="chart-dot" cx="${p.x}" cy="${p.y}" r="4"><title>${Utils.date(p.c.date)} · ${p.c.score||0}/100</title></circle>`).join('')}<text class="chart-label" x="${pad.l}" y="${h-7}">${Utils.date(ordered[0].date)}</text><text class="chart-label" text-anchor="end" x="${w-pad.r}" y="${h-7}">${Utils.date(ordered.at(-1).date)}</text></svg>`;
+}
+
+function dashboardActions(projectId) {
+  const tasks=(state.tasks||[]).filter(t=>(!projectId||t.projectId===projectId)&&!['Completata','Non applicabile'].includes(t.status)).sort((a,b)=>({P1:1,P2:2,P3:3,P4:4}[a.priority]||5)-({P1:1,P2:2,P3:3,P4:4}[b.priority]||5)).slice(0,5);
+  if(!tasks.length) return `<div class="dashboard-empty"><strong>Nessuna attività aperta</strong><p>Le opportunità trasformate in azioni compariranno qui.</p><button class="btn" data-go="opportunities">Esplora opportunità</button></div>`;
+  return `<div class="action-list">${tasks.map(t=>`<div class="action-row"><span class="priority-tag ${(t.priority||'P3').toLowerCase()}">${Utils.esc(t.priority||'P3')}</span><div><div class="action-title">${Utils.esc(t.title)}</div><div class="action-meta">${Utils.esc(t.status||'Da fare')}${t.due?` · entro ${Utils.date(t.due)}`:''}</div></div><button class="btn btn-sm" data-go="actions">Apri</button></div>`).join('')}</div>`;
+}
+
+function dashboardQuality(checks) {
+  const total=Math.max(1,checks.length), withSources=checks.filter(c=>(c.urls||[]).length).length, withReview=checks.filter(c=>c.manualReview?.completed).length, complete=checks.filter(c=>(c.response||'').length>=CONFIG.MIN_RESPONSE_LENGTH).length;
+  const rows=[['Risposte complete',Math.round(complete/total*100)],['Fonti registrate',Math.round(withSources/total*100)],['Revisione manuale',Math.round(withReview/total*100)]];
+  if(!checks.length) return `<div class="dashboard-empty"><strong>Nessun dato da valutare</strong><p>La qualità sarà calcolata sulle verifiche salvate.</p></div>`;
+  return `<div class="quality-stack">${rows.map(([label,value])=>`<div class="quality-row"><div class="quality-row-head"><span>${label}</span><strong class="${value>=80?'text-success':value<50?'text-danger':''}">${value}%</strong></div><div class="progress"><span style="width:${value}%;background:${value>=80?'var(--success)':value<50?'var(--danger)':'var(--warning)'}"></span></div></div>`).join('')}</div>`;
+}
+
 function resultsTable(checks, selectable = true, showReportAction = false) {
   if (!checks.length) return empty('Nessuna verifica', 'Incolla e analizza una risposta reale.');
   return `<div class="table-wrap"><table><thead><tr>${selectable ? '<th><input type="checkbox" id="selectAllResults" aria-label="Seleziona tutte"></th>' : ''}<th>Prompt / progetto</th><th>AI</th><th>Esito</th><th>Score</th><th>Confidenza</th><th>Data</th><th>Azioni</th></tr></thead><tbody>${checks.map(c => `<tr data-result-row data-id="${c.id}" data-search="${Utils.esc(Utils.slug(JSON.stringify(c)))}" data-project="${c.projectId}" data-platform="${c.platformId}" data-brand="${c.brandMentioned ? 'yes' : 'no'}" data-domain="${c.domainCited ? 'yes' : 'no'}" data-sources="${(c.urls || []).length ? 'yes' : 'no'}">${selectable ? `<td><input type="checkbox" class="result-select" value="${c.id}" ${window.selectedResultIds?.has(c.id) ? 'checked' : ''}></td>` : ''}<td><strong>${Utils.esc(promptBy(c.promptId)?.text || 'Prompt eliminato')}</strong><div class="help">${Utils.esc(projectBy(c.projectId)?.name || 'Progetto eliminato')}</div></td><td>${Utils.esc(platformBy(c.platformId).name)}<div class="help">${Utils.esc(c.responseType || '')}</div></td><td>${c.brandMentioned ? badge('Brand', 'success') : badge('Assente', 'danger')} ${c.domainCited ? badge('Dominio', 'info') : ''}</td><td><strong>${c.score || 0}</strong>/100</td><td>${c.confidence || 0}/100</td><td>${Utils.date(c.date, true)}</td><td><div class="flex gap-8 wrap"><button class="btn btn-sm" data-view-check="${c.id}">Dettagli</button><button class="btn btn-sm" data-edit-check="${c.id}">Modifica</button><button class="btn btn-sm" data-duplicate-check="${c.id}">Duplica</button>${showReportAction ? `<button class="btn btn-sm btn-primary" data-report-check="${c.id}">Report</button>` : ''}</div></td></tr>`).join('')}</tbody></table></div>`;
@@ -1379,22 +1450,23 @@ function renderSources(details) {
 // DASHBOARD
 // ============================================================
 function renderDashboard() {
-  const checks = state.checks.filter(c => !c.archived);
+  const projectId=dashboardProjectId;
+  const checks = state.checks.filter(c => !c.archived && (!projectId||c.projectId===projectId));
   const avg = checks.length ? Math.round(checks.reduce((s, c) => s + (c.score || 0), 0) / checks.length) : 0;
   const brandRate = checks.length ? Math.round(checks.filter(c => c.brandMentioned).length / checks.length * 100) : 0;
   const domainRate = checks.length ? Math.round(checks.filter(c => c.domainCited).length / checks.length * 100) : 0;
-  const quality = Derived.dataQualityIssues();
-  const anomalyList = Derived.anomalies().slice(0, 5);
-  const projectRows = state.projects.filter(p => !p.archived).map(p => [p, Derived.projectBenchmark(p.id)]).sort((a, b) => b[1].avg - a[1].avg);
+  const promptCount=state.prompts.filter(p=>!projectId||p.projectId===projectId).length;
+  const openTasks=(state.tasks||[]).filter(t=>(!projectId||t.projectId===projectId)&&!['Completata','Non applicabile'].includes(t.status)).length;
+  const currentProject=projectBy(projectId);
+  const latestCheck=checks.slice().sort((a,b)=>new Date(b.date)-new Date(a.date))[0];
 
   document.getElementById('dashboard').innerHTML = `
-    <div class="toolbar"><button class="btn btn-primary" data-go="new-check">＋ Nuova verifica</button><button class="btn" data-go="onboarding">Configurazione guidata</button><div class="spacer"></div>${!state.settings.onboardingDismissed && (!state.projects.length || !state.prompts.length) ? badge('Configurazione incompleta', 'warning') : ''}</div>
-    <div class="grid grid-4">${metric('Progetti attivi', state.projects.filter(p => !p.archived).length, 'Brand e domini monitorati')}${metric('Verifiche', checks.length, 'Risposte AI registrate')}${metric('GEO Score medio', avg + '/100', 'Metrica proprietaria')}${metric('Presenza brand', brandRate + '%', `Dominio citato: ${domainRate}%`)}</div>
-    <div class="grid grid-2" style="margin-top:16px"><div class="card"><div class="card-header"><div><div class="card-title">Benchmark per progetto</div><div class="card-sub">Score, quota di presenza e posizione media</div></div></div>${projectRows.length ? projectRows.map(([p, b]) => `<div class="bar-row"><div><strong>${Utils.esc(p.name)}</strong><div class="help">Brand ${b.brandRate}% · Pos. ${b.avgPosition}</div></div><div class="bar"><span style="width:${b.avg}%"></span></div><strong>${b.avg}</strong></div>`).join('') : empty('Nessun benchmark', 'Salva almeno una verifica.')}</div>
-    <div class="card"><div class="card-header"><div><div class="card-title">Anomalie recenti</div><div class="card-sub">Cambiamenti che meritano controllo</div></div><div class="spacer"></div><button class="btn btn-sm" data-go="compare">Apri confronto</button></div>${anomalyList.length ? anomalyList.map(a => `<div class="anomaly-item ${a.severity === 'P1' ? 'priority-P1' : 'priority-P2'}"><strong>${Utils.esc(a.title)}</strong><div class="help">${Utils.esc(a.detail)}</div><button class="btn btn-sm" data-view-check="${a.check.id}" style="margin-top:8px">Dettagli</button></div>`).join('') : empty('Nessuna anomalia', 'Servono almeno due verifiche confrontabili.')}</div></div>
-    <div class="grid grid-2" style="margin-top:16px"><div class="card"><div class="card-header"><div><div class="card-title">Qualità dati</div><div class="card-sub">Elementi da correggere prima del reporting</div></div><div class="spacer"></div><button class="btn btn-sm" data-go="quality">Centro qualità</button></div>${quality.length ? `<div class="score-large">${quality.length}</div><div class="muted">segnalazioni aperte</div>` : empty('Dati coerenti', 'Non sono stati rilevati problemi evidenti.')}</div><div class="card"><div class="card-header"><div><div class="card-title">Copertura Prompt–AI</div><div class="card-sub">Verifiche mancanti sulle piattaforme attive</div></div><div class="spacer"></div><button class="btn btn-sm" data-go="matrix">Apri matrice</button></div>${renderCoverageSummary()}</div></div>
-    <div class="card" style="margin-top:16px"><div class="card-header"><div><div class="card-title">Verifiche recenti</div><div class="card-sub">Ultimi risultati salvati</div></div><div class="spacer"></div><button class="btn btn-sm" data-go="results">Vedi tutti</button></div>${resultsTable([...checks].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 6), false, true)}</div>
+    <div class="dashboard-head"><div><h1>${currentProject?`Andamento di ${Utils.esc(currentProject.name)}`:'Il tuo monitoraggio GEO, a colpo d’occhio'}</h1><p>Dati reali dalle verifiche salvate. Usa il selettore in alto per restringere l’analisi.</p></div><div class="dashboard-date help">${latestCheck?`Aggiornato ${Utils.date(latestCheck.date,true)}`:'In attesa della prima verifica'}</div></div>
+    <div class="dashboard-kpis">${dashboardMetric('Visibilità GEO',checks.length?avg+'/100':'—',checks.length?`${checks.length} verifiche analizzate`:'Nessuna verifica','◉')}${dashboardMetric('Citazioni dominio',checks.length?domainRate+'%':'—',checks.length?`${checks.filter(c=>c.domainCited).length} risposte con dominio`:'Dati non disponibili','↗')}${dashboardMetric('Prompt monitorati',String(promptCount),projectId?'Nel progetto selezionato':'In tutti i progetti','◌')}${dashboardMetric('Attività aperte',String(openTasks),openTasks?'Da pianificare o completare':'Nessuna urgenza','✓')}</div>
+    <div class="dashboard-main"><section class="panel"><div class="panel-head"><div><h2>Andamento della visibilità GEO</h2><p>GEO Score delle ultime verifiche</p></div><div class="spacer"></div><button class="btn btn-sm" data-go="compare">Confronta</button></div><div class="panel-body">${dashboardTrend(checks)}</div></section><section class="panel"><div class="panel-head"><div><h2>Prossime azioni</h2><p>Ordinate per priorità</p></div><div class="spacer"></div><button class="btn btn-sm" data-go="actions">Vedi tutte</button></div>${dashboardActions(projectId)}</section></div>
+    <div class="dashboard-lower"><section class="panel"><div class="panel-head"><div><h2>Ultime verifiche</h2><p>Risultati più recenti</p></div><div class="spacer"></div><button class="btn btn-sm" data-go="results">Vedi tutti</button></div>${resultsTable([...checks].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,5),false,true)}</section><section class="panel quality-panel"><div class="panel-head"><div><h2>Qualità dei dati</h2><p>Completezza delle verifiche</p></div><div class="spacer"></div><button class="btn btn-sm" data-go="quality">Dettagli</button></div>${dashboardQuality(checks)}</section></div>
   `;
+  syncGlobalProjectSelect();
 }
 
 // ============================================================
@@ -3142,16 +3214,36 @@ function importJson(file) {
   reader.readAsText(file);
 }
 
-function globalSearch(query) {
-  const q = Utils.slug(query);
-  if (!q) return;
-  const matches = [];
-  state.projects.filter(x => Utils.slug(JSON.stringify(x)).includes(q)).slice(0, 5).forEach(x => matches.push({ type: 'Progetto', label: x.name, action: () => setSection('projects') }));
-  state.prompts.filter(x => Utils.slug(x.text).includes(q)).slice(0, 8).forEach(x => matches.push({ type: 'Prompt', label: x.text, action: () => setSection('prompts') }));
-  state.checks.filter(x => Utils.slug(x.response).includes(q)).slice(0, 8).forEach(x => matches.push({ type: 'Risultato', label: promptBy(x.promptId)?.text || '', action: () => viewCheck(x.id) }));
+function globalSearchMatches(query,limit=12) {
+  const q=Utils.slug(query); if(!q)return [];
+  const matches=[];
+  state.projects.filter(x=>Utils.slug(JSON.stringify(x)).includes(q)).slice(0,4).forEach(x=>matches.push({type:'Progetto',label:x.name,section:'projects'}));
+  state.prompts.filter(x=>Utils.slug(x.text).includes(q)).slice(0,4).forEach(x=>matches.push({type:'Prompt',label:x.text,section:'prompts'}));
+  state.checks.filter(x=>Utils.slug(`${x.response||''} ${promptBy(x.promptId)?.text||''}`).includes(q)).slice(0,4).forEach(x=>matches.push({type:'Risultato',label:promptBy(x.promptId)?.text||'Verifica senza prompt',checkId:x.id}));
+  (state.tasks||[]).filter(x=>Utils.slug(`${x.title||''} ${x.notes||''}`).includes(q)).slice(0,3).forEach(x=>matches.push({type:'Azione',label:x.title,section:'actions'}));
+  (state.opportunities||[]).filter(x=>Utils.slug(JSON.stringify(x)).includes(q)).slice(0,3).forEach(x=>matches.push({type:'Opportunità',label:x.title||x.kind||'Opportunità GEO',section:'opportunities'}));
+  return matches.slice(0,limit);
+}
 
-  modal('Risultati ricerca', matches.length ? matches.map((m, i) => `<button class="btn btn-block" id="globalResult${i}" style="justify-content:flex-start;margin-bottom:8px">${badge(m.type)} ${Utils.esc(m.label)}</button>`).join('') : empty('Nessun risultato', 'Prova con un termine differente.'));
-  matches.forEach((m, i) => document.getElementById('globalResult' + i).onclick = () => { closeModal(); m.action(); });
+function openSearchMatch(match) {
+  closeSearchPopover();
+  if(match.checkId)viewCheck(match.checkId);else setSection(match.section||'dashboard');
+}
+
+function closeSearchPopover(){document.getElementById('searchPopover')?.classList.remove('show')}
+
+function renderSearchPopover(query) {
+  const pop=document.getElementById('searchPopover'); if(!pop)return;
+  const matches=globalSearchMatches(query);
+  if(!String(query).trim()){pop.classList.remove('show');pop.innerHTML='';return;}
+  pop.innerHTML=matches.length?matches.map((m,i)=>`<button class="search-result" data-search-result="${i}" role="option"><span class="search-result-type">${Utils.esc(m.type)}</span><span class="search-result-label">${Utils.esc(m.label)}</span></button>`).join(''):'<div class="search-empty">Nessun risultato. Prova un termine diverso.</div>';
+  pop.classList.add('show'); window.__searchMatches=matches;
+}
+
+function globalSearch(query) {
+  const matches=globalSearchMatches(query,30); if(!String(query).trim())return;
+  modal('Risultati ricerca',matches.length?matches.map((m,i)=>`<button class="btn btn-block" id="globalResult${i}" style="justify-content:flex-start;margin-bottom:8px">${badge(m.type)} ${Utils.esc(m.label)}</button>`).join(''):empty('Nessun risultato','Prova con un termine differente.'));
+  matches.forEach((m,i)=>document.getElementById('globalResult'+i).onclick=()=>{closeModal();openSearchMatch(m)});
 }
 
 // ============================================================
@@ -3160,6 +3252,8 @@ function globalSearch(query) {
 function bindEvents() {
   // Click delegation
   document.addEventListener('click', (e) => {
+    const searchResult=e.target.closest('[data-search-result]');
+    if(searchResult){const match=window.__searchMatches?.[Number(searchResult.dataset.searchResult)];if(match)openSearchMatch(match);return;}
     const target = e.target.closest('[data-action]');
     if (target) {
       const action = target.dataset.action;
@@ -3191,7 +3285,7 @@ function bindEvents() {
 
     // Navigazione
     const nav = e.target.closest('[data-section]');
-    if (nav) { setSection(nav.dataset.section); return; }
+    if (nav) { if(nav.closest('.nav-more'))document.getElementById('navMore').open=true; setSection(nav.dataset.section); return; }
 
     // Go
     const go = e.target.closest('[data-go]');
@@ -3208,6 +3302,8 @@ function bindEvents() {
   // Change delegation
   document.addEventListener('change', (e) => {
     const target = e.target;
+    if(target.id==='dashboardProject'){dashboardProjectId=target.value;renderDashboard();return;}
+    if(target.id==='globalProject'){dashboardProjectId=target.value;setSection('dashboard');return;}
     // Check form changes
     if (target.closest('#checkForm')) { saveDraft(); }
 
@@ -3223,11 +3319,21 @@ function bindEvents() {
         break;
       }
     }
+    if (target.id === 'projectFilter') filterProjects();
+    if (target.id === 'promptProjectFilter' || target.id === 'promptPriorityFilter') filterPrompts();
+    if (target.id === 'resultProjectFilter' || target.id === 'resultPlatformFilter' || target.id === 'resultMentionFilter') applyResultFilters();
+    if (target.id === 'oppProject' || target.id === 'oppPriority' || target.id === 'oppStatus') filterOpportunities();
+    if (target.id === 'qualityPriority' || target.id === 'qualityKind') filterQuality();
   });
 
   // Input delegation (debounced)
   document.addEventListener('input', Utils.debounce((e) => {
     const target = e.target;
+    if(target.id==='globalSearch')renderSearchPopover(target.value);
+    if(target.id==='mobileGlobalSearch'){
+      const results=document.getElementById('mobileSearchResults'),matches=globalSearchMatches(target.value,20);window.__mobileSearchMatches=matches;
+      if(results)results.innerHTML=target.value.trim()?(matches.length?matches.map((m,i)=>`<button class="search-result" data-mobile-search-result="${i}"><span class="search-result-type">${Utils.esc(m.type)}</span><span class="search-result-label">${Utils.esc(m.label)}</span></button>`).join(''):'<div class="search-empty">Nessun risultato.</div>'):'';
+    }
     if (target.closest('#checkForm')) { saveDraft(); }
     if (target.id === 'quickKeyword' || target.id === 'quickPromptStyle') updateQuickPreview();
     if (target.id === 'projectSearch' || target.id === 'projectFilter') filterProjects();
@@ -3246,13 +3352,20 @@ function bindEvents() {
     if (e.target.id === 'modalBackdrop') closeModal();
   });
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeModal();
+    if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();document.getElementById('globalSearch').focus();return;}
+    if(e.key==='/'&&!/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName||'')){e.preventDefault();document.getElementById('globalSearch').focus();return;}
+    if (e.key === 'Escape') {closeSearchPopover();if(document.getElementById('modalBackdrop').classList.contains('show'))closeModal();}
+    if(e.key==='Tab'&&document.getElementById('modalBackdrop').classList.contains('show')){
+      const focusable=[...document.querySelectorAll('#modalBackdrop button:not([disabled]),#modalBackdrop input:not([disabled]),#modalBackdrop select:not([disabled]),#modalBackdrop textarea:not([disabled]),#modalBackdrop a[href]')].filter(x=>x.offsetParent!==null);
+      if(focusable.length){const first=focusable[0],last=focusable.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}
+    }
   });
 
   // Menu toggle
   document.getElementById('menuToggle').onclick = () => {
     document.getElementById('sidebar').classList.add('open');
     document.getElementById('mobileOverlay').classList.add('show');
+    document.getElementById('menuToggle').setAttribute('aria-expanded','true');
   };
   document.getElementById('mobileOverlay').onclick = closeMobile;
 
@@ -3266,8 +3379,11 @@ function bindEvents() {
 
   // Global search
   document.getElementById('globalSearch').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') globalSearch(e.target.value);
+    if (e.key === 'Enter') {const first=window.__searchMatches?.[0];if(first)openSearchMatch(first);else globalSearch(e.target.value);}
+    if(e.key==='ArrowDown'){e.preventDefault();document.querySelector('#searchPopover .search-result')?.focus();}
   });
+  document.getElementById('mobileSearchBtn').onclick=()=>{modal('Cerca in tutto','<input id="mobileGlobalSearch" placeholder="Progetti, prompt, risultati, azioni…" autocomplete="off"><div id="mobileSearchResults" style="margin-top:8px"></div>','<button class="btn" data-close-modal>Chiudi</button>');setTimeout(()=>document.getElementById('mobileGlobalSearch')?.focus(),0)};
+  document.addEventListener('click',e=>{const item=e.target.closest('[data-mobile-search-result]');if(item){const m=window.__mobileSearchMatches?.[Number(item.dataset.mobileSearchResult)];if(m){closeModal();openSearchMatch(m)}}else if(!e.target.closest('.global-search'))closeSearchPopover()});
 
   // JSON import
   document.getElementById('jsonImport').onchange = (e) => {
@@ -3312,8 +3428,8 @@ state.wpPackages ||= [];
 
 const AdvancedStore = {
   db:null,
-  open(){ return new Promise((resolve,reject)=>{ const req=indexedDB.open('geoCitationMonitorDB',1); req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains('snapshots'))db.createObjectStore('snapshots',{keyPath:'id'});if(!db.objectStoreNames.contains('backups'))db.createObjectStore('backups',{keyPath:'id'});};req.onsuccess=()=>{this.db=req.result;resolve(this.db)};req.onerror=()=>reject(req.error);}); },
-  async mirror(){ try{const db=this.db||await this.open();const tx=db.transaction('backups','readwrite');tx.objectStore('backups').put({id:'latest',date:Utils.now(),state:structuredClone(state)});}catch(e){console.warn('IndexedDB mirror non disponibile',e);} },
+  open(){ if(typeof indexedDB==='undefined')return Promise.reject(new Error('IndexedDB non supportato'));return new Promise((resolve,reject)=>{ const req=indexedDB.open('geoCitationMonitorDB',1); req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains('snapshots'))db.createObjectStore('snapshots',{keyPath:'id'});if(!db.objectStoreNames.contains('backups'))db.createObjectStore('backups',{keyPath:'id'});};req.onsuccess=()=>{this.db=req.result;resolve(this.db)};req.onerror=()=>reject(req.error);}); },
+  async mirror(){ if(typeof indexedDB==='undefined')return false;try{const db=this.db||await this.open();const tx=db.transaction('backups','readwrite');tx.objectStore('backups').put({id:'latest',date:Utils.now(),state:structuredClone(state)});return true}catch(e){console.warn('IndexedDB mirror non disponibile',e);return false} },
   async restore(){ try{const db=this.db||await this.open();return await new Promise((resolve,reject)=>{const r=db.transaction('backups').objectStore('backups').get('latest');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)});}catch{return null;} }
 };
 const originalSaveState=saveState;
@@ -3445,7 +3561,7 @@ Object.assign(changeHandlers,{
 
 // Backup recovery button injection
 const baseRenderBackup=renderBackup;
-renderBackup=function(){baseRenderBackup();const root=document.getElementById('backup');root.insertAdjacentHTML('beforeend','<div class="card" style="margin-top:16px"><h3>Mirror IndexedDB</h3><p class="help">Copia locale aggiuntiva, utile quando localStorage viene cancellato accidentalmente. Non sostituisce un backup esterno.</p><button class="btn" data-action="restore-indexeddb">Ripristina ultimo mirror</button></div>');};
+renderBackup=function(){baseRenderBackup();const root=document.getElementById('backup'),supported=typeof indexedDB!=='undefined';root.insertAdjacentHTML('beforeend',`<div class="card" style="margin-top:16px"><h3>Mirror IndexedDB</h3><p class="help">${supported?'Copia locale aggiuntiva, utile quando localStorage viene cancellato accidentalmente. Non sostituisce un backup esterno.':'Il browser attuale non supporta il mirror aggiuntivo. Usa l’esportazione JSON.'}</p><button class="btn" data-action="restore-indexeddb" ${supported?'':'disabled'}>Ripristina ultimo mirror</button></div>`);};
 
 
 
