@@ -6,11 +6,11 @@
 <meta name="description" content="Strumento locale per monitorare citazioni, fonti e visibilità GEO con verifiche manuali, report e controlli di qualità.">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
-<meta name="app-build" content="5.5.0">
+<meta name="app-build" content="5.6.0">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#f7f9fc">
 <meta name="color-scheme" content="light dark">
-<title>GEO Citation Monitor 5.5.0</title>
+<title>GEO Citation Monitor 5.6.0</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2064%2064%22%3E%3Crect%20width=%2264%22%20height=%2264%22%20rx=%2214%22%20fill=%22%23155eef%22/%3E%3Cpath%20d=%22M32%2011%2014%2021v22l18%2010%2018-10V21L32%2011Zm0%209%209%205-9%205-9-5%209-5ZM22%2033l7%204v8l-7-4v-8Zm13%2012v-8l7-4v8l-7%204Z%22%20fill=%22white%22/%3E%3C/svg%3E">
 <style>
 :root{
@@ -209,6 +209,46 @@ body.guided-lock{overflow:hidden}.guided-mode .nav-more,.guided-mode .sidebar-sy
 @media(max-width:760px){.guided-launch{grid-template-columns:1fr}.guided-launch-actions{justify-content:flex-start}.guided-shell-inner{padding:12px 12px 84px}.guided-header{position:sticky;top:0;z-index:2;background:var(--bg);padding:8px 0}.guided-stage{padding:19px 15px}.guided-stage h1{font-size:22px}.guided-steps{grid-template-columns:1fr;gap:5px}.guided-step{padding:6px 0 6px 16px}.guided-step:before{left:0;right:auto;top:8px;width:5px;height:18px}.guided-summary,.guided-safety{grid-template-columns:1fr}.guided-footer-actions{align-items:stretch}.guided-footer-actions .btn{width:100%}.guided-footer-actions .secondary-link{margin-left:0}}
 
 </style>
+
+<style id="guidedWizard56Styles">
+:root{--guided-font-scale:2}
+.guided-shell{font-size:calc(14px * var(--guided-font-scale))}
+.guided-shell-inner{width:min(1180px,100%);padding-top:18px}
+.guided-header{gap:14px;min-height:58px}
+.guided-header-brand{font-size:calc(15px * var(--guided-font-scale));letter-spacing:-.02em}
+.guided-header .btn{font-size:calc(12px * var(--guided-font-scale));min-height:calc(36px * var(--guided-font-scale));padding:calc(6px * var(--guided-font-scale)) calc(10px * var(--guided-font-scale))}
+.guided-font-tools{display:flex;align-items:center;gap:6px;padding:5px;border:1px solid var(--border);background:var(--surface);border-radius:10px}
+.guided-font-label{font-size:calc(10px * var(--guided-font-scale));font-weight:800;color:var(--muted);padding:0 5px}
+.guided-font-btn{min-width:calc(34px * var(--guided-font-scale));height:calc(34px * var(--guided-font-scale));border:1px solid transparent;background:transparent;color:var(--text);border-radius:7px;font-size:calc(12px * var(--guided-font-scale));font-weight:900;cursor:pointer}
+.guided-font-btn:hover,.guided-font-btn.active{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,var(--surface));color:var(--accent)}
+.guided-progress{padding:calc(10px * var(--guided-font-scale)) calc(12px * var(--guided-font-scale));margin-bottom:calc(12px * var(--guided-font-scale))}
+.guided-progress-top strong{font-size:calc(12px * var(--guided-font-scale))}.guided-progress-top span{font-size:calc(11px * var(--guided-font-scale))}
+.guided-step{font-size:calc(10px * var(--guided-font-scale));padding-top:calc(10px * var(--guided-font-scale))}
+.guided-next-hint{margin-top:calc(8px * var(--guided-font-scale));font-size:calc(11px * var(--guided-font-scale));color:var(--muted);font-weight:650}
+.guided-stage{padding:calc(19px * var(--guided-font-scale));border-radius:14px}
+.guided-stage h1{font-size:calc(26px * var(--guided-font-scale));line-height:1.08;max-width:16ch;margin-bottom:calc(7px * var(--guided-font-scale))}
+.guided-stage>p,.guided-stage p{font-size:calc(14px * var(--guided-font-scale));line-height:1.45;max-width:42ch}
+.guided-eyebrow{font-size:calc(10px * var(--guided-font-scale));font-weight:900;letter-spacing:.09em;color:var(--accent);margin-bottom:calc(5px * var(--guided-font-scale))}
+.guided-primary{min-height:calc(46px * var(--guided-font-scale));padding:calc(9px * var(--guided-font-scale)) calc(15px * var(--guided-font-scale));font-size:calc(14px * var(--guided-font-scale));border-radius:10px}
+.guided-footer-actions{gap:calc(7px * var(--guided-font-scale));margin-top:calc(15px * var(--guided-font-scale))}.guided-footer-actions .btn:not(.guided-primary){font-size:calc(11px * var(--guided-font-scale));min-height:calc(36px * var(--guided-font-scale))}
+.guided-one-line{display:flex;gap:calc(7px * var(--guided-font-scale));align-items:center;padding:calc(10px * var(--guided-font-scale));border-radius:10px;background:color-mix(in srgb,var(--success) 8%,var(--surface));font-size:calc(12px * var(--guided-font-scale));margin-top:calc(12px * var(--guided-font-scale));max-width:32ch}
+.guided-checks{gap:calc(7px * var(--guided-font-scale));margin:calc(13px * var(--guided-font-scale)) 0}.guided-check{grid-template-columns:calc(24px * var(--guided-font-scale)) minmax(0,1fr);gap:calc(7px * var(--guided-font-scale));padding:calc(9px * var(--guided-font-scale))}.guided-check-icon{width:calc(22px * var(--guided-font-scale));height:calc(22px * var(--guided-font-scale));font-size:calc(11px * var(--guided-font-scale))}.guided-check strong{font-size:calc(12px * var(--guided-font-scale))}.guided-check .help{font-size:calc(10px * var(--guided-font-scale))}
+.guided-overall{padding:calc(12px * var(--guided-font-scale));font-size:calc(13px * var(--guided-font-scale));max-width:34ch}.guided-overall strong{display:block;font-size:calc(14px * var(--guided-font-scale));margin-bottom:4px}
+.guided-muted-note{font-size:calc(11px * var(--guided-font-scale));color:var(--muted);margin-top:calc(8px * var(--guided-font-scale))}
+.guided-simple-block{display:grid;grid-template-columns:calc(30px * var(--guided-font-scale)) minmax(0,1fr);gap:calc(9px * var(--guided-font-scale));padding:calc(12px * var(--guided-font-scale));margin:calc(9px * var(--guided-font-scale)) 0;border:1px solid var(--border);border-radius:12px;background:var(--surface-2)}
+.guided-simple-block.recommended{border-color:color-mix(in srgb,var(--accent) 38%,var(--border));background:color-mix(in srgb,var(--accent) 6%,var(--surface))}.guided-simple-block.next{background:var(--surface)}
+.guided-simple-number{width:calc(28px * var(--guided-font-scale));height:calc(28px * var(--guided-font-scale));border-radius:50%;display:grid;place-items:center;background:var(--accent);color:#fff;font-size:calc(12px * var(--guided-font-scale));font-weight:900}.guided-simple-block strong{font-size:calc(14px * var(--guided-font-scale))}.guided-simple-block p{margin:4px 0 0!important;font-size:calc(12px * var(--guided-font-scale))!important;max-width:48ch!important}
+.guided-example{padding:calc(10px * var(--guided-font-scale));font-size:calc(11px * var(--guided-font-scale));line-height:1.45;margin:calc(8px * var(--guided-font-scale)) 0}
+.guided-action-box{padding:calc(13px * var(--guided-font-scale));margin-top:calc(12px * var(--guided-font-scale));border:2px solid color-mix(in srgb,var(--accent) 28%,var(--border));border-radius:13px;background:var(--surface)}.guided-action-title{font-size:calc(15px * var(--guided-font-scale));font-weight:900;margin-bottom:calc(6px * var(--guided-font-scale))}.guided-action-box>p{font-size:calc(12px * var(--guided-font-scale))!important}.guided-untouched{font-size:calc(11px * var(--guided-font-scale));color:var(--muted);padding-top:calc(6px * var(--guided-font-scale))}
+.guided-big-steps{list-style:none;padding:0;margin:calc(9px * var(--guided-font-scale)) 0;display:grid;gap:calc(8px * var(--guided-font-scale))}.guided-big-steps li{display:grid;grid-template-columns:calc(28px * var(--guided-font-scale)) minmax(0,1fr);gap:calc(8px * var(--guided-font-scale));align-items:start;font-size:calc(12px * var(--guided-font-scale));line-height:1.45}.guided-big-steps li>span{width:calc(26px * var(--guided-font-scale));height:calc(26px * var(--guided-font-scale));display:grid;place-items:center;border-radius:50%;background:var(--surface-3);font-weight:900}
+.guided-technical{margin-top:calc(12px * var(--guided-font-scale));font-size:calc(10px * var(--guided-font-scale))}.guided-technical-body{font-size:calc(9px * var(--guided-font-scale));line-height:1.5}
+.guided-complete-icon{width:calc(48px * var(--guided-font-scale));height:calc(48px * var(--guided-font-scale));font-size:calc(24px * var(--guided-font-scale));margin-bottom:calc(9px * var(--guided-font-scale))}.guided-warn-icon{color:var(--warning);background:color-mix(in srgb,var(--warning) 13%,var(--surface))}
+.guided-launch{padding:calc(14px * var(--guided-font-scale));gap:calc(14px * var(--guided-font-scale))}.guided-launch h2{font-size:calc(20px * var(--guided-font-scale));margin-bottom:calc(4px * var(--guided-font-scale))}.guided-launch p{font-size:calc(12px * var(--guided-font-scale));line-height:1.4;max-width:46ch}.guided-launch .guided-eyebrow{font-size:calc(8px * var(--guided-font-scale))}
+.guided-resume{font-size:calc(11px * var(--guided-font-scale));line-height:1.45}
+@media(max-width:900px){.guided-header{flex-wrap:wrap}.guided-header-brand{width:100%}.guided-font-tools{order:2}.guided-header .spacer{display:none}.guided-header .guided-close{margin-left:auto}.guided-shell-inner{padding:10px 10px 90px}.guided-stage h1{max-width:none}.guided-stage>p,.guided-stage p{max-width:none}.guided-steps{grid-template-columns:repeat(5,minmax(0,1fr));overflow:auto}.guided-step{min-width:100px}.guided-footer-actions{align-items:stretch}.guided-footer-actions .btn{width:100%}}
+@media(max-width:600px){:root{--guided-font-scale:1.5}.guided-shell-inner{padding-left:8px;padding-right:8px}.guided-stage{padding:18px 14px}.guided-stage h1{font-size:calc(24px * var(--guided-font-scale))}.guided-font-label{display:none}.guided-font-btn{min-width:44px;height:44px}.guided-header .btn{font-size:16px;min-height:44px}.guided-progress-top{flex-wrap:wrap}.guided-progress-top span{margin-left:0}.guided-steps{display:flex}.guided-simple-block{grid-template-columns:44px minmax(0,1fr)}}
+</style>
+
 </head>
 <body>
 <a class="skip-link" href="#mainContent">Vai al contenuto principale</a>
@@ -307,7 +347,7 @@ body.guided-lock{overflow:hidden}.guided-mode .nav-more,.guided-mode .sidebar-sy
 const CONFIG = {
   APP_KEY: 'geoCitationMonitor_v42',
   LEGACY_APP_KEYS: ['geoCitationMonitor_v3'],
-  VERSION: '5.5.0',
+  VERSION: '5.6.0',
   DATA_SCHEMA_VERSION: 8,
   MAX_LOGO_SIZE: 350000,
   MIN_RESPONSE_LENGTH: 120,
@@ -5985,6 +6025,112 @@ function guidedDashboardCard(){const g=guidedEnsureState(),issues=guidedCurrentI
 const renderDashboardBeforeGuided55=renderDashboard;
 renderDashboard=function(){renderDashboardBeforeGuided55();const root=document.getElementById('dashboard');if(root&&!root.querySelector('.guided-launch'))root.insertAdjacentHTML('afterbegin',guidedDashboardCard())};
 document.addEventListener('click',event=>{const b=event.target.closest('[data-guided]');if(!b)return;event.preventDefault();event.stopPropagation();const action=b.dataset.guided,g=guidedEnsureState();if(action==='start'){Object.assign(g,{active:true,stage:'intro',startedAt:'',issueIndex:0,resolvedIds:[],verification:{}});saveState(true);guidedOpen()}else if(action==='open-resume'||action==='resume'){guidedOpen()}else if(action==='restart'||action==='restart-open'){guidedRestart();guidedOpen()}else if(action==='run-analysis'){guidedRunAnalysis()}else if(action==='start-corrections'){guidedAdvanceIssue()}else if(action==='apply-auto'){guidedApplyAuto()}else if(action==='verify-manual'){const issue=guidedActiveIssue();if(issue){g.verification[issue.id]={at:Utils.now(),status:'checking'};g.stage='verify';saveState(true);guidedRender();setTimeout(()=>guidedVerifyCurrent(issue.id),250)}}else if(action==='open-route'){guidedGoRoute(b.dataset.route)}else if(action==='retry-verify'){const id=Object.entries(g.verification||{}).sort((a,b)=>new Date(b[1].at)-new Date(a[1].at))[0]?.[0];if(id)guidedVerifyCurrent(id)}else if(action==='back-corrections'){g.stage='correction';saveState(true);guidedRender()}else if(action==='next-issue'){g.stage='correction';g.issueIndex=0;saveState(true);guidedRender()}else if(action==='complete'){g.stage='complete';g.active=false;saveState(true);guidedRender()}else if(action==='show-optional'){guidedShowOptional()}else if(action==='summary'){guidedSummary()}else if(action==='close'){guidedClose()}else if(action==='mode-advanced'||action==='mode-advanced-dashboard'){guidedSetMode('advanced');guidedClose();Utils.toast('Modalità avanzata attivata. Tutte le funzioni sono visibili.','success')}else if(action==='mode-guided-dashboard'){guidedSetMode('guided');Utils.toast('Modalità guidata attivata. Il menu mostra solo le funzioni essenziali.','success')}},true);
+
+
+
+
+// ============================================================
+// GUIDED WIZARD 5.6 — larger type, simpler decisions, font controls
+// ============================================================
+const GUIDED_FONT_LEVELS = [1.5, 2, 2.5];
+function guidedFontScale(){
+  guidedEnsureState();
+  const raw=Number(state.settings.guidedFontScale || 2);
+  return GUIDED_FONT_LEVELS.includes(raw)?raw:2;
+}
+function guidedApplyFontScale(){
+  document.documentElement.style.setProperty('--guided-font-scale', String(guidedFontScale()));
+}
+function guidedSetFontScale(direction){
+  const current=guidedFontScale();
+  let idx=GUIDED_FONT_LEVELS.indexOf(current);
+  if(direction==='reset') idx=1;
+  else idx=Math.max(0,Math.min(GUIDED_FONT_LEVELS.length-1,idx+(direction==='up'?1:-1)));
+  state.settings.guidedFontScale=GUIDED_FONT_LEVELS[idx];
+  saveState(true);
+  guidedApplyFontScale();
+  guidedRender();
+}
+function guidedFontControls(){
+  const scale=guidedFontScale();
+  return `<div class="guided-font-tools" role="group" aria-label="Dimensione testo">
+    <span class="guided-font-label">Testo</span>
+    <button class="guided-font-btn" data-guided="font-down" aria-label="Riduci testo" title="Riduci testo">A−</button>
+    <button class="guided-font-btn ${scale===2?'active':''}" data-guided="font-reset" aria-label="Dimensione testo consigliata" title="Dimensione consigliata">A</button>
+    <button class="guided-font-btn" data-guided="font-up" aria-label="Aumenta testo" title="Aumenta testo">A+</button>
+  </div>`;
+}
+
+const guidedFrameBefore56=guidedFrame;
+guidedFrame=function(body){
+  const g=guidedEnsureState();guidedApplyFontScale();
+  return `<div class="guided-shell-inner"><div class="guided-header"><div class="guided-header-brand">Controllo guidato</div><div class="spacer"></div>${guidedFontControls()}<button class="btn btn-sm btn-ghost" data-guided="mode-advanced">Modalità avanzata</button><button class="btn btn-sm guided-close" data-guided="close">Salva ed esci</button></div>${guidedProgress(g.stage)}${body}</div>`;
+};
+
+guidedProgress=function(stage){
+  const labels=['Controllo','Problemi','Soluzione','Verifica','Fine'],idx=guidedStageIndex(stage);
+  return `<div class="guided-progress" aria-label="Avanzamento controllo"><div class="guided-progress-top"><strong>Passaggio ${idx+1} di 5</strong><span>${Utils.esc(labels[idx])}</span></div><div class="guided-steps">${labels.map((x,i)=>`<div class="guided-step ${i<idx?'done':i===idx?'current':''}">${i<idx?'✓ ':''}${x}</div>`).join('')}</div><div class="guided-next-hint">${['Adesso controlliamo i dati.','Adesso scegliamo da dove iniziare.','Adesso sistemiamo una cosa alla volta.','Adesso controlliamo se ha funzionato.','Hai finito.'][idx]}</div></div>`;
+};
+
+guidedIntro=function(){
+  const g=guidedEnsureState();const hasResume=g.active&&g.startedAt&&g.stage!=='complete'&&g.stage!=='intro';
+  return `<section class="guided-stage guided-stage-simple"><div class="guided-eyebrow">${hasResume?'CONTROLLO DA RIPRENDERE':'INIZIAMO DA QUI'}</div><h1>${hasResume?'Continuiamo da dove eri arrivato':'Controlliamo il tuo progetto insieme'}</h1><p>${hasResume?'Non devi ricominciare. Abbiamo salvato il punto in cui ti eri fermato.':'Premi il pulsante qui sotto. Ti dirò io cosa controllare e cosa fare, un passaggio alla volta.'}</p><div class="guided-one-line"><span aria-hidden="true">✓</span><strong>Il primo controllo non modifica nulla.</strong></div><div class="guided-footer-actions"><button class="btn btn-primary guided-primary" data-guided="${hasResume?'resume':'run-analysis'}">${hasResume?'Continua il controllo':'Inizia il controllo'}</button>${hasResume?'<button class="btn btn-ghost" data-guided="restart">Ricomincia da zero</button>':''}</div></section>`;
+};
+
+guidedAnalysisView=function(){
+  const p=guidedEnsureState().analysisProgress||0,checks=['Il sito e le domande','Le verifiche già fatte','Cosa conviene sistemare'];
+  return `<section class="guided-stage guided-stage-simple"><div class="guided-eyebrow">NON DEVI FARE NULLA</div><h1>Sto controllando tutto</h1><p>Tra poco ti mostrerò solo ciò che richiede la tua attenzione.</p><div class="guided-checks">${checks.map((x,i)=>`<div class="guided-check ${i<p?'done':i===p?'current':''}"><span class="guided-check-icon">${i<p?'✓':i===p?'○':'·'}</span><div><strong>${Utils.esc(x)}</strong><div class="help">${i<p?'Fatto':i===p?'Sto controllando…':'Subito dopo'}</div></div></div>`).join('')}</div><details class="guided-technical"><summary>Dettagli tecnici</summary><div class="guided-technical-body">Versione: ${CONFIG.VERSION}\nSiti: ${state.projects.length}\nDomande: ${state.prompts.length}\nVerifiche: ${state.checks.length}\nAttività: ${state.tasks.length}</div></details></section>`;
+};
+
+guidedResultView=function(){
+  const issues=guidedCurrentIssues(),required=guidedRequiredIssues(issues),optional=guidedOptionalIssues(issues),good=!required.length;
+  return `<section class="guided-stage guided-stage-simple"><div class="guided-eyebrow">CONTROLLO TERMINATO</div><h1>${good?'Va tutto bene ✓':`Abbiamo trovato ${required.length} ${required.length===1?'cosa':'cose'} da sistemare`}</h1><p>${good?'Non risultano problemi importanti.':'Non devi affrontarle tutte insieme. Partiamo dalla più importante e ti guido io.'}</p><div class="guided-overall ${good?'good':'attention'}"><strong>${good?'Situazione buona':'La prima cosa da fare'}</strong><div>${good?'Puoi concludere il controllo.':Utils.esc(required[0]?.title||'Apri la prima correzione')}</div></div>${optional.length?`<div class="guided-muted-note">Ci sono anche ${optional.length} suggerimenti facoltativi. Li vedremo solo se vorrai.</div>`:''}<div class="guided-footer-actions">${required.length?'<button class="btn btn-primary guided-primary" data-guided="start-corrections">Mostrami cosa fare</button>':'<button class="btn btn-primary guided-primary" data-guided="complete">Concludi il controllo</button>'}</div></section>`;
+};
+
+guidedCorrectionView=function(){
+  const g=guidedEnsureState(),issues=guidedRequiredIssues().filter(i=>!g.resolvedIds.includes(i.id)),issue=issues[Math.max(0,Math.min(g.issueIndex||0,issues.length-1))];
+  if(!issue){g.stage='complete';saveState(true);return guidedCompleteView()}
+  const project=projectBy(issue.projectId);
+  return `<section class="guided-stage"><div class="guided-eyebrow">UNA COSA ALLA VOLTA · ${Math.min((g.issueIndex||0)+1,issues.length)} DI ${issues.length}</div><h1>${Utils.esc(issue.title)}</h1><div class="guided-simple-block"><span class="guided-simple-number">1</span><div><strong>Che cosa significa</strong><p>${Utils.esc(issue.summary)}</p></div></div><div class="guided-simple-block recommended"><span class="guided-simple-number">2</span><div><strong>Fai questo adesso</strong><p>${Utils.esc(issue.recommendation)}</p></div></div><div class="guided-example"><strong>Esempio</strong><br>${Utils.esc(guidedIssueExample(issue.type,project))}</div><div class="guided-simple-block next"><span class="guided-simple-number">3</span><div><strong>Cosa succede dopo</strong><p>${issue.canAutoFix?'Applicherò solo questa correzione interna e controllerò subito che sia riuscita.':'Quando hai finito, torni qui e controlleremo se il problema è davvero risolto.'}</p></div></div>${issue.canAutoFix?guidedAutoFixBlock(issue):guidedManualBlock(issue)}<details class="guided-technical"><summary>Dettagli tecnici</summary><div class="guided-technical-body">ID: ${Utils.esc(issue.id)}\nPriorità: ${Utils.esc(issue.priority)}\n${Utils.esc(issue.technical||'Nessun dettaglio tecnico aggiuntivo.')}</div></details></section>`;
+};
+
+guidedAutoFixBlock=function(issue){
+  return `<div class="guided-action-box"><div class="guided-action-title">Posso farlo io in sicurezza</div><p>${Utils.esc(issue.whatChanges||'Applicherò soltanto la correzione indicata.')}</p><div class="guided-untouched"><strong>Non toccherò:</strong> ${Utils.esc(issue.whatUntouched||'tutto il resto.')}</div><div class="guided-footer-actions"><button class="btn btn-primary guided-primary" data-guided="apply-auto">Correggi e verifica</button></div></div>`;
+};
+
+guidedManualBlock=function(issue){
+  const steps=issue.manualSteps||['Apri la sezione indicata.','Esegui la modifica richiesta.','Torna qui e verifica.'];
+  return `<div class="guided-action-box"><div class="guided-action-title">Segui questi ${steps.length} passaggi</div><ol class="guided-big-steps">${steps.map((x,i)=>`<li><span>${i+1}</span><div>${Utils.esc(x)}</div></li>`).join('')}</ol><div class="guided-footer-actions">${issue.route?`<button class="btn btn-primary guided-primary" data-guided="open-route" data-route="${Utils.esc(issue.route)}">Portami dove devo intervenire</button>`:''}<button class="btn btn-ghost" data-guided="verify-manual">Ho già fatto la modifica · Verifica</button></div></div>`;
+};
+
+guidedVerifyView=function(){
+  const g=guidedEnsureState();const entries=Object.entries(g.verification||{}).sort((a,b)=>new Date(b[1].at)-new Date(a[1].at));const [id,last]=entries[0]||[];
+  if(!id)return `<section class="guided-stage guided-stage-simple"><h1>Controlliamo il risultato</h1><p>Non c’è ancora una modifica da verificare.</p><button class="btn btn-primary guided-primary" data-guided="back-corrections">Torna alla soluzione</button></section>`;
+  const ok=last.status==='success';
+  return `<section class="guided-stage guided-stage-simple"><div class="guided-complete-icon ${ok?'':'guided-warn-icon'}">${ok?'✓':'!'}</div><h1>${ok?'Fatto: il problema è risolto':'Serve ancora un passaggio'}</h1><p>${ok?'Ho controllato il risultato: ora questo controllo viene superato.':'Il problema risulta ancora presente. Non lo segno come risolto finché non abbiamo una verifica positiva.'}</p><div class="guided-footer-actions">${ok?'<button class="btn btn-primary guided-primary" data-guided="next-issue">Vai al prossimo</button>':'<button class="btn btn-primary guided-primary" data-guided="back-corrections">Mostrami cosa fare</button><button class="btn btn-ghost" data-guided="retry-verify">Controlla di nuovo</button>'}</div><details class="guided-technical"><summary>Dettagli tecnici</summary><div class="guided-technical-body">Problema: ${Utils.esc(id)}\nUltima verifica: ${Utils.date(last.at,true)}\nEsito: ${ok?'superato':'ancora presente'}</div></details></section>`;
+};
+
+guidedCompleteView=function(){
+  const issues=guidedCurrentIssues(),g=guidedEnsureState(),required=guidedRequiredIssues(issues).filter(i=>!g.resolvedIds.includes(i.id)),optional=guidedOptionalIssues(issues),good=!required.length;
+  return `<section class="guided-stage guided-stage-simple"><div class="guided-complete-icon">✓</div><div class="guided-eyebrow">CONTROLLO FINITO</div><h1>${good?'Hai completato tutto':'Hai completato il controllo'}</h1><p>${good?'Le correzioni importanti risultano verificate.':'Rimangono alcune cose da sistemare. Potrai riprendere esattamente da qui.'}</p><div class="guided-overall ${good?'good':'attention'}"><strong>${good?'Situazione buona':'Rimane da fare'}</strong><div>${good?'Nessun problema importante aperto.':`${required.length} ${required.length===1?'problema importante':'problemi importanti'}`}</div></div><div class="guided-footer-actions"><button class="btn btn-primary guided-primary" data-guided="summary">Torna alla dashboard</button>${required.length?'<button class="btn btn-ghost" data-guided="restart-open">Rivedi il controllo</button>':''}${optional.length?'<button class="btn btn-ghost" data-guided="show-optional">Guarda i suggerimenti facoltativi</button>':''}</div></section>`;
+};
+
+guidedDashboardCard=function(){
+  const g=guidedEnsureState(),issues=guidedCurrentIssues(),required=guidedRequiredIssues(issues).filter(i=>!g.resolvedIds.includes(i.id)),resume=g.active&&g.startedAt&&g.stage!=='complete'&&g.stage!=='intro';
+  return `${resume?`<div class="notice warning guided-resume"><strong>Hai un controllo da continuare</strong><br>Rimangono ${required.length} ${required.length===1?'cosa':'cose'} da controllare.<div class="compact-actions" style="margin-top:10px"><button class="btn btn-primary btn-sm" data-guided="open-resume">Continua da dove eri</button><button class="btn btn-ghost btn-sm" data-guided="restart-open">Ricomincia</button></div></div>`:''}<section class="guided-launch"><div><div class="guided-eyebrow">CONSIGLIATO</div><h2>${resume?'Continua il controllo':'Non sai da dove iniziare?'}</h2><p>${resume?'Riprendi il lavoro già salvato.':'Premi qui: controlleremo insieme il progetto e ti dirò una cosa alla volta cosa fare.'}</p></div><div class="guided-launch-actions"><button class="btn btn-primary guided-primary" data-guided="${resume?'open-resume':'start'}">${resume?'Continua':'Avvia controllo guidato'}</button></div></section>`;
+};
+
+guidedApplyFontScale();
+
+// Font controls are deliberately handled before the older 5.5 delegated actions.
+document.addEventListener('click',event=>{
+  const b=event.target.closest('[data-guided="font-down"],[data-guided="font-reset"],[data-guided="font-up"]');
+  if(!b)return;
+  event.preventDefault();event.stopImmediatePropagation();
+  if(b.dataset.guided==='font-down')guidedSetFontScale('down');
+  else if(b.dataset.guided==='font-up')guidedSetFontScale('up');
+  else guidedSetFontScale('reset');
+},true);
 
 
 // ============================================================
