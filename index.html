@@ -6,11 +6,11 @@
 <meta name="description" content="Strumento locale per monitorare citazioni, fonti e visibilità GEO con verifiche manuali, report e controlli di qualità.">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
-<meta name="app-build" content="5.7.0">
+<meta name="app-build" content="5.8.0">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#f7f9fc">
 <meta name="color-scheme" content="light dark">
-<title>GEO Citation Monitor 5.7.0</title>
+<title>GEO Citation Monitor 5.8.0</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2064%2064%22%3E%3Crect%20width=%2264%22%20height=%2264%22%20rx=%2214%22%20fill=%22%23155eef%22/%3E%3Cpath%20d=%22M32%2011%2014%2021v22l18%2010%2018-10V21L32%2011Zm0%209%209%205-9%205-9-5%209-5ZM22%2033l7%204v8l-7-4v-8Zm13%2012v-8l7-4v8l-7%204Z%22%20fill=%22white%22/%3E%3C/svg%3E">
 <style>
 :root{
@@ -272,6 +272,47 @@ body.guided-lock{overflow:hidden}.guided-mode .nav-more,.guided-mode .sidebar-sy
 @media(max-width:760px){.guided-shell-inner{padding:8px 8px 100px}.guided-header{gap:8px}.guided-header-brand{width:100%}.guided-font-tools{order:2}.guided-header .guided-close{margin-left:auto}.guided-stage{padding:22px 16px}.guided-stage h1{font-size:clamp(32px,11vw,46px)}.guided-stage>p,.guided-stage p{font-size:clamp(20px,6vw,26px)}.guided-steps{display:flex;overflow-x:auto;scrollbar-width:thin}.guided-step{min-width:110px}.guided-where{grid-template-columns:1fr}.guided-footer-actions .btn{width:100%}.guided-return-bar{bottom:max(10px,env(safe-area-inset-bottom));flex-wrap:wrap}.guided-return-bar .btn{width:100%;margin-left:0}.guided-simple-block{grid-template-columns:44px minmax(0,1fr);padding:16px}.guided-simple-number{width:40px;height:40px}.guided-font-label{display:none}}
 </style>
 
+
+<style id="verificationWizard58Styles">
+/* 5.8 — verification wizard: stable, readable type at every step */
+#new-check{--check-font-scale:2;font-size:clamp(18px,calc(10px * var(--check-font-scale)),25px)}
+#new-check .check-font-bar{position:sticky;top:78px;z-index:12;display:flex;align-items:center;gap:8px;margin:0 0 14px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:color-mix(in srgb,var(--surface) 96%,transparent);backdrop-filter:blur(9px)}
+#new-check .check-font-bar strong{font-size:clamp(18px,calc(10px * var(--check-font-scale)),25px)}
+#new-check .check-font-bar .spacer{flex:1}
+#new-check .check-font-btn{min-width:46px;height:46px;padding:0 10px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);font-size:clamp(18px,calc(10px * var(--check-font-scale)),25px);font-weight:900}
+#new-check .check-font-btn.active{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,var(--surface));color:var(--accent)}
+#new-check .wizard-step-nav strong{font-size:clamp(17px,calc(9px * var(--check-font-scale)),22px);line-height:1.3}
+#new-check .wizard-step-nav small{font-size:clamp(14px,calc(7px * var(--check-font-scale)),18px);line-height:1.4}
+#new-check .step-number{width:36px;height:36px;flex-basis:36px;font-size:17px}
+#new-check .card-title{font-size:clamp(24px,calc(13px * var(--check-font-scale)),32px);line-height:1.2}
+#new-check .card-sub,#new-check .help,#new-check .field-note{font-size:clamp(16px,calc(8px * var(--check-font-scale)),21px);line-height:1.5}
+#new-check .field label,#new-check .check-row strong{font-size:clamp(18px,calc(9px * var(--check-font-scale)),24px);line-height:1.35}
+#new-check input,#new-check select,#new-check textarea,#new-check .btn{font-size:clamp(18px,calc(9px * var(--check-font-scale)),24px)}
+#new-check input,#new-check select{min-height:52px}
+#new-check .btn{min-height:50px;padding:10px 15px}
+#new-check .answer-view,#new-check .response-text{font-size:clamp(19px,calc(10px * var(--check-font-scale)),26px);line-height:1.65}
+#new-check .analysis-item small{font-size:clamp(16px,calc(8px * var(--check-font-scale)),21px)}
+#new-check .analysis-item strong{font-size:clamp(22px,calc(11px * var(--check-font-scale)),29px);line-height:1.25}
+#new-check .confidence-part{font-size:clamp(17px,calc(8.5px * var(--check-font-scale)),22px)}
+#new-check .evidence strong,#new-check .source-row strong{font-size:clamp(18px,calc(9px * var(--check-font-scale)),24px)}
+#new-check .evidence blockquote,#new-check .source-row{font-size:clamp(17px,calc(8.5px * var(--check-font-scale)),22px);line-height:1.5}
+#new-check .wizard-footer{font-size:clamp(17px,calc(8.5px * var(--check-font-scale)),22px)}
+#new-check .review-simple-intro{padding:16px 18px;border:1px solid color-mix(in srgb,var(--accent) 30%,var(--border));background:color-mix(in srgb,var(--accent) 6%,var(--surface));border-radius:12px;margin-bottom:14px}
+#new-check .review-simple-intro strong{display:block;font-size:clamp(22px,calc(11px * var(--check-font-scale)),29px);margin-bottom:5px}
+#new-check .review-summary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}
+#new-check .review-summary-item{padding:15px;border:1px solid var(--border);border-radius:11px;background:var(--surface-2)}
+#new-check .review-summary-item small{display:block;color:var(--muted);font-size:clamp(15px,calc(7.5px * var(--check-font-scale)),19px);margin-bottom:4px}
+#new-check .review-summary-item strong{font-size:clamp(21px,calc(10.5px * var(--check-font-scale)),28px);line-height:1.3}
+#new-check .review-confirm-box{padding:16px;border:2px solid color-mix(in srgb,var(--success) 35%,var(--border));border-radius:12px;background:color-mix(in srgb,var(--success) 6%,var(--surface));margin:14px 0}
+#new-check .review-confirm-box p{margin:0 0 12px;font-size:clamp(17px,calc(8.5px * var(--check-font-scale)),22px)}
+#new-check .review-confirm-status{margin-top:10px;font-weight:800;font-size:clamp(16px,calc(8px * var(--check-font-scale)),21px)}
+#new-check .review-corrections{margin-top:14px;border:1px solid var(--border);border-radius:12px;background:var(--surface)}
+#new-check .review-corrections>summary{cursor:pointer;padding:14px 16px;font-weight:850;font-size:clamp(18px,calc(9px * var(--check-font-scale)),24px)}
+#new-check .review-corrections-body{padding:0 16px 16px}
+#new-check .review-hidden-checks{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important}
+@media(max-width:900px){#new-check .check-font-bar{top:68px}#new-check .review-summary-grid{grid-template-columns:1fr}}
+@media(max-width:680px){#new-check .check-font-bar{top:64px;flex-wrap:wrap}#new-check .check-font-bar strong{width:100%}#new-check .check-font-bar .spacer{display:none}#new-check .check-font-btn{flex:1}#new-check .wizard-footer{position:sticky;left:auto;right:auto;bottom:max(8px,env(safe-area-inset-bottom))}}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#mainContent">Vai al contenuto principale</a>
@@ -370,7 +411,7 @@ body.guided-lock{overflow:hidden}.guided-mode .nav-more,.guided-mode .sidebar-sy
 const CONFIG = {
   APP_KEY: 'geoCitationMonitor_v42',
   LEGACY_APP_KEYS: ['geoCitationMonitor_v3'],
-  VERSION: '5.7.0',
+  VERSION: '5.8.0',
   DATA_SCHEMA_VERSION: 8,
   MAX_LOGO_SIZE: 350000,
   MIN_RESPONSE_LENGTH: 120,
@@ -6220,6 +6261,128 @@ document.addEventListener('click',event=>{
 },true);
 window.addEventListener('resize',Utils.debounce(()=>guidedApplyFontScale(),120));
 
+
+
+
+// ============================================================
+// RELEASE 5.8 — simpler step 4 + stable verification typography
+// ============================================================
+function checkFontScale(){
+  const raw=Number(state.settings?.guidedFontScale || 2);
+  return GUIDED_FONT_LEVELS.includes(raw)?raw:2;
+}
+function applyCheckFontScale(){
+  const root=document.getElementById('new-check');
+  if(!root)return;
+  const scale=checkFontScale();
+  root.style.setProperty('--check-font-scale',String(scale));
+  const label=root.querySelector('[data-check-font-label]');
+  if(label)label.textContent=`Testo ${Math.round(scale*100)}%`;
+  root.querySelectorAll('.check-font-btn').forEach(b=>b.classList.remove('active'));
+  const active=scale===GUIDED_FONT_LEVELS[0]?'down':scale===2?'reset':'up';
+  root.querySelector(`[data-check-font="${active}"]`)?.classList.add('active');
+}
+function checkFontToolbar(){
+  const scale=checkFontScale();
+  return `<div class="check-font-bar" aria-label="Dimensione testo della verifica"><strong data-check-font-label>Testo ${Math.round(scale*100)}%</strong><div class="spacer"></div><button type="button" class="check-font-btn ${scale===GUIDED_FONT_LEVELS[0]?'active':''}" data-check-font="down" aria-label="Riduci dimensione testo">A−</button><button type="button" class="check-font-btn ${scale===2?'active':''}" data-check-font="reset" aria-label="Dimensione testo consigliata">A</button><button type="button" class="check-font-btn ${scale===GUIDED_FONT_LEVELS.at(-1)?'active':''}" data-check-font="up" aria-label="Aumenta dimensione testo">A+</button></div>`;
+}
+const renderNewCheckBefore58=renderNewCheck;
+renderNewCheck=function(pref={}){
+  renderNewCheckBefore58(pref);
+  const root=document.getElementById('new-check');
+  if(root && !root.querySelector('.check-font-bar')) root.insertAdjacentHTML('afterbegin',checkFontToolbar());
+  applyCheckFontScale();
+};
+
+document.addEventListener('click',event=>{
+  const b=event.target.closest('[data-check-font]');
+  if(!b)return;
+  event.preventDefault();
+  let idx=GUIDED_FONT_LEVELS.indexOf(checkFontScale());
+  if(b.dataset.checkFont==='reset') idx=1;
+  else idx=Math.max(0,Math.min(GUIDED_FONT_LEVELS.length-1,idx+(b.dataset.checkFont==='up'?1:-1)));
+  state.settings.guidedFontScale=GUIDED_FONT_LEVELS[idx];
+  saveState(true); guidedApplyFontScale(); applyCheckFontScale();
+},true);
+
+// Step 4 is intentionally simple: one decision first, corrections only on demand.
+wizardPanel4=function(){
+  return `<section class="wizard-panel" data-step="4"><div class="card"><div class="card-header"><div><div class="card-title">4. Controlla che abbiamo capito bene</div><div class="card-sub">Non devi compilare campi tecnici. Guarda il riepilogo e conferma; correggi solo se qualcosa è sbagliato.</div></div></div><div id="manualReview">${empty('Prima analizziamo la risposta','Torna al passaggio 3 e premi “Analizza risposta”.')}</div></div></section>`;
+};
+
+renderManualReview=function(a){
+  const el=document.getElementById('manualReview');
+  if(!el)return;
+  const saved=draft();
+  const brand=saved.manualBrand!==undefined ? saved.manualBrand==='true' || saved.manualBrand===true : Boolean(a.brandMentioned);
+  const domain=saved.manualDomain!==undefined ? saved.manualDomain==='true' || saved.manualDomain===true : Boolean(a.domainCited);
+  const position=saved.manualPosition!==undefined ? saved.manualPosition : (a.position||0);
+  const mentions=saved.manualMentions!==undefined ? saved.manualMentions : (a.mentions||0);
+  const competitors=saved.manualCompetitors!==undefined ? saved.manualCompetitors : (a.competitors||[]).join('\n');
+  const urls=saved.manualUrls!==undefined ? saved.manualUrls : (a.urls||[]).join('\n');
+  const responseType=saved.manualResponseType || a.responseType || 'Risposta narrativa';
+  const sentiment=saved.manualSentiment || a.brandSentiment || a.sentiment || 'Neutro';
+  const confirmed=['reviewBrand','reviewDomain','reviewCompetitors','reviewSources'].every(name=>saved[name]===true||saved[name]==='true'||saved[name]==='on');
+  el.innerHTML=`
+    <div class="review-simple-intro"><strong>Ti basta controllare queste 4 cose</strong>Se il riepilogo corrisponde a ciò che hai visto nella risposta dell’AI, premi un solo pulsante.</div>
+    <div class="review-summary-grid">
+      <div class="review-summary-item"><small>Il tuo brand compare?</small><strong>${brand?'Sì ✓':'No'}</strong></div>
+      <div class="review-summary-item"><small>Il sito ufficiale è citato?</small><strong>${domain?'Sì ✓':'No'}</strong></div>
+      <div class="review-summary-item"><small>Concorrenti trovati</small><strong>${Utils.lines(competitors).length}</strong></div>
+      <div class="review-summary-item"><small>Fonti / link trovati</small><strong>${Utils.lines(urls).length}</strong></div>
+    </div>
+    <div class="review-confirm-box"><p><strong>È tutto corretto?</strong><br>Conferma solo se questi quattro dati corrispondono alla risposta che hai incollato.</p><button type="button" class="btn btn-success" data-action="confirm-review-all">Sì, è tutto corretto</button><div class="review-confirm-status ${confirmed?'text-success':'muted'}" id="reviewConfirmStatus">${confirmed?'✓ Controllo confermato. Puoi continuare.':'Non ancora confermato.'}</div></div>
+    <details class="review-corrections"><summary>Qualcosa non è corretto? Correggi i dati</summary><div class="review-corrections-body"><div class="notice">Modifica soltanto ciò che hai verificato direttamente nella risposta dell’AI. Dopo una modifica dovrai confermare di nuovo il riepilogo.</div><div class="form-grid">
+      <div class="field"><label>Brand presente</label><select name="manualBrand"><option value="true" ${brand?'selected':''}>Sì</option><option value="false" ${!brand?'selected':''}>No</option></select></div>
+      <div class="field"><label>Sito ufficiale citato</label><select name="manualDomain"><option value="true" ${domain?'selected':''}>Sì</option><option value="false" ${!domain?'selected':''}>No</option></select></div>
+      ${field('manualPosition','Posizione nell’elenco',position,'','0 se non c’è una posizione','number')}
+      ${field('manualMentions','Numero di menzioni',mentions,'','','number')}
+      ${textareaField('manualCompetitors','Concorrenti confermati',competitors,'Uno per riga. Lascia vuoto se non ce ne sono.',4)}
+      ${textareaField('manualUrls','Fonti confermate',urls,'Mantieni solo i link realmente mostrati.',4)}
+      <div class="field"><label>Tipo di risposta</label><select name="manualResponseType">${['Local Pack / risultati locali','Elenco editoriale','Risposta con fonti','Confronto','Risposta narrativa','Risposta limitata'].map(x=>`<option ${responseType===x?'selected':''}>${x}</option>`).join('')}</select></div>
+      <div class="field"><label>Tono verso il brand</label><select name="manualSentiment"><option ${sentiment==='Positivo'?'selected':''}>Positivo</option><option ${sentiment==='Neutro'?'selected':''}>Neutro</option><option ${sentiment==='Negativo'?'selected':''}>Negativo</option></select></div>
+    </div></div></details>
+    <div class="review-hidden-checks" aria-hidden="true"><input type="checkbox" name="reviewBrand" ${confirmed?'checked':''}><input type="checkbox" name="reviewDomain" ${confirmed?'checked':''}><input type="checkbox" name="reviewCompetitors" ${confirmed?'checked':''}><input type="checkbox" name="reviewSources" ${confirmed?'checked':''}></div>`;
+};
+
+actionHandlers['confirm-review-all']=()=>{
+  const form=document.getElementById('checkForm'); if(!form)return;
+  ['reviewBrand','reviewDomain','reviewCompetitors','reviewSources'].forEach(name=>{if(form.elements[name])form.elements[name].checked=true});
+  const status=document.getElementById('reviewConfirmStatus');
+  if(status){status.textContent='✓ Controllo confermato. Puoi continuare.';status.className='review-confirm-status text-success'}
+  saveDraft();
+  const d=Utils.form(form); if(analysisDraft) renderSaveSummary(d,analysisDraft);
+  Utils.toast('Controllo confermato. Puoi continuare.','success');
+};
+
+function invalidateSimpleReview(){
+  const form=document.getElementById('checkForm'); if(!form)return;
+  ['reviewBrand','reviewDomain','reviewCompetitors','reviewSources'].forEach(name=>{if(form.elements[name])form.elements[name].checked=false});
+  const status=document.getElementById('reviewConfirmStatus');
+  if(status){status.textContent='Hai modificato i dati: controlla il riepilogo e conferma di nuovo.';status.className='review-confirm-status text-danger'}
+  saveDraft();
+}
+document.addEventListener('input',event=>{if(event.target.closest('#manualReview .review-corrections-body')) invalidateSimpleReview()},true);
+document.addEventListener('change',event=>{if(event.target.closest('#manualReview .review-corrections-body')) invalidateSimpleReview()},true);
+
+// Prevent stale confirmations from surviving a new or changed AI response.
+const runAnalysisBefore58=runAnalysis;
+runAnalysis=function(showToast=true){
+  const form=document.getElementById('checkForm');
+  if(form){
+    const d=Utils.form(form);
+    const fingerprint=hashText([d.projectId||'',d.promptId||'',d.response||'',d.sources||''].join('|'));
+    if(state.checkDraft.analysisFingerprint && state.checkDraft.analysisFingerprint!==fingerprint){
+      ['manualBrand','manualDomain','manualPosition','manualMentions','manualCompetitors','manualUrls','manualResponseType','manualSentiment','reviewBrand','reviewDomain','reviewCompetitors','reviewSources'].forEach(k=>delete state.checkDraft[k]);
+    }
+    state.checkDraft.analysisFingerprint=fingerprint;
+  }
+  runAnalysisBefore58(showToast);
+  applyCheckFontScale();
+};
+
+// Keep the selected text size stable on mobile too; do not force a smaller scale.
+window.addEventListener('resize',Utils.debounce(()=>{guidedApplyFontScale();applyCheckFontScale()},120));
 
 // ============================================================
 // INIT
