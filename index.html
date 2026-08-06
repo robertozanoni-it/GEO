@@ -3,8 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Strumento locale per monitorare citazioni, fonti e visibilità GEO con verifiche manuali, report e controlli di qualità.">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#f7f9fc">
 <meta name="color-scheme" content="light dark">
-<title>GEO Citation Monitor 5.0</title>
+<title>GEO Citation Monitor 5.1</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2064%2064%22%3E%3Crect%20width=%2264%22%20height=%2264%22%20rx=%2214%22%20fill=%22%23155eef%22/%3E%3Cpath%20d=%22M32%2011%2014%2021v22l18%2010%2018-10V21L32%2011Zm0%209%209%205-9%205-9-5%209-5ZM22%2033l7%204v8l-7-4v-8Zm13%2012v-8l7-4v8l-7%204Z%22%20fill=%22white%22/%3E%3C/svg%3E">
 <style>
 :root{
   --bg:#f3f6fb;--surface:#fff;--surface-2:#f7f9fc;--surface-3:#edf2f8;
@@ -98,13 +103,78 @@ body{font-size:14px;line-height:1.5;letter-spacing:-.006em}
 @media(max-width:900px){.app{grid-template-columns:minmax(0,1fr)}.main{grid-column:1}.topbar{height:64px}.global-search{display:block;width:min(360px,45vw)}.global-search kbd{display:none}.topbar-cta span:last-child{display:none}.sidebar{left:calc(-1 * var(--sidebar) - 20px);width:var(--sidebar)}.sidebar.open{left:0}.menu-toggle{display:grid!important}.content{padding:18px 16px 90px}}
 @media(max-width:680px){.page-subtitle,.global-search,.topbar-cta{display:none}.mobile-search-btn{display:grid}.topbar-spacer{flex:1}.dashboard-head{display:block}.dashboard-head .dashboard-date{margin-top:10px}.dashboard-kpis{grid-template-columns:1fr 1fr}.dashboard-kpi{padding:14px}.dashboard-kpi-value{font-size:23px}.dashboard-main,.dashboard-lower{display:block}.dashboard-main>.panel+.panel,.dashboard-lower>.panel+.panel{margin-top:14px}.action-row{grid-template-columns:44px minmax(0,1fr)}.action-row .btn{grid-column:2;justify-self:start}.panel-body{padding:12px}.content{padding-left:12px;padding-right:12px}.topbar{padding:0 12px}.page-title{font-size:17px}.modal-backdrop{padding:0}.modal{height:100%;max-height:100%;border-radius:0}.toast-zone{left:12px;right:12px}.toast{max-width:none}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+/* ============================================================
+   UI SYSTEM 5.1 — accessibility, responsive and interaction fixes
+   ============================================================ */
+html{color-scheme:light}html[data-theme="dark"]{color-scheme:dark}body{overflow-x:clip}
+.skip-link{position:fixed;left:12px;top:12px;z-index:1000;transform:translateY(-160%);background:var(--text);color:var(--surface);padding:10px 14px;border-radius:8px;font-weight:800;text-decoration:none;box-shadow:var(--shadow)}
+.skip-link:focus{transform:translateY(0)}
+body.modal-open,body.nav-open{overflow:hidden}
+.main[aria-busy="true"]{cursor:progress}
+.page-title:focus{outline:none}
+.table-wrap[tabindex="0"]{overscroll-behavior:contain;scrollbar-gutter:stable}.table-wrap[tabindex="0"]:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 28%,transparent);outline-offset:3px}
+button,input,select,textarea{accent-color:var(--accent)}
+input[type="checkbox"],input[type="radio"]{min-width:18px;min-height:18px}
+input[aria-invalid="true"],select[aria-invalid="true"],textarea[aria-invalid="true"]{border-color:var(--danger);box-shadow:0 0 0 3px color-mix(in srgb,var(--danger) 13%,transparent)}
+.btn:active:not(:disabled){transform:translateY(1px)}.btn[aria-disabled="true"]{opacity:.55;pointer-events:none}
+.loading-spinner::after{margin-right:0;margin-left:12px}
+.search-result[aria-selected="true"]{background:var(--surface-2);outline:2px solid color-mix(in srgb,var(--accent) 28%,transparent)}
+.modal-backdrop[aria-hidden="true"]{display:none}.modal-head{min-height:66px}.modal-body{overscroll-behavior:contain}.modal-actions{background:var(--surface)}
+.toast{border:1px solid rgba(255,255,255,.16)}.toast.warning{background:#8a4b00}
+.status-dot.session-only{background:var(--warning);box-shadow:0 0 0 3px color-mix(in srgb,var(--warning) 16%,transparent)}
+.nav-item[aria-current="page"]{font-weight:800}
+.wizard-step-nav.completed .step-number{background:var(--success);color:#fff}.wizard-step-nav[aria-current="step"]{color:var(--accent)}
+.bulk-toolbar-inactive{opacity:.72}
+.fact-row{display:grid;grid-template-columns:minmax(130px,.45fr) minmax(0,1fr);gap:12px;align-items:start;padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--surface);margin-bottom:8px}
+.knowledge-fact-row{display:grid;grid-template-columns:130px minmax(220px,1fr) 140px auto;gap:10px;align-items:start;padding:12px;border:1px solid var(--border);border-radius:10px;background:var(--surface-2);margin-bottom:8px}
+.knowledge-fact-row .fact-actions{display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap}
+.task-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:start;padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--surface)}
+.action-manager-row{display:grid;grid-template-columns:90px minmax(220px,1.5fr) 150px 145px minmax(230px,1fr);gap:9px;align-items:start;padding:12px;border-bottom:1px solid var(--border)}
+.action-manager-row:last-child{border-bottom:0}.action-manager-head{position:sticky;top:0;z-index:2;background:var(--surface-2)}
+.action-manager-row .task-controls{display:grid;gap:8px}.action-manager-row textarea{min-height:70px}
+.form-error-summary{border:1px solid color-mix(in srgb,var(--danger) 40%,var(--border));background:color-mix(in srgb,var(--danger) 7%,var(--surface));border-radius:10px;padding:12px 14px;margin-bottom:14px}
+.field-note{font-size:12px;color:var(--muted);line-height:1.45}.required-mark{color:var(--danger)}
+.campaign-context{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px}.campaign-delta{font-weight:800}
+.qa-unverifiable{border-left:5px solid var(--muted)}
+.diagnostic-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.mobile-overlay{backdrop-filter:blur(2px)}
+@media(max-width:1050px){.action-manager-row,.knowledge-fact-row{grid-template-columns:1fr}.action-manager-head{display:none}.task-row{grid-template-columns:auto minmax(0,1fr) auto}}
+@media(max-width:680px){
+  .content{padding-bottom:max(96px,calc(84px + env(safe-area-inset-bottom)))}
+  .sidebar{height:100dvh;padding-bottom:max(12px,env(safe-area-inset-bottom))}
+  .btn,.icon-btn,.nav-item,input,select{min-height:44px}
+  .toolbar{align-items:stretch}.toolbar>input,.toolbar>select{max-width:none!important;flex:1 1 100%}.toolbar>.spacer{display:none}
+  .wizard-footer{bottom:max(9px,env(safe-area-inset-bottom))}
+  .task-row{grid-template-columns:auto minmax(0,1fr)}.task-row>small{grid-column:2}
+  .fact-row{grid-template-columns:1fr}.knowledge-fact-row{grid-template-columns:1fr}
+  .modal-actions .btn{flex:1 1 auto}
+  .dashboard-kpis{grid-template-columns:1fr}.dashboard-kpi{border-right:0!important;border-bottom:1px solid var(--border)!important}.dashboard-kpi:last-child{border-bottom:0!important}
+  .diagnostic-summary{grid-template-columns:1fr}
+}
+@media print{.skip-link{display:none!important}.table-wrap{overflow:visible!important}.table-wrap table{min-width:0!important}}
+
+/* Results table becomes readable cards on small screens. */
+.results-table-wrap{overflow:auto}.results-data-table{min-width:900px}
+@media(max-width:680px){
+  .results-table-wrap{overflow:visible;border:0;background:transparent}
+  .results-data-table{display:block;min-width:0}.results-data-table thead{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+  .results-data-table tbody{display:grid;gap:12px}.results-data-table tr{display:block;border:1px solid var(--border);border-radius:12px;background:var(--surface);overflow:hidden;box-shadow:0 1px 2px rgba(16,24,40,.04)}
+  .results-data-table td{display:grid;grid-template-columns:minmax(92px,.38fr) minmax(0,1fr);gap:10px;padding:10px 12px;border-bottom:1px solid var(--border);font-size:13px;min-height:42px}
+  .results-data-table td:last-child{border-bottom:0}.results-data-table td::before{content:attr(data-label);font-size:10px;line-height:1.35;text-transform:uppercase;letter-spacing:.055em;color:var(--muted);font-weight:800}
+  .results-data-table .result-select-cell{display:flex;align-items:center;justify-content:flex-end;min-height:38px;background:var(--surface-2)}.results-data-table .result-select-cell::before{margin-right:auto}
+  .results-data-table .result-actions .flex{justify-content:flex-start}.results-data-table .result-actions .btn{flex:1 1 calc(50% - 4px)}
+}
+@media print{.results-data-table{display:table!important;min-width:0}.results-data-table thead{position:static!important;width:auto!important;height:auto!important;margin:0!important;overflow:visible!important;clip:auto!important;white-space:normal!important}.results-data-table tbody{display:table-row-group!important}.results-data-table tr{display:table-row!important}.results-data-table td{display:table-cell!important}.results-data-table td::before{display:none!important}}
+
 </style>
 </head>
 <body>
-<div class="mobile-overlay" id="mobileOverlay"></div>
+<a class="skip-link" href="#mainContent">Vai al contenuto principale</a>
+<div id="routeAnnouncer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+<div class="mobile-overlay" id="mobileOverlay" aria-hidden="true"></div>
 <div class="app" id="app">
 <aside class="sidebar" id="sidebar" aria-label="Navigazione principale">
-  <div class="brand"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2 3.5 7v10L12 22l8.5-5V7L12 2Zm0 4.2 4.9 2.9-4.9 2.8-4.9-2.8L12 6.2Zm-5.5 6 3.8 2.2v4.1l-3.8-2.3v-4Zm7.2 6.3v-4.1l3.8-2.2v4l-3.8 2.3Z"/></svg></div><div><div class="brand-name">GEO Monitor</div><div class="brand-sub">Citation intelligence</div></div></div>
+  <div class="brand"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2 3.5 7v10L12 22l8.5-5V7L12 2Zm0 4.2 4.9 2.9-4.9 2.8-4.9-2.8L12 6.2Zm-5.5 6 3.8 2.2v4.1l-3.8-2.3v-4Zm7.2 6.3v-4.1l3.8-2.2v4l-3.8 2.3Z"/></svg></div><div><div class="brand-name">GEO Monitor</div><div class="brand-sub">Intelligence sulle citazioni</div></div></div>
   <nav>
     <div class="nav-group"><div class="nav-label">Panoramica</div>
       <button class="nav-item active" data-section="dashboard"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg></span><span>Dashboard</span></button>
@@ -142,15 +212,15 @@ body{font-size:14px;line-height:1.5;letter-spacing:-.006em}
     </details>
   </nav>
   <div class="sidebar-system"><button class="nav-item" data-section="settings"><span class="nav-icon" aria-hidden="true">⚙</span><span>Impostazioni</span></button></div>
-  <div class="sidebar-footer"><span class="status-dot" aria-hidden="true"></span> Dati salvati nel browser <strong>v5.0</strong></div>
+  <div class="sidebar-footer"><span class="status-dot" aria-hidden="true"></span><span id="storageStatusText">Dati salvati nel browser</span><strong>v5.1</strong></div>
 </aside>
-<main class="main" id="mainContent">
+<main class="main" id="mainContent" tabindex="-1">
   <header class="topbar">
     <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Apri menu" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
-    <div><div class="page-title" id="pageTitle">Dashboard</div><div class="page-subtitle" id="pageSubtitle">Panoramica della visibilità GEO</div></div>
+    <div><div class="page-title" id="pageTitle" role="heading" aria-level="1" tabindex="-1">Dashboard</div><div class="page-subtitle" id="pageSubtitle">Panoramica della visibilità GEO</div></div>
     <div class="topbar-project"><label class="sr-only" for="globalProject">Progetto attivo</label><select id="globalProject" aria-label="Progetto attivo"><option value="">Tutti i progetti</option></select></div>
     <div class="topbar-spacer"></div>
-    <div class="global-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="globalSearch" placeholder="Cerca in tutto…" aria-label="Ricerca globale" autocomplete="off"><kbd>/</kbd><div class="search-popover" id="searchPopover" role="listbox" aria-label="Risultati ricerca"></div></div>
+    <div class="global-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="globalSearch" placeholder="Cerca in tutto…" aria-label="Ricerca globale" aria-controls="searchPopover" aria-expanded="false" aria-autocomplete="list" autocomplete="off"><kbd>/</kbd><div class="search-popover" id="searchPopover" role="listbox" aria-label="Risultati ricerca"></div></div>
     <button class="icon-btn mobile-search-btn" id="mobileSearchBtn" aria-label="Apri ricerca"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
     <button class="icon-btn" id="themeToggle" aria-label="Cambia tema" title="Cambia tema"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
     <button class="btn btn-primary topbar-cta" data-go="new-check"><span aria-hidden="true">＋</span><span>Nuova verifica</span></button>
@@ -184,8 +254,8 @@ body{font-size:14px;line-height:1.5;letter-spacing:-.006em}
   </div>
 </main>
 </div>
-<div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal"><div class="modal-head"><div class="modal-title" id="modalTitle"></div><div class="spacer"></div><button class="icon-btn" id="modalClose" aria-label="Chiudi">×</button></div><div class="modal-body" id="modalBody"></div><div class="modal-actions" id="modalActions"></div></div></div>
-<div class="toast-zone" id="toastZone" aria-live="polite"></div>
+<div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true"><div class="modal"><div class="modal-head"><div class="modal-title" id="modalTitle"></div><div class="spacer"></div><button class="icon-btn" id="modalClose" aria-label="Chiudi">×</button></div><div class="modal-body" id="modalBody"></div><div class="modal-actions" id="modalActions"></div></div></div>
+<div class="toast-zone" id="toastZone" aria-live="polite" aria-relevant="additions" aria-atomic="false"></div>
 <input type="file" id="jsonImport" accept="application/json,.json" hidden>
 
 <script>
@@ -195,14 +265,57 @@ body{font-size:14px;line-height:1.5;letter-spacing:-.006em}
 const CONFIG = {
   APP_KEY: 'geoCitationMonitor_v42',
   LEGACY_APP_KEYS: ['geoCitationMonitor_v3'],
-  VERSION: '5.0.0',
+  VERSION: '5.1.0',
   DATA_SCHEMA_VERSION: 8,
   MAX_LOGO_SIZE: 350000,
   MIN_RESPONSE_LENGTH: 120,
   ANOMALY_THRESHOLD: 20,
   STORAGE_LIMIT_MB: 5,
   TOAST_DURATION: 3500,
-  DEBOUNCE_DELAY: 180,
+  DEBOUNCE_DELAY: 280,
+};
+
+// Storage adapter: preserves normal localStorage behavior and falls back to
+// in-memory session storage when browser privacy policies block persistence.
+const SafeStorage = {
+  memory: new Map(),
+  persistent: null,
+  _backend() {
+    if (this.persistent === false) return null;
+    try {
+      const backend = window.localStorage;
+      if (this.persistent === null) {
+        const key = '__geo_storage_probe__';
+        backend.setItem(key, '1');
+        backend.removeItem(key);
+        this.persistent = true;
+      }
+      return backend;
+    } catch {
+      this.persistent = false;
+      return null;
+    }
+  },
+  getItem(key) {
+    const backend = this._backend();
+    if (backend) {
+      const value = backend.getItem(key);
+      if (value !== null) return value;
+    }
+    return this.memory.has(key) ? this.memory.get(key) : null;
+  },
+  setItem(key, value) {
+    const serialized = String(value);
+    const backend = this._backend();
+    if (!backend) { this.memory.set(key, serialized); return; }
+    try { backend.setItem(key, serialized); }
+    catch (error) { this.memory.set(key, serialized); throw error; }
+  },
+  removeItem(key) {
+    const backend = this._backend();
+    if (backend) backend.removeItem(key);
+    this.memory.delete(key);
+  }
 };
 
 // ============================================================
@@ -380,8 +493,8 @@ function defaultState() {
       website: '',
       email: '',
       phone: '',
-      primary: '#2853d7',
-      secondary: '#173ba8',
+      primary: '#155eef',
+      secondary: '#004eeb',
       footer: 'Report GEO – dati da verificare',
       logo: '',
       onboardingDismissed: false,
@@ -494,18 +607,18 @@ let state = null;
 
 function loadState() {
   try {
-    let raw = localStorage.getItem(CONFIG.APP_KEY);
+    let raw = SafeStorage.getItem(CONFIG.APP_KEY);
     let migratedFrom = '';
     if (!raw) {
       for (const legacyKey of CONFIG.LEGACY_APP_KEYS || []) {
-        const legacyRaw = localStorage.getItem(legacyKey);
+        const legacyRaw = SafeStorage.getItem(legacyKey);
         if (legacyRaw) { raw = legacyRaw; migratedFrom = legacyKey; break; }
       }
     }
     const parsed = raw ? JSON.parse(raw) : null;
     state = parsed ? migrate(parsed) : defaultState();
     if (migratedFrom) {
-      localStorage.setItem(CONFIG.APP_KEY, JSON.stringify(state));
+      SafeStorage.setItem(CONFIG.APP_KEY, JSON.stringify(state));
       state.activityLog.push({ id: Utils.uid(), at: Utils.now(), action: 'legacy-migration', detail: `Dati copiati da ${migratedFrom}` });
     }
   } catch (e) {
@@ -519,7 +632,7 @@ function saveState(silent = false) {
   try {
     state.version = CONFIG.VERSION;
     state.updatedAt = Utils.now();
-    localStorage.setItem(CONFIG.APP_KEY, JSON.stringify(state));
+    SafeStorage.setItem(CONFIG.APP_KEY, JSON.stringify(state));
     if (!silent) Utils.toast('Dati salvati', 'success');
     return true;
   } catch (e) {
@@ -2494,7 +2607,7 @@ function renderReport(projectId) {
   const domainRate = check.domainCited ? 100 : 0;
   const opp = reportAvailableOpportunities(projectId, [check.id]).filter(o => reportSelectedOpportunityIds.has(o.id));
 
-  return `<div class="card"><div class="flex wrap gap-8">${state.settings.logo ? `<img src="${state.settings.logo}" alt="Logo" style="max-height:60px;max-width:180px">` : ''}<div><h1 style="margin:0">Report GEO — ${Utils.esc(p.name)}</h1><div class="muted">${Utils.esc(state.settings.agency || state.settings.consultant || 'GEO Citation Monitor')} · ${Utils.date(new Date())}</div><div class="help">Report dedicato a una sola ricerca. Nessun dato di altre verifiche è incluso.</div></div></div>
+  return `<div class="card"><div class="flex wrap gap-8">${Utils.safeImageSrc(state.settings.logo) ? `<img src="${Utils.safeImageSrc(state.settings.logo)}" alt="Logo del report" style="max-height:60px;max-width:180px">` : ''}<div><h1 style="margin:0">Report GEO — ${Utils.esc(p.name)}</h1><div class="muted">${Utils.esc(state.settings.agency || state.settings.consultant || 'GEO Citation Monitor')} · ${Utils.date(new Date())}</div><div class="help">Report dedicato a una sola ricerca. Nessun dato di altre verifiche è incluso.</div></div></div>
     <div class="report-context"><strong>Ricerca analizzata</strong><div style="font-size:18px;margin-top:6px">${Utils.esc(prompt?.text || 'Prompt eliminato')}</div><div class="help" style="margin-top:6px">${Utils.esc(platformBy(check.platformId).name)} · ${Utils.date(check.date, true)} · Ambiente: ${Utils.esc(environmentMeta(check.testEnvironment || 'not-verified').label)}</div></div>
     <div class="grid grid-4" style="margin-top:18px">${metric('Verifiche incluse', '1', '')}${metric('GEO Score', avg + '/100', '')}${metric('Presenza brand', brandRate + '%', '')}${metric('Dominio citato', domainRate + '%', '')}</div>
     ${executiveDiagnosis(check, p, prompt, opp)}
@@ -2859,7 +2972,7 @@ const actionHandlers = {
     createSafetySnapshot('clear-all');
     deleteConfirm('Cancellare definitivamente tutti i dati locali?', () => {
       state = defaultState();
-      localStorage.removeItem(CONFIG.APP_KEY);
+      SafeStorage.removeItem(CONFIG.APP_KEY);
       saveState(true);
       renderDashboard();
     });
@@ -3162,7 +3275,7 @@ function mergeCollection(localItems=[], importedItems=[]) {
 
 function createSafetySnapshot(reason='operazione') {
   try {
-    localStorage.setItem(`${CONFIG.APP_KEY}_rollback`, JSON.stringify({createdAt:Utils.now(),reason,state}));
+    SafeStorage.setItem(`${CONFIG.APP_KEY}_rollback`, JSON.stringify({createdAt:Utils.now(),reason,state}));
     return true;
   } catch(e) { Utils.toast('Impossibile creare lo snapshot di sicurezza. Esporta un backup prima di continuare.','error'); return false; }
 }
@@ -3824,7 +3937,7 @@ function orphanReport() {
   };
 }
 actionHandlers['inspect-orphans']=()=>{const report=orphanReport(), counts=Object.fromEntries(Object.entries(report).map(([k,v])=>[k,v.length])), total=Object.values(counts).reduce((a,b)=>a+b,0);modal('Pulizia dati orfani',`<div class="notice ${total?'warning':'success'}">${total?`Sono stati trovati ${total} record orfani.`:'Nessun dato orfano rilevato.'}</div><div class="card">${Object.entries(counts).map(([k,v])=>`<div class="kpi-row"><strong>${Utils.esc(k)}</strong><span>${v}</span></div>`).join('')}</div>`,total?'<button class="btn" data-close-modal>Annulla</button><button class="btn btn-danger" id="confirmOrphanCleanup">Crea snapshot e pulisci</button>':'<button class="btn" data-close-modal>Chiudi</button>');if(total)document.getElementById('confirmOrphanCleanup').onclick=()=>{if(!createSafetySnapshot('orphan-cleanup'))return;cleanupOrphans();state.activityLog.push({id:Utils.uid(),at:Utils.now(),action:'cleanup-orphans',detail:`${total} record`});saveState();closeModal();renderBackup();Utils.toast(`${total} record orfani rimossi.`,'success');};};
-actionHandlers['restore-rollback']=()=>{const raw=localStorage.getItem(`${CONFIG.APP_KEY}_rollback`);if(!raw){Utils.toast('Nessuno snapshot disponibile.','error');return;}deleteConfirm('Ripristinare lo snapshot precedente? I dati attuali verranno sostituiti.',()=>{try{const payload=JSON.parse(raw);state=migrate(payload.state);state.activityLog.push({id:Utils.uid(),at:Utils.now(),action:'rollback-restore',detail:payload.reason||''});saveState();render(window.currentSection||'dashboard');Utils.toast('Snapshot ripristinato.','success');}catch(e){Utils.toast('Snapshot non valido.','error');}});};
+actionHandlers['restore-rollback']=()=>{const raw=SafeStorage.getItem(`${CONFIG.APP_KEY}_rollback`);if(!raw){Utils.toast('Nessuno snapshot disponibile.','error');return;}deleteConfirm('Ripristinare lo snapshot precedente? I dati attuali verranno sostituiti.',()=>{try{const payload=JSON.parse(raw);state=migrate(payload.state);state.activityLog.push({id:Utils.uid(),at:Utils.now(),action:'rollback-restore',detail:payload.reason||''});saveState();render(window.currentSection||'dashboard');Utils.toast('Snapshot ripristinato.','success');}catch(e){Utils.toast('Snapshot non valido.','error');}});};
 
 // Source lab is manual by design.
 PAGES['source-lab']=['Revisione manuale fonti','Controlla pertinenza e supporto delle fonti registrate'];
@@ -3893,6 +4006,1197 @@ actionHandlers['start-post-geo-test']=e=>{const a=state.implementationAudits.fin
 changeHandlers['#qaProject']=e=>{qaProject=e.target.value;implementationProject=e.target.value;qaText='';implementationPlan='';implementationPage='';renderContentQa();};
 
 // ============================================================
+// RELEASE 5.1 — PRODUCT, QA, ACCESSIBILITY & DATA-INTEGRITY PATCH
+// ============================================================
+PAGES.actions = ['Gestione attività', 'Assegna responsabilità, scadenze e verifiche prima/dopo'];
+PAGES['content-engine'] = ['Motore contenuti', 'Decidi l’intervento e prepara contenuti senza inventare dati'];
+state.version = CONFIG.VERSION;
+window.__state = state;
+
+Utils.storage = function() {
+  const bytes = new Blob([JSON.stringify(state || {})]).size;
+  const mb = bytes / (1024 * 1024);
+  return {
+    bytes,
+    kb: (bytes / 1024).toFixed(1),
+    mb: mb.toFixed(2),
+    pct: Math.min(100, (bytes / (CONFIG.STORAGE_LIMIT_MB * 1024 * 1024)) * 100)
+  };
+};
+Utils.safeImageSrc = value => /^data:image\/(?:png|jpe?g|webp);base64,[a-z0-9+/=\s]+$/i.test(String(value || '')) ? String(value) : '';
+Utils.absoluteUrl = value => {
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+  try { return new URL(raw.includes('://') ? raw : `https://${raw}`).href; } catch { return ''; }
+};
+Utils.truncateWords = (value, max) => {
+  const text = String(value || '').replace(/\s+/g, ' ').trim();
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max + 1);
+  const safe = cut.slice(0, Math.max(cut.lastIndexOf(' '), Math.floor(max * .72))).trim();
+  return safe || text.slice(0, max).trim();
+};
+Utils.toast = function(message, type = '') {
+  const zone = document.getElementById('toastZone');
+  if (!zone) return;
+  const el = document.createElement('div');
+  el.className = `toast ${type}`.trim();
+  el.textContent = message;
+  el.setAttribute('role', type === 'error' ? 'alert' : 'status');
+  el.setAttribute('aria-live', type === 'error' ? 'assertive' : 'polite');
+  zone.appendChild(el);
+  setTimeout(() => el.remove(), CONFIG.TOAST_DURATION);
+};
+
+function storageIsPersistent() { return SafeStorage.persistent !== false; }
+function updateStorageStatus() {
+  const label = document.getElementById('storageStatusText');
+  const dot = document.querySelector('.sidebar-footer .status-dot');
+  const version = document.querySelector('.sidebar-footer strong');
+  if (label) label.textContent = storageIsPersistent() ? 'Dati salvati nel browser' : 'Dati temporanei nella sessione';
+  dot?.classList.toggle('session-only', !storageIsPersistent());
+  if (version) version.textContent = `v${CONFIG.VERSION.split('.').slice(0, 2).join('.')}`;
+}
+
+function enhanceRenderedAccessibility(root = document) {
+  if (!root?.querySelectorAll) return;
+  root.querySelectorAll('button:not([type])').forEach(button => button.type = 'button');
+  root.querySelectorAll('.table-wrap').forEach((wrap, index) => {
+    wrap.tabIndex = 0;
+    wrap.setAttribute('role', 'region');
+    if (!wrap.hasAttribute('aria-label')) {
+      const title = wrap.closest('.card,.panel')?.querySelector('.card-title,.panel-head h2,h2,h3')?.textContent?.trim();
+      wrap.setAttribute('aria-label', title ? `Tabella: ${title}` : `Tabella scorrevole ${index + 1}`);
+    }
+  });
+  root.querySelectorAll('.progress').forEach(progress => {
+    const bar = progress.querySelector(':scope > span');
+    const value = Math.max(0, Math.min(100, parseFloat(bar?.style.width || '0') || 0));
+    progress.setAttribute('role', 'progressbar');
+    progress.setAttribute('aria-valuemin', '0');
+    progress.setAttribute('aria-valuemax', '100');
+    progress.setAttribute('aria-valuenow', String(Math.round(value)));
+  });
+  root.querySelectorAll('input,select,textarea').forEach(control => {
+    if (control.hasAttribute('aria-label') || control.hasAttribute('aria-labelledby')) return;
+    const id = control.id;
+    if (id && root.querySelector(`label[for="${CSS.escape(id)}"]`)) return;
+    const wrapping = control.closest('label');
+    if (wrapping) return;
+    const label = control.placeholder || control.name || control.type;
+    if (label) control.setAttribute('aria-label', label);
+  });
+}
+
+const baseApplyTheme51 = applyTheme;
+applyTheme = function() {
+  let theme = state.settings.theme;
+  if (theme === 'auto') theme = matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
+  document.documentElement.dataset.theme = theme;
+  document.documentElement.style.colorScheme = theme;
+  document.documentElement.style.setProperty('--accent', state.settings.primary || '#155eef');
+  document.documentElement.style.setProperty('--accent-2', state.settings.secondary || '#004eeb');
+  const toggle = document.getElementById('themeToggle');
+  if (toggle) {
+    const mode = state.settings.theme === 'auto' ? 'automatico' : state.settings.theme;
+    toggle.setAttribute('aria-label', `Tema ${mode}. Attiva il tema successivo`);
+    toggle.title = `Tema: ${mode}`;
+  }
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.content = theme === 'dark' ? '#0b1220' : '#f7f9fc';
+};
+
+modal = function(title, body, actions = '') {
+  window.__modalReturnFocus = document.activeElement;
+  const backdrop = document.getElementById('modalBackdrop');
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').innerHTML = body;
+  document.getElementById('modalActions').innerHTML = actions;
+  backdrop.classList.add('show');
+  backdrop.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('modal-open');
+  const app = document.getElementById('app');
+  app.setAttribute('aria-hidden', 'true');
+  app.inert = true;
+  enhanceRenderedAccessibility(backdrop);
+  setTimeout(() => {
+    const first = backdrop.querySelector('input:not([type="hidden"]),select,textarea,button:not([disabled])');
+    (first || document.getElementById('modalClose'))?.focus();
+  }, 0);
+};
+
+closeModal = function() {
+  const backdrop = document.getElementById('modalBackdrop');
+  backdrop.classList.remove('show');
+  backdrop.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('modal-open');
+  const app = document.getElementById('app');
+  app.removeAttribute('aria-hidden');
+  app.inert = false;
+  if (window.__modalReturnFocus?.isConnected) window.__modalReturnFocus.focus({ preventScroll: true });
+};
+
+function syncSidebarAccessibility() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('mobileOverlay');
+  const mobile = matchMedia('(max-width:900px)').matches;
+  const open = sidebar.classList.contains('open');
+  if (!mobile) {
+    sidebar.classList.remove('open');
+    sidebar.inert = false;
+    sidebar.setAttribute('aria-hidden', 'false');
+    overlay.classList.remove('show');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('nav-open');
+    document.getElementById('mainContent').inert = false;
+    document.getElementById('menuToggle')?.setAttribute('aria-expanded', 'false');
+    return;
+  }
+  sidebar.inert = !open;
+  sidebar.setAttribute('aria-hidden', open ? 'false' : 'true');
+  overlay.setAttribute('aria-hidden', open ? 'false' : 'true');
+}
+
+function openMobileNav() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('mobileOverlay');
+  sidebar.classList.add('open');
+  sidebar.inert = false;
+  sidebar.setAttribute('aria-hidden', 'false');
+  overlay.classList.add('show');
+  overlay.setAttribute('aria-hidden', 'false');
+  document.getElementById('menuToggle').setAttribute('aria-expanded', 'true');
+  document.body.classList.add('nav-open');
+  document.getElementById('mainContent').inert = true;
+  setTimeout(() => (sidebar.querySelector('.nav-item.active') || sidebar.querySelector('.nav-item'))?.focus(), 0);
+}
+
+closeMobile = function() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('mobileOverlay');
+  const wasOpen = sidebar.classList.contains('open');
+  sidebar.classList.remove('open');
+  overlay.classList.remove('show');
+  overlay.setAttribute('aria-hidden', 'true');
+  document.getElementById('menuToggle')?.setAttribute('aria-expanded', 'false');
+  document.body.classList.remove('nav-open');
+  document.getElementById('mainContent').inert = false;
+  syncSidebarAccessibility();
+  if (wasOpen) document.getElementById('menuToggle')?.focus({ preventScroll: true });
+};
+
+setSection = function(id) {
+  if (!PAGES[id]) id = 'dashboard';
+  window.currentSection = id;
+  document.querySelectorAll('.section').forEach(section => section.classList.toggle('active', section.id === id));
+  document.querySelectorAll('.nav-item').forEach(item => {
+    const active = item.dataset.section === id;
+    item.classList.toggle('active', active);
+    if (active) item.setAttribute('aria-current', 'page'); else item.removeAttribute('aria-current');
+  });
+  const activeNav = document.querySelector(`.nav-item[data-section="${CSS.escape(id)}"]`);
+  const navMore = document.getElementById('navMore');
+  if (navMore) navMore.open = Boolean(activeNav?.closest('.nav-more'));
+  const title = document.getElementById('pageTitle');
+  title.textContent = PAGES[id][0];
+  document.getElementById('pageSubtitle').textContent = PAGES[id][1];
+  document.getElementById('mainContent').setAttribute('aria-busy', 'true');
+  render(id);
+  enhanceRenderedAccessibility(document.getElementById(id));
+  document.getElementById('mainContent').removeAttribute('aria-busy');
+  document.querySelector('.content')?.scrollTo?.({ top: 0, behavior: 'auto' });
+  window.scrollTo({ top: 0, behavior: 'auto' });
+  closeMobile();
+  const announcer = document.getElementById('routeAnnouncer');
+  if (announcer) announcer.textContent = `${PAGES[id][0]}. ${PAGES[id][1]}`;
+  requestAnimationFrame(() => title.focus({ preventScroll: true }));
+};
+
+let searchActiveIndex51 = -1;
+closeSearchPopover = function() {
+  const pop = document.getElementById('searchPopover');
+  const input = document.getElementById('globalSearch');
+  pop?.classList.remove('show');
+  input?.setAttribute('aria-expanded', 'false');
+  searchActiveIndex51 = -1;
+};
+
+function setSearchActive(index) {
+  const items = [...document.querySelectorAll('#searchPopover .search-result')];
+  if (!items.length) return;
+  searchActiveIndex51 = ((index % items.length) + items.length) % items.length;
+  items.forEach((item, i) => item.setAttribute('aria-selected', i === searchActiveIndex51 ? 'true' : 'false'));
+  items[searchActiveIndex51].focus();
+}
+
+renderSearchPopover = function(query) {
+  const pop = document.getElementById('searchPopover');
+  const input = document.getElementById('globalSearch');
+  if (!pop) return;
+  const matches = globalSearchMatches(query);
+  if (!String(query).trim()) { closeSearchPopover(); pop.innerHTML = ''; return; }
+  pop.innerHTML = matches.length
+    ? matches.map((match, index) => `<button type="button" class="search-result" data-search-result="${index}" role="option" aria-selected="false"><span class="search-result-type">${Utils.esc(match.type)}</span><span class="search-result-label">${Utils.esc(match.label)}</span></button>`).join('')
+    : '<div class="search-empty" role="status">Nessun risultato. Prova un termine diverso.</div>';
+  pop.classList.add('show');
+  input?.setAttribute('aria-expanded', 'true');
+  window.__searchMatches = matches;
+  searchActiveIndex51 = -1;
+};
+
+function openMobileSearch() {
+  modal('Cerca in tutto', '<label class="sr-only" for="mobileGlobalSearch">Cerca in progetti, prompt, risultati e azioni</label><input id="mobileGlobalSearch" placeholder="Progetti, prompt, risultati, azioni…" autocomplete="off"><div id="mobileSearchResults" role="listbox" aria-label="Risultati ricerca" style="margin-top:8px"></div>', '<button class="btn" data-close-modal>Chiudi</button>');
+  setTimeout(() => document.getElementById('mobileGlobalSearch')?.focus(), 0);
+}
+
+const wizardPanel1Before51 = wizardPanel1;
+wizardPanel1 = function(...args) {
+  return wizardPanel1Before51(...args)
+    .replace('data-action="copy-current-prompt">Copia prompt</button>', 'data-action="copy-quick-prompt">Copia prompt</button>')
+    .replace('id="date" name="date" type="datetime-local"', 'id="date" name="date" type="datetime-local" required')
+    .replace('<label>Keyword o domanda da ricercare *</label>', '<label for="quickKeyword">Keyword o domanda da ricercare <span class="required-mark">*</span></label>')
+    .replace('<label>Progetto</label><select id="quickProject">', '<label for="quickProject">Progetto</label><select id="quickProject">')
+    .replace('<label>Formato del prompt</label><select id="quickPromptStyle">', '<label for="quickPromptStyle">Formato del prompt</label><select id="quickPromptStyle">');
+};
+
+const promptFormBefore51 = promptForm;
+promptForm = function(p = {}) {
+  return promptFormBefore51(p).replace('<textarea id="text" name="text"', '<textarea id="text" name="text" required aria-required="true"');
+};
+
+saveDraft = function() {
+  const form = document.getElementById('checkForm');
+  if (!form) return;
+  const values = Utils.form(form);
+  ['reviewBrand', 'reviewDomain', 'reviewCompetitors', 'reviewSources'].forEach(name => values[name] = Boolean(form.elements[name]?.checked));
+  state.checkDraft = { ...state.checkDraft, ...values, wizardStep: currentWizardStep, updatedAt: Utils.now() };
+  saveState(true);
+  const status = document.getElementById('draftStatus');
+  if (status) status.textContent = `Bozza salvata alle ${new Intl.DateTimeFormat('it-IT', { hour: '2-digit', minute: '2-digit' }).format(new Date())}`;
+};
+
+const renderManualReviewBefore51 = renderManualReview;
+renderManualReview = function(a) {
+  renderManualReviewBefore51(a);
+  const form = document.getElementById('checkForm');
+  const saved = draft();
+  if (!form) return;
+  const setValue = (name, value) => { if (value !== undefined && value !== null && form.elements[name]) form.elements[name].value = value; };
+  setValue('manualBrand', saved.manualBrand);
+  setValue('manualDomain', saved.manualDomain);
+  setValue('manualPosition', saved.manualPosition);
+  setValue('manualMentions', saved.manualMentions);
+  setValue('manualCompetitors', saved.manualCompetitors);
+  setValue('manualUrls', saved.manualUrls);
+  setValue('manualResponseType', saved.manualResponseType);
+  setValue('manualSentiment', saved.manualSentiment);
+  ['reviewBrand', 'reviewDomain', 'reviewCompetitors', 'reviewSources'].forEach(name => {
+    if (form.elements[name]) form.elements[name].checked = saved[name] === true || saved[name] === 'true' || saved[name] === 'on';
+  });
+};
+
+showWizardStep = function(step) {
+  currentWizardStep = Math.max(1, Math.min(5, Number(step)));
+  document.querySelectorAll('.wizard-panel').forEach(panel => panel.classList.toggle('active', Number(panel.dataset.step) === currentWizardStep));
+  document.querySelectorAll('.wizard-step-nav').forEach(button => {
+    const number = Number(button.dataset.wizardStep);
+    button.classList.toggle('active', number === currentWizardStep);
+    button.classList.toggle('completed', number < currentWizardStep);
+    if (number === currentWizardStep) button.setAttribute('aria-current', 'step'); else button.removeAttribute('aria-current');
+  });
+  const next = document.querySelector('[data-action="wizard-next"]');
+  if (next) next.textContent = currentWizardStep === 5 ? 'Salva verifica' : 'Continua';
+  saveDraft();
+  document.querySelector(`.wizard-panel[data-step="${currentWizardStep}"]`)?.querySelector('input,select,textarea,button')?.focus({ preventScroll: true });
+};
+
+function markInvalid(control, message) {
+  if (!control) return false;
+  control.setAttribute('aria-invalid', 'true');
+  if (message) control.setCustomValidity(message);
+  control.reportValidity();
+  control.focus();
+  return false;
+}
+
+validateStep = function(step) {
+  const form = document.getElementById('checkForm');
+  if (!form) return false;
+  const d = Utils.form(form);
+  if (step === 1) {
+    for (const name of ['projectId', 'promptId', 'platformId', 'testEnvironment', 'date']) {
+      const control = form.elements[name];
+      if (!control?.value) return markInvalid(control, 'Completa questo campo prima di continuare.');
+      control.setCustomValidity('');
+      control.removeAttribute('aria-invalid');
+    }
+    if (Number.isNaN(new Date(d.date).getTime())) return markInvalid(form.elements.date, 'Inserisci una data e un’ora valide.');
+  }
+  if (step === 2 && String(d.response || '').trim().length < Number(state.settings.analysis.minimumResponseLength || CONFIG.MIN_RESPONSE_LENGTH)) {
+    Utils.toast(`La risposta deve contenere almeno ${state.settings.analysis.minimumResponseLength} caratteri.`, 'error');
+    return markInvalid(form.elements.response, `Inserisci almeno ${state.settings.analysis.minimumResponseLength} caratteri.`);
+  }
+  if (step === 3 && !analysisDraft) { Utils.toast('Esegui prima l’analisi.', 'error'); return false; }
+  if (step === 4 && !manualReviewValid()) { Utils.toast('Conferma i quattro controlli obbligatori.', 'error'); return false; }
+  return true;
+};
+
+function goToWizardStep(target) {
+  target = Math.max(1, Math.min(5, Number(target)));
+  if (target <= currentWizardStep) { showWizardStep(target); return; }
+  if (target > currentWizardStep + 1) { Utils.toast('Completa i passaggi in ordine usando “Continua”.', 'error'); return; }
+  if (!validateStep(currentWizardStep)) return;
+  if (currentWizardStep === 2) runAnalysis(false);
+  if (currentWizardStep === 4) {
+    const data = Utils.form(document.getElementById('checkForm'));
+    renderSaveSummary(data, finalAnalysisFromForm());
+  }
+  showWizardStep(target);
+}
+
+actionHandlers['wizard-prev'] = () => showWizardStep(currentWizardStep - 1);
+actionHandlers['wizard-next'] = () => {
+  if (currentWizardStep === 5) { saveCheck(); return; }
+  goToWizardStep(currentWizardStep + 1);
+};
+actionHandlers['copy-quick-prompt'] = () => {
+  const keyword = document.getElementById('quickKeyword')?.value.trim() || '';
+  const project = projectBy(document.getElementById('quickProject')?.value || document.getElementById('checkProject')?.value || '');
+  if (!keyword || !project) { Utils.toast('Inserisci una keyword e seleziona un progetto.', 'error'); return; }
+  copyText(buildQuickPrompt(keyword, document.getElementById('quickPromptStyle')?.value || 'sources', project));
+};
+actionHandlers['copy-current-prompt'] = () => {
+  const id = document.getElementById('checkPrompt')?.value;
+  const text = promptBy(id)?.text || '';
+  if (!text) { Utils.toast('Seleziona prima un prompt.', 'error'); return; }
+  copyText(text);
+};
+
+Analyzer.score = function(data) {
+  const w = state.settings.scoreWeights;
+  let score = 0;
+  if (!data.brandMentioned && !data.domainCited && !data.domainMentionedText) return 0;
+  score += data.brandMentioned ? w.brand : 0;
+  score += data.domainCited ? w.domain : 0;
+  if (data.brandMentioned) {
+    const position = Number(data.position || 0);
+    if (position > 0) score += w.position * (position === 1 ? 1 : position === 2 ? .8 : position === 3 ? .65 : position <= 5 ? .45 : .25);
+    score += w.mentions * Math.min(1, Number(data.mentions || 0) / 3);
+  }
+  const competitors = (data.competitors || []).length;
+  if (data.brandMentioned) score += w.competitors * (competitors === 0 ? 1 : competitors === 1 ? .75 : competitors === 2 ? .5 : .25);
+  else if (competitors === 0) score += w.competitors * .2;
+  score += w.sentiment * (data.brandSentiment === 'Positivo' ? 1 : data.brandSentiment === 'Neutro' ? .5 : 0);
+  return Math.max(0, Math.min(100, Math.round(score)));
+};
+
+finalAnalysisFromForm = function() {
+  const form = document.getElementById('checkForm');
+  const d = Utils.form(form);
+  const project = projectBy(d.projectId);
+  const base = analysisDraft || applyEnvironmentConfidence(Analyzer.analyze(project, d.response, d.sources), d.testEnvironment || 'not-verified');
+  const brandMentioned = d.manualBrand === 'true';
+  const domainCited = d.manualDomain === 'true';
+  const urls = Utils.unique(Utils.lines(d.manualUrls));
+  const sourceDetails = urls.map(url => ({ ...Analyzer.classifySource(url, project), verificationStatus: 'Confermata manualmente' }));
+  const sourceQualityScore = sourceDetails.length ? Math.round(sourceDetails.reduce((sum, item) => sum + item.quality, 0) / (sourceDetails.length * 5) * 100) : 0;
+  const result = {
+    ...base,
+    brandMentioned,
+    domainCited,
+    position: brandMentioned ? Math.max(0, Number(d.manualPosition || 0)) : 0,
+    mentions: brandMentioned ? Math.max(0, Number(d.manualMentions || 0)) : 0,
+    competitors: Utils.unique(Utils.lines(d.manualCompetitors)),
+    urls,
+    domains: Utils.unique(urls.map(Utils.domain)),
+    sourceDetails,
+    sourceQualityScore,
+    responseType: d.manualResponseType || base.responseType,
+    sentiment: d.manualSentiment || base.sentiment,
+    brandSentiment: brandMentioned ? (d.manualSentiment || base.brandSentiment || 'Neutro') : 'Non applicabile',
+    manualOverrides: {
+      brand: brandMentioned !== base.brandMentioned,
+      domain: domainCited !== base.domainCited,
+      competitors: JSON.stringify(Utils.lines(d.manualCompetitors)) !== JSON.stringify(base.competitors || []),
+      sources: JSON.stringify(urls) !== JSON.stringify(base.urls || [])
+    }
+  };
+  result.confidenceBreakdown = {
+    ...(base.confidenceBreakdown || {}),
+    sources: urls.length >= 3 ? 25 : urls.length ? 15 : 0,
+    entity: (brandMentioned || domainCited) && !base.homonymRisk ? 15 : 0
+  };
+  result.score = Analyzer.score(result);
+  result.visibilityScore = result.score;
+  return applyEnvironmentConfidence(result, d.testEnvironment || 'not-verified', manualReviewValid());
+};
+
+saveCheck = function() {
+  const form = document.getElementById('checkForm');
+  if (!form || !validateStep(4)) return;
+  const d = Utils.form(form);
+  const date = new Date(d.date);
+  if (Number.isNaN(date.getTime())) { markInvalid(form.elements.date, 'Inserisci una data valida.'); return; }
+  const final = finalAnalysisFromForm();
+  const prompt = promptBy(d.promptId);
+  const item = {
+    id: Utils.uid(), projectId: d.projectId, promptId: d.promptId,
+    promptTextSnapshot: prompt?.text || '', promptHash: hashText(prompt?.text || ''),
+    platformId: d.platformId, model: d.model, date: date.toISOString(), location: d.location,
+    sessionType: d.sessionType, testEnvironment: d.testEnvironment || 'not-verified', response: d.response,
+    cleanResponse: final.cleanResponse, sources: Utils.lines(d.sources), urls: final.urls,
+    sourceDetails: final.sourceDetails, brandMentioned: final.brandMentioned, domainCited: final.domainCited,
+    position: final.position, mentions: final.mentions, competitors: final.competitors, sentiment: final.sentiment,
+    responseType: final.responseType, servicesPresent: final.servicesPresent, locationsPresent: final.locationsPresent,
+    evidence: final.evidence, confidence: final.confidence, rawConfidence: final.rawConfidence,
+    confidenceBreakdown: final.confidenceBreakdown, environmentPenalty: final.environmentPenalty,
+    domainMentionedText: final.domainMentionedText, brandSentiment: final.brandSentiment,
+    visibilityScore: final.visibilityScore, sourceQualityScore: final.sourceQualityScore,
+    responseQualityScore: final.responseQualityScore, manualOverrides: final.manualOverrides,
+    algorithmVersion: CONFIG.VERSION, scoreWeightsSnapshot: structuredClone(state.settings.scoreWeights),
+    analysisSettingsSnapshot: structuredClone(state.settings.analysis), homonymRisk: final.homonymRisk,
+    relevance: Number(d.relevance), reliability: Number(d.reliability), notes: d.notes, score: final.score,
+    manualReview: { completed: true, brand: true, domain: true, competitors: true, sources: true, reviewedAt: Utils.now() },
+    status: 'Attiva', archived: false, createdAt: Utils.now(), updatedAt: Utils.now()
+  };
+  state.checks.push(item);
+  if (prompt) { prompt.lastChecked = item.date; prompt.updatedAt = Utils.now(); }
+  state.checkDraft = {};
+  analysisDraft = null;
+  generateOpportunities();
+  saveState();
+  Utils.toast('Verifica salvata', 'success');
+  setSection('results');
+};
+
+function reviewExistingCheck(id) {
+  const check = state.checks.find(item => item.id === id);
+  const project = projectBy(check?.projectId);
+  if (!check || !project) { Utils.toast('Verifica non disponibile.', 'error'); return; }
+  modal('Revisione manuale della verifica', `
+    <div class="notice"><strong>Conferma i dati osservati.</strong> Le correzioni manuali aggiornano score, fonti e Confidence Score senza modificare la risposta originale.</div>
+    <form id="reviewExistingForm" class="form-grid">
+      <div class="field"><label for="existingBrand">Brand presente</label><select id="existingBrand" name="manualBrand"><option value="true" ${check.brandMentioned ? 'selected' : ''}>Sì</option><option value="false" ${!check.brandMentioned ? 'selected' : ''}>No</option></select></div>
+      <div class="field"><label for="existingDomain">Dominio citato</label><select id="existingDomain" name="manualDomain"><option value="true" ${check.domainCited ? 'selected' : ''}>Sì</option><option value="false" ${!check.domainCited ? 'selected' : ''}>No</option></select></div>
+      <div class="field"><label for="existingPosition">Posizione</label><input id="existingPosition" name="manualPosition" type="number" min="0" value="${Math.max(0, Number(check.position || 0))}"></div>
+      <div class="field"><label for="existingMentions">Numero menzioni</label><input id="existingMentions" name="manualMentions" type="number" min="0" value="${Math.max(0, Number(check.mentions || 0))}"></div>
+      <div class="field full"><label for="existingCompetitors">Concorrenti confermati</label><textarea id="existingCompetitors" name="manualCompetitors" rows="4">${Utils.esc((check.competitors || []).join('\n'))}</textarea></div>
+      <div class="field full"><label for="existingUrls">Fonti confermate</label><textarea id="existingUrls" name="manualUrls" rows="4">${Utils.esc((check.urls || []).join('\n'))}</textarea></div>
+      <div class="field"><label for="existingResponseType">Tipo di risposta</label><select id="existingResponseType" name="manualResponseType">${['Local Pack / risultati locali','Elenco editoriale','Risposta con fonti','Confronto','Risposta narrativa','Risposta limitata'].map(value => `<option ${check.responseType === value ? 'selected' : ''}>${value}</option>`).join('')}</select></div>
+      <div class="field"><label for="existingSentiment">Sentiment del brand</label><select id="existingSentiment" name="manualSentiment">${['Positivo','Neutro','Negativo'].map(value => `<option ${check.brandSentiment === value || check.sentiment === value ? 'selected' : ''}>${value}</option>`).join('')}</select></div>
+      <div class="field full"><h3>Checklist obbligatoria</h3><div class="checklist">
+        <label class="check-row"><input type="checkbox" name="reviewBrand"><span><strong>Brand verificato</strong><small>Non si tratta di un omonimo.</small></span></label>
+        <label class="check-row"><input type="checkbox" name="reviewDomain"><span><strong>Dominio verificato</strong><small>È una citazione o fonte effettiva.</small></span></label>
+        <label class="check-row"><input type="checkbox" name="reviewCompetitors"><span><strong>Concorrenti verificati</strong><small>Sono pertinenti e non duplicati.</small></span></label>
+        <label class="check-row"><input type="checkbox" name="reviewSources"><span><strong>Fonti verificate</strong><small>Gli URL corrispondono alle citazioni mostrate.</small></span></label>
+      </div></div>
+    </form>`,
+    '<button class="btn" data-close-modal>Annulla</button><button class="btn btn-primary" id="saveExistingReview">Conferma revisione</button>');
+
+  document.getElementById('saveExistingReview').onclick = () => {
+    const form = document.getElementById('reviewExistingForm');
+    if (!['reviewBrand','reviewDomain','reviewCompetitors','reviewSources'].every(name => form.elements[name]?.checked)) {
+      Utils.toast('Completa i quattro controlli obbligatori.', 'error');
+      return;
+    }
+    const data = Utils.form(form);
+    const base = Analyzer.analyze(project, check.response, (check.urls || []).join('\n'));
+    const brandMentioned = data.manualBrand === 'true';
+    const domainCited = data.manualDomain === 'true';
+    const urls = Utils.unique(Utils.lines(data.manualUrls));
+    const sourceDetails = urls.map(url => ({ ...Analyzer.classifySource(url, project), verificationStatus: 'Confermata manualmente' }));
+    const reviewed = {
+      ...base,
+      brandMentioned,
+      domainCited,
+      position: brandMentioned ? Math.max(0, Number(data.manualPosition || 0)) : 0,
+      mentions: brandMentioned ? Math.max(0, Number(data.manualMentions || 0)) : 0,
+      competitors: Utils.unique(Utils.lines(data.manualCompetitors)),
+      urls,
+      domains: Utils.unique(urls.map(Utils.domain)),
+      sourceDetails,
+      sourceQualityScore: sourceDetails.length ? Math.round(sourceDetails.reduce((sum, item) => sum + item.quality, 0) / (sourceDetails.length * 5) * 100) : 0,
+      responseType: data.manualResponseType || base.responseType,
+      sentiment: data.manualSentiment || base.sentiment,
+      brandSentiment: brandMentioned ? (data.manualSentiment || 'Neutro') : 'Non applicabile'
+    };
+    reviewed.confidenceBreakdown = {
+      ...(base.confidenceBreakdown || {}),
+      sources: urls.length >= 3 ? 25 : urls.length ? 15 : 0,
+      entity: (brandMentioned || domainCited) && !base.homonymRisk ? 15 : 0
+    };
+    reviewed.score = Analyzer.score(reviewed);
+    reviewed.visibilityScore = reviewed.score;
+    const final = applyEnvironmentConfidence(reviewed, check.testEnvironment || 'not-verified', true);
+    Object.assign(check, final, {
+      sources: urls,
+      manualReview: { completed: true, brand: true, domain: true, competitors: true, sources: true, reviewedAt: Utils.now() },
+      status: 'Revisionata',
+      algorithmVersion: CONFIG.VERSION,
+      scoreWeightsSnapshot: structuredClone(state.settings.scoreWeights),
+      analysisSettingsSnapshot: structuredClone(state.settings.analysis),
+      updatedAt: Utils.now()
+    });
+    generateOpportunities();
+    saveState();
+    closeModal();
+    renderResults();
+    Utils.toast('Revisione manuale completata.', 'success');
+  };
+}
+actionHandlers['review-check'] = event => reviewExistingCheck(event.target.dataset.id);
+
+
+editCheck = function(id) {
+  const check = state.checks.find(item => item.id === id);
+  if (!check) return;
+  const project = projectBy(check.projectId);
+  modal('Modifica verifica', `
+    <div class="notice warning"><strong>Controllo qualità:</strong> se modifichi risposta o fonti, la revisione manuale precedente verrà invalidata e dovrà essere ripetuta.</div>
+    <form id="editCheckForm" class="form-grid"><input type="hidden" name="id" value="${check.id}">${textareaField('response', 'Risposta completa', check.response, '', 12).replace('<textarea', '<textarea required class="response-text"')}${textareaField('sources', 'Fonti / URL', (check.urls || []).join('\n'), '', 5)}${field('model', 'Modello / modalità', check.model || '')}${field('location', 'Località', check.location || '')}${textareaField('notes', 'Note', check.notes || '', '', 3)}<div class="field"><label for="editRelevance">Rilevanza</label><select id="editRelevance" name="relevance">${[1,2,3,4,5].map(n => `<option ${check.relevance === n ? 'selected' : ''}>${n}</option>`).join('')}</select></div><div class="field"><label for="editReliability">Attendibilità</label><select id="editReliability" name="reliability">${[1,2,3,4,5].map(n => `<option ${check.reliability === n ? 'selected' : ''}>${n}</option>`).join('')}</select></div></form>
+    <div class="toolbar" style="margin-top:15px"><button class="btn btn-primary" id="editAnalyzeButton">Analizza anteprima</button></div>
+    <div id="editAnalysis">${renderEditAnalysis(check, project)}</div>
+  `, '<button class="btn" data-close-modal>Annulla</button><button class="btn btn-primary" id="saveEditedCheck">Salva modifiche</button>');
+  document.getElementById('editAnalyzeButton').onclick = () => {
+    const data = Utils.form(document.getElementById('editCheckForm'));
+    const preview = applyEnvironmentConfidence(Analyzer.analyze(project, data.response, data.sources), check.testEnvironment || 'not-verified', false);
+    document.getElementById('editAnalysis').innerHTML = renderEditAnalysis(preview, project) + '<div class="notice warning" style="margin-top:12px">Anteprima automatica: completa nuovamente la revisione manuale dopo il salvataggio.</div>';
+  };
+  document.getElementById('saveEditedCheck').onclick = () => {
+    const form = document.getElementById('editCheckForm');
+    if (!form.reportValidity()) return;
+    const data = Utils.form(form);
+    const newUrls = Utils.unique(Utils.lines(data.sources));
+    const contentChanged = data.response !== check.response || JSON.stringify(newUrls) !== JSON.stringify(check.urls || []);
+    const analyzed = contentChanged
+      ? applyEnvironmentConfidence(Analyzer.analyze(project, data.response, data.sources), check.testEnvironment || 'not-verified', false)
+      : { ...check };
+    Object.assign(check, analyzed, {
+      response: data.response,
+      cleanResponse: analyzed.cleanResponse || Analyzer.cleanText(data.response),
+      urls: contentChanged ? analyzed.urls : newUrls,
+      sources: Utils.lines(data.sources), model: data.model, location: data.location, notes: data.notes,
+      relevance: Number(data.relevance), reliability: Number(data.reliability), algorithmVersion: CONFIG.VERSION,
+      scoreWeightsSnapshot: structuredClone(state.settings.scoreWeights),
+      analysisSettingsSnapshot: structuredClone(state.settings.analysis),
+      manualReview: contentChanged ? { completed: false, invalidatedAt: Utils.now() } : check.manualReview,
+      status: contentChanged ? 'Da revisionare' : check.status,
+      updatedAt: Utils.now()
+    });
+    generateOpportunities();
+    saveState();
+    closeModal();
+    renderResults();
+    Utils.toast(contentChanged ? 'Modifiche salvate. Completa una nuova revisione manuale.' : 'Modifiche salvate.', contentChanged ? 'warning' : 'success');
+  };
+};
+
+function isValidDomain(value) {
+  const domain = Utils.domain(value);
+  return /^(?=.{1,253}$)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/i.test(domain);
+}
+
+saveProject = function() {
+  const form = document.getElementById('projectForm');
+  if (!form?.reportValidity()) return;
+  const d = Utils.form(form);
+  if (!isValidDomain(d.domain)) { markInvalid(form.elements.domain, 'Inserisci un dominio valido, ad esempio esempio.it.'); return; }
+  const normalizedDomain = Utils.domain(d.domain);
+  const old = projectBy(d.id);
+  const item = {
+    id: d.id || Utils.uid(), name: d.name.trim(), client: (d.client || '').trim(), brand: d.brand.trim(),
+    domain: normalizedDomain, targetUrl: (d.targetUrl || '').trim(), location: (d.location || '').trim(),
+    market: (d.market || '').trim(), language: (d.language || '').trim(), sector: (d.sector || '').trim(),
+    brandVariants: Utils.unique(Utils.lines(d.brandVariants)), competitors: Utils.unique(Utils.lines(d.competitors)),
+    services: Utils.unique(Utils.lines(d.services)), nearbyLocations: Utils.unique(Utils.lines(d.nearbyLocations)),
+    homonymExclusions: Utils.unique(Utils.lines(d.homonymExclusions)), contextTerms: Utils.unique(Utils.lines(d.contextTerms)),
+    description: (d.description || '').trim(),
+    pageAudit: {
+      title: (d.auditTitle || '').trim(), h1: (d.auditH1 || '').trim(), intro: (d.auditIntro || '').trim(),
+      internalLinks: Math.max(0, Number(d.auditInternalLinks || 0)), reviews: Math.max(0, Number(d.auditReviews || 0)),
+      hasAuthor: Boolean(form.elements.auditHasAuthor?.checked), hasFaq: Boolean(form.elements.auditHasFaq?.checked),
+      hasSchema: Boolean(form.elements.auditHasSchema?.checked), notes: (d.auditNotes || '').trim()
+    },
+    notes: (d.notes || '').trim(), archived: old?.archived || false,
+    createdAt: old?.createdAt || Utils.now(), updatedAt: Utils.now()
+  };
+  if (old) Object.assign(old, item); else state.projects.push(item);
+  saveState(); closeModal(); renderProjects();
+};
+
+savePrompt = function() {
+  const form = document.getElementById('promptForm');
+  if (!form?.reportValidity()) return;
+  const d = Utils.form(form);
+  const text = String(d.text || '').trim();
+  if (!text) { markInvalid(form.elements.text, 'Inserisci il testo del prompt.'); return; }
+  const duplicate = state.prompts.find(item => item.id !== d.id && item.projectId === d.projectId && Utils.slug(item.text) === Utils.slug(text));
+  if (duplicate) { Utils.toast('Esiste già un prompt identico per questo progetto.', 'error'); return; }
+  const old = promptBy(d.id);
+  const item = {
+    id: d.id || Utils.uid(), projectId: d.projectId, text, category: d.category, priority: d.priority,
+    intent: (d.intent || '').trim(), tags: Utils.unique(Utils.lines(d.tags)), frequency: (d.frequency || '').trim(),
+    notes: (d.notes || '').trim(), createdAt: old?.createdAt || Utils.now(), updatedAt: Utils.now(), lastChecked: old?.lastChecked
+  };
+  if (old) Object.assign(old, item); else state.prompts.push(item);
+  saveState(); closeModal(); renderPrompts();
+};
+
+actionHandlers['bulk-prompts'] = () => {
+  modal('Importa più prompt', `<form id="bulkPromptForm" class="form-grid"><div class="field"><label for="bulkPromptProject">Progetto <span class="required-mark">*</span></label><select id="bulkPromptProject" name="projectId" required><option value="">Seleziona</option>${options(state.projects.filter(p => !p.archived), '')}</select></div><div class="field"><label for="bulkPromptPriority">Priorità</label><select id="bulkPromptPriority" name="priority"><option>P1</option><option>P2</option><option selected>P3</option><option>P4</option></select></div><div class="field full"><label for="bulkPromptTexts">Prompt, uno per riga <span class="required-mark">*</span></label><textarea id="bulkPromptTexts" name="texts" rows="10" required></textarea></div></form>`, '<button class="btn" data-close-modal>Annulla</button><button class="btn btn-primary" id="saveBulkPrompts">Importa</button>');
+  document.getElementById('saveBulkPrompts').onclick = () => {
+    const form = document.getElementById('bulkPromptForm');
+    if (!form.reportValidity()) return;
+    const d = Utils.form(form);
+    const texts = Utils.unique(String(d.texts || '').split(/\r?\n/).map(x => x.trim()).filter(Boolean));
+    let added = 0, skipped = 0;
+    texts.forEach(text => {
+      const exists = state.prompts.some(p => p.projectId === d.projectId && Utils.slug(p.text) === Utils.slug(text));
+      if (exists) { skipped++; return; }
+      state.prompts.push({ id: Utils.uid(), projectId: d.projectId, text, category: 'Informativa', priority: d.priority, intent: '', tags: [], frequency: 'Mensile', notes: '', createdAt: Utils.now(), updatedAt: Utils.now() });
+      added++;
+    });
+    saveState(); closeModal(); renderPrompts();
+    Utils.toast(`${added} prompt importati${skipped ? `, ${skipped} duplicati ignorati` : ''}.`, 'success');
+  };
+};
+
+function snapshotBefore(reason) {
+  if (createSafetySnapshot(reason)) return true;
+  Utils.toast('Operazione annullata: impossibile creare lo snapshot di sicurezza.', 'error');
+  return false;
+}
+
+actionHandlers['delete-project'] = e => deleteConfirm('Eliminare il progetto e tutti i dati collegati?', () => {
+  if (!snapshotBefore('delete-project')) return;
+  const id = e.target.dataset.deleteProject;
+  const promptIds = state.prompts.filter(x => x.projectId === id).map(x => x.id);
+  state.projects = state.projects.filter(x => x.id !== id);
+  state.prompts = state.prompts.filter(x => x.projectId !== id);
+  state.checks = state.checks.filter(x => x.projectId !== id && !promptIds.includes(x.promptId));
+  state.opportunities = state.opportunities.filter(x => x.projectId !== id);
+  cleanupOrphans(); saveState(); renderProjects();
+});
+actionHandlers['delete-prompt'] = e => deleteConfirm('Eliminare il prompt e le verifiche collegate?', () => {
+  if (!snapshotBefore('delete-prompt')) return;
+  const id = e.target.dataset.deletePrompt;
+  state.prompts = state.prompts.filter(x => x.id !== id);
+  state.checks = state.checks.filter(x => x.promptId !== id);
+  cleanupOrphans(); saveState(); renderPrompts();
+});
+actionHandlers['bulk-delete'] = () => {
+  if (!selectedResultIds.size) { Utils.toast('Seleziona almeno una verifica.', 'error'); return; }
+  deleteConfirm(`Eliminare ${selectedResultIds.size} verifiche selezionate?`, () => {
+    if (!snapshotBefore('bulk-delete-checks')) return;
+    state.checks = state.checks.filter(c => !selectedResultIds.has(c.id));
+    selectedResultIds.clear(); cleanupOrphans(); saveState(); renderResults();
+  });
+};
+actionHandlers['delete-duplicate'] = e => deleteConfirm('Eliminare la seconda verifica duplicata?', () => {
+  if (!snapshotBefore('delete-duplicate-check')) return;
+  state.checks = state.checks.filter(c => c.id !== e.target.dataset.deleteDuplicate);
+  cleanupOrphans(); saveState(); renderQuality();
+});
+actionHandlers['clear-all'] = () => deleteConfirm('Cancellare definitivamente tutti i dati locali?', () => {
+  if (!snapshotBefore('clear-all')) return;
+  state = defaultState(); window.__state = state; SafeStorage.removeItem(CONFIG.APP_KEY); saveState(true); setSection('dashboard');
+});
+
+
+resultsTable = function(checks, selectable = true, showReportAction = false) {
+  if (!checks.length) return empty('Nessuna verifica', 'Incolla e analizza una risposta reale.');
+  return `<div class="table-wrap results-table-wrap"><table class="results-data-table"><thead><tr>${selectable ? '<th scope="col"><input type="checkbox" id="selectAllResults" aria-label="Seleziona tutte le verifiche visibili"></th>' : ''}<th scope="col">Prompt / progetto</th><th scope="col">AI</th><th scope="col">Esito</th><th scope="col">Score</th><th scope="col">Confidenza</th><th scope="col">Data</th><th scope="col">Azioni</th></tr></thead><tbody>${checks.map(check => {
+    const promptText = promptBy(check.promptId)?.text || 'Prompt eliminato';
+    return `<tr data-result-row data-id="${check.id}" data-search="${Utils.esc(Utils.slug(JSON.stringify(check)))}" data-project="${check.projectId}" data-platform="${check.platformId}" data-brand="${check.brandMentioned ? 'yes' : 'no'}" data-domain="${check.domainCited ? 'yes' : 'no'}" data-sources="${(check.urls || []).length ? 'yes' : 'no'}">${selectable ? `<td class="result-select-cell" data-label="Seleziona"><input type="checkbox" class="result-select" value="${check.id}" aria-label="Seleziona: ${Utils.esc(promptText)}" ${window.selectedResultIds?.has(check.id) ? 'checked' : ''}></td>` : ''}<td data-label="Prompt / progetto"><strong>${Utils.esc(promptText)}</strong><div class="help">${Utils.esc(projectBy(check.projectId)?.name || 'Progetto eliminato')}</div></td><td data-label="AI">${Utils.esc(platformBy(check.platformId).name)}<div class="help">${Utils.esc(check.responseType || '')}</div></td><td data-label="Esito">${check.brandMentioned ? badge('Brand', 'success') : badge('Assente', 'danger')} ${check.domainCited ? badge('Dominio', 'info') : ''}</td><td data-label="Score"><strong>${check.score || 0}</strong>/100</td><td data-label="Confidenza">${check.confidence || 0}/100</td><td data-label="Data">${Utils.date(check.date, true)}</td><td class="result-actions" data-label="Azioni"><div class="flex gap-8 wrap"><button class="btn btn-sm" data-view-check="${check.id}">Dettagli</button><button class="btn btn-sm" data-edit-check="${check.id}">Modifica</button><button class="btn btn-sm" data-duplicate-check="${check.id}">Duplica</button>${!check.manualReview?.completed ? `<button class="btn btn-sm btn-primary" data-action="review-check" data-id="${check.id}">Rivedi</button>` : ''}${showReportAction ? `<button class="btn btn-sm ${check.manualReview?.completed ? 'btn-primary' : ''}" data-report-check="${check.id}">Report</button>` : ''}</div></td></tr>`;
+  }).join('')}</tbody></table></div>`;
+};
+
+dashboardActions = function(projectId) {
+  const tasks = (state.tasks || []).filter(task => (!projectId || task.projectId === projectId) && !['Completata','Non applicabile'].includes(task.status)).sort((a,b) => ({P1:1,P2:2,P3:3,P4:4}[a.priority] || 5) - ({P1:1,P2:2,P3:3,P4:4}[b.priority] || 5)).slice(0,5);
+  if (tasks.length) return `<div class="action-list">${tasks.map(task => `<div class="action-row"><span class="priority-tag ${(task.priority || 'P3').toLowerCase()}">${Utils.esc(task.priority || 'P3')}</span><div><div class="action-title">${Utils.esc(task.title)}</div><div class="action-meta">${Utils.esc(task.status || 'Da fare')}${task.due ? ` · entro ${Utils.date(task.due)}` : ''}</div></div><button class="btn btn-sm" data-go="actions">Apri</button></div>`).join('')}</div>`;
+  const opportunities = (state.opportunities || []).filter(item => (!projectId || item.projectId === projectId) && item.status !== 'Completata' && !(state.dismissedOpportunityIds || []).includes(item.id)).sort((a,b) => ({P1:1,P2:2,P3:3,P4:4}[a.priority] || 5) - ({P1:1,P2:2,P3:3,P4:4}[b.priority] || 5)).slice(0,5);
+  if (opportunities.length) return `<div class="action-list">${opportunities.map(item => `<div class="action-row"><span class="priority-tag ${(item.priority || 'P3').toLowerCase()}">${Utils.esc(item.priority || 'P3')}</span><div><div class="action-title">${Utils.esc(item.title)}</div><div class="action-meta">Opportunità da valutare</div></div><button class="btn btn-sm" data-go="opportunities">Valuta</button></div>`).join('')}</div>`;
+  return `<div class="dashboard-empty"><strong>Nessuna attività aperta</strong><p>Le opportunità generate dalle prossime verifiche compariranno qui.</p><button class="btn" data-go="new-check">Avvia verifica</button></div>`;
+};
+
+const renderResultsBefore51 = renderResults;
+renderResults = function() {
+  renderResultsBefore51();
+  document.querySelectorAll('[data-action="bulk-export"],[data-action="bulk-archive"],[data-action="bulk-status"],[data-action="bulk-delete"]').forEach(button => button.dataset.requiresResultsSelection = 'true');
+  updateSelectedCount();
+};
+updateSelectedCount = function() {
+  const count = selectedResultIds.size;
+  const el = document.getElementById('selectedCount');
+  if (el) el.textContent = count;
+  document.querySelectorAll('[data-requires-results-selection="true"]').forEach(button => {
+    button.disabled = count === 0;
+    button.setAttribute('aria-disabled', count === 0 ? 'true' : 'false');
+  });
+  document.getElementById('bulkToolbar')?.classList.toggle('bulk-toolbar-inactive', count === 0);
+};
+actionHandlers['bulk-export'] = () => {
+  if (!selectedResultIds.size) { Utils.toast('Seleziona almeno una verifica.', 'error'); return; }
+  exportChecks(state.checks.filter(c => selectedResultIds.has(c.id)), 'geo-selezione.csv');
+};
+actionHandlers['bulk-archive'] = () => {
+  if (!selectedResultIds.size) { Utils.toast('Seleziona almeno una verifica.', 'error'); return; }
+  state.checks.filter(c => selectedResultIds.has(c.id)).forEach(c => c.archived = true);
+  saveState(); selectedResultIds.clear(); renderResults();
+};
+actionHandlers['bulk-status'] = () => {
+  if (!selectedResultIds.size) { Utils.toast('Seleziona almeno una verifica.', 'error'); return; }
+  state.checks.filter(c => selectedResultIds.has(c.id)).forEach(c => c.status = 'Revisionata');
+  saveState(); renderResults();
+};
+changeHandlers['#selectAllResults'] = e => {
+  document.querySelectorAll('[data-result-row]').forEach(row => {
+    if (row.style.display === 'none') return;
+    const checkbox = row.querySelector('.result-select');
+    if (!checkbox) return;
+    checkbox.checked = e.target.checked;
+    e.target.checked ? selectedResultIds.add(checkbox.value) : selectedResultIds.delete(checkbox.value);
+  });
+  updateSelectedCount();
+};
+
+function updateOpportunitySelection() {
+  const count = selectedOpportunityIds.size;
+  const label = document.getElementById('selectedOpportunityCount');
+  if (label) label.textContent = count;
+  document.querySelectorAll('[data-requires-opportunity-selection="true"]').forEach(button => {
+    button.disabled = count === 0;
+    button.setAttribute('aria-disabled', count === 0 ? 'true' : 'false');
+  });
+}
+const renderOpportunitiesBefore51 = renderOpportunities;
+renderOpportunities = function() {
+  renderOpportunitiesBefore51();
+  document.querySelectorAll('[data-action="opp-mark-progress"],[data-action="opp-mark-done"],[data-action="opp-add-report"]').forEach(button => button.dataset.requiresOpportunitySelection = 'true');
+  updateOpportunitySelection();
+};
+changeHandlers['.opp-select'] = e => {
+  e.target.checked ? selectedOpportunityIds.add(e.target.value) : selectedOpportunityIds.delete(e.target.value);
+  e.target.closest('.opportunity')?.classList.toggle('selected', e.target.checked);
+  updateOpportunitySelection();
+};
+actionHandlers['select-visible-opportunities'] = () => {
+  document.querySelectorAll('#opportunityList .opportunity').forEach(card => {
+    if (card.style.display === 'none') return;
+    const checkbox = card.querySelector('.opp-select');
+    if (checkbox) { checkbox.checked = true; selectedOpportunityIds.add(checkbox.value); card.classList.add('selected'); }
+  });
+  updateOpportunitySelection();
+};
+actionHandlers['opp-mark-progress'] = () => {
+  if (!selectedOpportunityIds.size) { Utils.toast('Seleziona almeno un’opportunità.', 'error'); return; }
+  state.opportunities.filter(o => selectedOpportunityIds.has(o.id)).forEach(o => o.status = 'In corso'); saveState(true); renderOpportunities();
+};
+actionHandlers['opp-mark-done'] = () => {
+  if (!selectedOpportunityIds.size) { Utils.toast('Seleziona almeno un’opportunità.', 'error'); return; }
+  state.opportunities.filter(o => selectedOpportunityIds.has(o.id)).forEach(o => o.status = 'Completata'); saveState(true); renderOpportunities();
+};
+actionHandlers['opp-add-report'] = () => {
+  const selected = generateOpportunities().filter(o => selectedOpportunityIds.has(o.id));
+  if (!selected.length) { Utils.toast('Seleziona almeno un’opportunità.', 'error'); return; }
+  const contexts = Utils.unique(selected.map(o => `${o.projectId}|${o.checkId}`));
+  if (contexts.length !== 1) { Utils.toast('Per il report seleziona opportunità appartenenti alla stessa verifica.', 'error'); return; }
+  reportProjectChoice = selected[0].projectId;
+  reportRangeChoice = 'all';
+  reportSelectedCheckIds = new Set([selected[0].checkId]);
+  reportSelectedOpportunityIds = new Set(selected.map(o => o.id));
+  setSection('reports');
+};
+
+factForm41 = function(f = {}) {
+  const categories = ['Identità','Biografia','Servizio','Esperienza','Case study','Risultato','Recensione','Certificazione','Prezzo','Contatto','Altro'];
+  const projectId = f.projectId || state.projects[0]?.id || '';
+  return `<form id="factForm41" class="form-grid"><input type="hidden" name="id" value="${Utils.esc(f.id || '')}">
+    <div class="field"><label for="factProject">Progetto <span class="required-mark">*</span></label><select id="factProject" name="projectId" required><option value="">Seleziona</option>${options(state.projects, projectId)}</select></div>
+    <div class="field"><label for="factCategory">Categoria <span class="required-mark">*</span></label><select id="factCategory" name="category" required>${categories.map(category => `<option ${category === (f.category || 'Identità') ? 'selected' : ''}>${Utils.esc(category)}</option>`).join('')}</select></div>
+    <div class="field full"><label for="factLabel">Etichetta <span class="required-mark">*</span></label><input id="factLabel" name="label" required value="${Utils.esc(f.label || '')}"></div>
+    <div class="field full"><label for="factValue">Valore approvato <span class="required-mark">*</span></label><textarea id="factValue" name="value" rows="5" required>${Utils.esc(f.value || '')}</textarea><div class="help">Testo esatto utilizzabile nei contenuti.</div></div>
+    <div class="field"><label for="factSource">URL fonte</label><input id="factSource" name="source" type="url" placeholder="https://…" value="${Utils.esc(f.source || '')}"></div>
+    <div class="field"><label for="factEvidence">Evidenza interna</label><input id="factEvidence" name="internalEvidence" value="${Utils.esc(f.internalEvidence || '')}" placeholder="Documento, contratto o nota verificabile"></div>
+    <div class="field"><label for="factVerifiedBy">Verificato da</label><input id="factVerifiedBy" name="verifiedBy" value="${Utils.esc(f.verifiedBy || state.settings.consultant || '')}"></div>
+    <div class="field"><label for="factVerifiedAt">Data verifica</label><input id="factVerifiedAt" name="verifiedAt" type="date" value="${Utils.esc(f.verifiedAt ? String(f.verifiedAt).slice(0,10) : '')}"></div>
+    <div class="field"><label for="factExpiresAt">Scadenza dato</label><input id="factExpiresAt" name="expiresAt" type="date" value="${Utils.esc(f.expiresAt ? String(f.expiresAt).slice(0,10) : '')}"></div>
+    <div class="field full"><label for="factNotes">Note</label><textarea id="factNotes" name="notes" rows="3">${Utils.esc(f.notes || '')}</textarea></div>
+    <label class="field full"><span><input type="checkbox" name="verified" ${f.verified ? 'checked' : ''}> Dato verificato</span><span class="help">Per essere utilizzabile serve anche una fonte pubblica o un’evidenza interna.</span></label>
+  </form>`;
+};
+
+renderKnowledge = function() {
+  const pid = document.getElementById('knowledgeProject')?.value || state.projects[0]?.id || '';
+  const facts = state.knowledge.filter(item => item.projectId === pid);
+  const usable = usableKnowledge(pid).length;
+  document.getElementById('knowledge').innerHTML = `<div class="toolbar"><select id="knowledgeProject" aria-label="Progetto Knowledge Base"><option value="">Seleziona progetto</option>${options(state.projects, pid)}</select><button class="btn btn-primary" data-action="new-fact" ${pid ? '' : 'disabled'}>＋ Aggiungi dato</button><div class="spacer"></div>${badge(`${usable} utilizzabili`, usable ? 'success' : 'warning')}</div><div class="notice">Solo i dati verificati, non scaduti e associati a una fonte o evidenza interna possono alimentare i generatori.</div>${facts.length ? facts.map(fact => {
+    const expired = fact.expiresAt && new Date(fact.expiresAt) < new Date();
+    const status = expired ? '<span class="evidence-label evidence-probable">Scaduto</span>' : fact.verified && (fact.source || fact.internalEvidence) ? evidenceBadge('confirmed') : evidenceBadge('verify');
+    return `<article class="knowledge-fact-row"><div>${badge(fact.category || 'Altro', 'info')}</div><div><strong>${Utils.esc(fact.label)}</strong><div>${Utils.esc(fact.value)}</div><div class="help">${fact.source ? `Fonte: ${Utils.esc(fact.source)}` : fact.internalEvidence ? `Evidenza: ${Utils.esc(fact.internalEvidence)}` : 'Fonte/evidenza non indicata'}${fact.verifiedAt ? ` · verificato ${Utils.date(fact.verifiedAt)}` : ''}</div></div><div>${status}</div><div class="fact-actions"><button class="btn btn-sm" data-action="edit-fact" data-id="${fact.id}">Modifica</button><button class="btn btn-sm btn-danger" data-action="delete-fact" data-id="${fact.id}">Elimina</button></div></article>`;
+  }).join('') : empty('Knowledge Base vuota', 'Aggiungi soltanto dati reali, autorizzati e verificabili.')}`;
+};
+advancedRenderers.knowledge = renderKnowledge;
+actionHandlers['delete-fact'] = e => deleteConfirm('Eliminare definitivamente questo dato verificato?', () => {
+  if (!snapshotBefore('delete-knowledge-fact')) return;
+  state.knowledge = state.knowledge.filter(x => x.id !== e.target.dataset.id); saveState(); renderKnowledge();
+});
+
+renderActions = function() {
+  const pid = document.getElementById('taskProject')?.value || '';
+  const status = document.getElementById('taskStatus')?.value || '';
+  const tasks = state.tasks.filter(task => (!pid || task.projectId === pid) && (!status || task.status === status));
+  document.getElementById('actions').innerHTML = `<div class="toolbar"><button class="btn btn-primary" data-action="new-task">＋ Nuova attività</button><button class="btn" data-action="sync-tasks">Sincronizza opportunità</button><select id="taskProject" aria-label="Filtra attività per progetto"><option value="">Tutti i progetti</option>${options(state.projects, pid)}</select><select id="taskStatus" aria-label="Filtra attività per stato"><option value="">Tutti gli stati</option>${['Da verificare','Confermata','Da fare','In corso','Completata','Non applicabile','Da ritestare'].map(x => `<option ${x === status ? 'selected' : ''}>${x}</option>`).join('')}</select></div>${tasks.length ? `<div class="card" style="padding:0;overflow:auto"><div class="action-manager-row action-manager-head"><strong>Priorità</strong><strong>Attività</strong><strong>Stato</strong><strong>Scadenza</strong><strong>Gestione</strong></div>${tasks.map(task => `<div class="action-manager-row" data-task-id="${task.id}"><div>${badge(task.priority, task.priority === 'P1' ? 'danger' : task.priority === 'P2' ? 'warning' : 'info')}</div><div><strong>${Utils.esc(task.title)}</strong><div class="help">${Utils.esc(projectBy(task.projectId)?.name || '')}</div><label class="sr-only" for="owner-${task.id}">Responsabile</label><input id="owner-${task.id}" class="task-owner" placeholder="Responsabile" value="${Utils.esc(task.owner || '')}"></div><select class="task-status" aria-label="Stato attività">${['Da verificare','Confermata','Da fare','In corso','Completata','Non applicabile','Da ritestare'].map(x => `<option ${x === task.status ? 'selected' : ''}>${x}</option>`).join('')}</select><input class="task-due" type="date" aria-label="Scadenza" value="${Utils.esc(task.due || '')}"><div class="task-controls"><input class="task-url" aria-label="URL interessato" placeholder="URL interessato" value="${Utils.esc(task.url || '')}"><textarea class="task-notes" aria-label="Note operative" placeholder="Note operative">${Utils.esc(task.notes || '')}</textarea><textarea class="task-evidence" aria-label="Evidenza" placeholder="Evidenza separata: URL, screenshot o prova">${Utils.esc(task.evidence || '')}</textarea><input class="task-implementation" type="date" aria-label="Data implementazione" value="${Utils.esc(task.implementationDate || '')}"><select class="task-after" aria-label="Verifica dopo intervento"><option value="">Verifica dopo intervento</option>${state.checks.filter(c => c.projectId === task.projectId).map(c => `<option value="${c.id}" ${c.id === task.afterCheckId ? 'selected' : ''}>${Utils.date(c.date)} · ${c.score}/100</option>`).join('')}</select><div class="compact-actions"><button class="btn btn-sm" data-action="save-task" data-id="${task.id}">Salva</button><button class="btn btn-sm btn-danger" data-action="delete-task" data-id="${task.id}">Elimina</button></div>${taskDelta(task)}</div></div>`).join('')}</div>` : empty('Nessuna attività', 'Sincronizza le opportunità oppure crea una nuova attività.')}`;
+};
+advancedRenderers.actions = renderActions;
+actionHandlers['delete-task'] = e => deleteConfirm('Eliminare questa attività?', () => {
+  if (!snapshotBefore('delete-task')) return;
+  const task = state.tasks.find(x => x.id === e.target.dataset.id);
+  if (task?.opportunityId) state.dismissedOpportunityIds = Utils.unique([...state.dismissedOpportunityIds, task.opportunityId]);
+  state.tasks = state.tasks.filter(x => x.id !== e.target.dataset.id); saveState(); renderActions();
+});
+
+function campaignForm51() {
+  return `<form id="campaignForm" class="form-grid"><div class="field full"><label for="campaignName">Nome campagna <span class="required-mark">*</span></label><input id="campaignName" name="name" required></div><div class="field"><label for="campaignProject">Progetto <span class="required-mark">*</span></label><select id="campaignProject" name="projectId" required><option value="">Seleziona</option>${options(state.projects.filter(p => !p.archived), '')}</select></div><div class="field"><label for="campaignPrompt">Prompt <span class="required-mark">*</span></label><select id="campaignPrompt" name="promptId" required disabled><option value="">Seleziona prima il progetto</option></select></div><div class="field"><label for="campaignRuns">Numero minimo di test</label><input id="campaignRuns" name="targetRuns" type="number" min="2" max="100" value="6"></div><div class="field"><label for="campaignEnvironment">Ambiente obbligatorio <span class="required-mark">*</span></label><select id="campaignEnvironment" name="environment" required><option value="">Seleziona</option><option value="anonymous">Anonimo senza login</option><option value="temporary">Chat temporanea</option><option value="memory-off">Memoria disattivata</option></select></div><fieldset class="field full" style="border:0;padding:0;margin:0"><legend style="font-size:13px;font-weight:800;color:var(--muted);margin-bottom:7px">Piattaforme <span class="required-mark">*</span></legend><div class="checklist">${state.platforms.filter(p => p.active).map(p => `<label class="check-item"><input type="checkbox" name="platformIds" value="${p.id}"> ${Utils.esc(p.name)}</label>`).join('')}</div></fieldset></form>`;
+}
+
+actionHandlers['new-campaign'] = () => {
+  modal('Nuova campagna', campaignForm51(), '<button class="btn" data-close-modal>Annulla</button><button class="btn btn-primary" id="saveCampaign51">Salva</button>');
+  const form = document.getElementById('campaignForm');
+  const projectSelect = form.elements.projectId;
+  const promptSelect = form.elements.promptId;
+  projectSelect.onchange = () => {
+    const prompts = state.prompts.filter(p => p.projectId === projectSelect.value);
+    promptSelect.disabled = !prompts.length;
+    promptSelect.innerHTML = `<option value="">${prompts.length ? 'Seleziona' : 'Nessun prompt per il progetto'}</option>${options(prompts, '', p => p.text)}`;
+  };
+  document.getElementById('saveCampaign51').onclick = () => {
+    if (!form.reportValidity()) return;
+    const d = Utils.form(form);
+    const prompt = promptBy(d.promptId);
+    const platforms = [...form.querySelectorAll('[name="platformIds"]:checked')].map(x => x.value);
+    if (!prompt || prompt.projectId !== d.projectId) { Utils.toast('Il prompt non appartiene al progetto selezionato.', 'error'); return; }
+    if (!platforms.length) { Utils.toast('Seleziona almeno una piattaforma.', 'error'); return; }
+    state.campaigns.push({ id: Utils.uid(), name: d.name.trim(), projectId: d.projectId, promptId: d.promptId, targetRuns: Math.max(2, Number(d.targetRuns || 6)), platformIds: platforms, environment: d.environment, promptTextSnapshot: prompt.text, promptHash: hashText(prompt.text), status: 'Attiva', createdAt: Utils.now() });
+    saveState(); closeModal(); renderCampaigns();
+  };
+};
+
+campaignMetrics = function(cam, opts = {}) {
+  const checks = campaignEligibleChecks(cam, opts);
+  const n = checks.length, brand = checks.filter(c => c.brandMentioned).length, domain = checks.filter(c => c.domainCited).length;
+  const positions = checks.filter(c => c.position > 0).map(c => c.position);
+  return { checks: n, checkIds: checks.map(c => c.id), brand, domain, brandRate: n ? Math.round(brand / n * 100) : 0, domainRate: n ? Math.round(domain / n * 100) : 0, avgPosition: positions.length ? (positions.reduce((a,b) => a + b, 0) / positions.length).toFixed(1) : '—', platforms: new Set(checks.map(c => c.platformId)).size, environments: Utils.unique(checks.map(c => c.testEnvironment)), promptHash: cam.promptHash };
+};
+
+renderCampaigns = function() {
+  document.getElementById('campaigns').innerHTML = `<div class="toolbar"><button class="btn btn-primary" data-action="new-campaign">＋ Nuova campagna</button><div class="spacer"></div></div>${state.campaigns.length ? state.campaigns.map(cam => {
+    const all = campaignMetrics(cam), post = cam.baselineDate ? campaignMetrics(cam, { afterBaseline: true }) : null;
+    const prompt = promptBy(cam.promptId);
+    const env = environmentMeta(cam.environment || 'not-verified');
+    const delta = cam.baseline && post ? post.brandRate - cam.baseline.brandRate : null;
+    return `<article class="campaign-card"><div class="flex wrap gap-8"><h3>${Utils.esc(cam.name)}</h3><div class="spacer"></div>${badge(cam.status || 'Attiva', cam.status === 'Completata' ? 'success' : 'info')}</div><div class="help">${Utils.esc(prompt?.text || cam.promptTextSnapshot || 'Prompt eliminato')}</div><div class="campaign-context">${badge(env.label, env.type)}${badge(`${cam.platformIds?.length || 0} piattaforme`, 'info')}<span class="help">Obiettivo: ${cam.targetRuns || 6} test comparabili</span></div><div class="grid grid-4" style="margin-top:12px">${metric('Test comparabili', all.checks, `Obiettivo ${cam.targetRuns || 6}`)}${metric('Stabilità brand', `${all.brandRate}%`, `${all.brand}/${all.checks || 0}`)}${metric('Citazione dominio', `${all.domainRate}%`, `${all.domain}/${all.checks || 0}`)}${metric('Posizione media', all.avgPosition, `${all.platforms} piattaforme`)}</div>${cam.baseline ? `<div class="notice" style="margin-top:10px">Baseline: brand ${cam.baseline.brandRate}% · dominio ${cam.baseline.domainRate}% · ${cam.baseline.checks} test${post ? ` · post-baseline ${post.checks} test${delta === null ? '' : ` · variazione brand <span class="campaign-delta">${delta >= 0 ? '+' : ''}${delta} pp</span>`}` : ''}</div>` : ''}<div class="card-actions"><button class="btn btn-sm" data-action="campaign-start-test" data-id="${cam.id}">Avvia test</button><button class="btn btn-sm" data-action="campaign-baseline" data-id="${cam.id}" ${all.checks ? '' : 'disabled'}>Salva baseline</button><button class="btn btn-sm btn-success" data-action="campaign-complete" data-id="${cam.id}" ${cam.baseline ? '' : 'disabled'}>Completa</button><button class="btn btn-sm btn-danger" data-action="campaign-delete" data-id="${cam.id}">Elimina</button></div></article>`;
+  }).join('') : empty('Nessuna campagna', 'Crea una campagna per misurare la stabilità con prompt e ambiente bloccati.')}`;
+};
+advancedRenderers.campaigns = renderCampaigns;
+actionHandlers['campaign-start-test'] = e => {
+  const campaign = state.campaigns.find(x => x.id === e.target.dataset.id); if (!campaign) return;
+  const counts = Object.fromEntries((campaign.platformIds || []).map(id => [id, campaignEligibleChecks(campaign).filter(c => c.platformId === id).length]));
+  const platformId = Object.entries(counts).sort((a,b) => a[1] - b[1])[0]?.[0] || campaign.platformIds?.[0] || 'chatgpt';
+  state.checkDraft = { projectId: campaign.projectId, promptId: campaign.promptId, platformId, testEnvironment: campaign.environment, wizardStep: 1 };
+  saveState(true); setSection('new-check');
+};
+actionHandlers['campaign-baseline'] = e => {
+  const campaign = state.campaigns.find(x => x.id === e.target.dataset.id); if (!campaign) return;
+  const metrics = campaignMetrics(campaign);
+  if (!metrics.checks) { Utils.toast('Esegui almeno un test comparabile prima di salvare la baseline.', 'error'); return; }
+  campaign.baseline = structuredClone(metrics); campaign.baselineCheckIds = metrics.checkIds; campaign.baselineDate = Utils.now(); campaign.algorithmVersion = CONFIG.VERSION; campaign.scoreWeightsSnapshot = structuredClone(state.settings.scoreWeights); saveState(); renderCampaigns();
+};
+actionHandlers['campaign-complete'] = e => {
+  const campaign = state.campaigns.find(x => x.id === e.target.dataset.id); if (!campaign?.baselineDate) { Utils.toast('Salva prima una baseline.', 'error'); return; }
+  const final = campaignMetrics(campaign, { afterBaseline: true });
+  if (!final.checks) { Utils.toast('Esegui almeno un nuovo test dopo la baseline.', 'error'); return; }
+  campaign.completedAt = Utils.now(); campaign.status = 'Completata'; campaign.final = structuredClone(final); campaign.finalCheckIds = final.checkIds; campaign.algorithmVersion = CONFIG.VERSION; saveState(); renderCampaigns();
+};
+actionHandlers['campaign-delete'] = e => deleteConfirm('Eliminare questa campagna? Le verifiche collegate resteranno disponibili.', () => {
+  if (!snapshotBefore('delete-campaign')) return;
+  state.campaigns = state.campaigns.filter(x => x.id !== e.target.dataset.id); saveState(); renderCampaigns();
+});
+
+function qaCheck(label, status, detail, severity = 'warning') { return { label, status, pass: status === 'pass', skipped: status === 'unverifiable', detail, severity }; }
+qaContent = function(project, raw) {
+  const isHtml = /<[a-z][\s\S]*>/i.test(raw);
+  const doc = document.implementation.createHTMLDocument('qa');
+  if (isHtml) doc.documentElement.innerHTML = raw; else doc.body.textContent = raw;
+  const text = (doc.body?.innerText || doc.body?.textContent || raw).replace(/\s+/g, ' ').trim();
+  const low = text.toLowerCase();
+  const title = isHtml ? doc.querySelector('title')?.textContent?.trim() || '' : '';
+  const meta = isHtml ? doc.querySelector('meta[name="description"]')?.content?.trim() || '' : '';
+  const h1 = isHtml ? [...doc.querySelectorAll('h1')].map(x => x.textContent.trim()).filter(Boolean) : [];
+  const headings = isHtml ? [...doc.querySelectorAll('h1,h2,h3')] : [];
+  const emptyHeadings = headings.filter(x => !x.textContent.trim()).length;
+  const links = isHtml ? [...doc.querySelectorAll('a[href]')].map(x => x.getAttribute('href')) : [];
+  const images = isHtml ? [...doc.querySelectorAll('img')] : [];
+  const target = project.targetUrl || '';
+  const services = (project.services || []).filter(service => low.includes(String(service).toLowerCase()));
+  const hasLocation = project.location ? low.includes(project.location.toLowerCase()) : null;
+  const placeholders = (String(raw).match(/\[[^\]]*(?:INSERIRE|DATO|VERIFICARE|NON PUBBLICARE|DA DEFINIRE)[^\]]*\]/gi) || []);
+  const riskyClaims = (text.match(/\b(?:migliore|numero uno|leader|garantito|garantisce|sempre|senza rischi|risultati certi)\b/gi) || []);
+  const numericClaims = (text.match(/\b\d+(?:[.,]\d+)?\s*(?:%|anni?|clienti?|progetti?|euro|€|recensioni?|casi?|ore?|giorni?|mesi?)\b/gi) || []);
+  const facts = usableKnowledge(project.id);
+  const unsupportedNumeric = numericClaims.filter(claim => !facts.some(fact => String(fact.value).toLowerCase().includes(claim.toLowerCase())));
+  const checks = [];
+  checks.push(isHtml ? qaCheck('H1 unico', h1.length === 1 ? 'pass' : 'fail', h1.length ? `${h1.length} rilevato/i` : 'Assente', 'blocking') : qaCheck('H1 unico', 'unverifiable', 'Serve il sorgente HTML per verificare la struttura.', 'warning'));
+  checks.push(isHtml ? qaCheck('Title SEO', title.length >= 25 && title.length <= 60 ? 'pass' : 'fail', title || 'Non rilevato') : qaCheck('Title SEO', 'unverifiable', 'Non verificabile dal solo testo.'));
+  checks.push(isHtml ? qaCheck('Meta description', meta.length >= 110 && meta.length <= 165 ? 'pass' : 'fail', meta || 'Non rilevata') : qaCheck('Meta description', 'unverifiable', 'Non verificabile dal solo testo.'));
+  checks.push(project.brand ? qaCheck('Brand presente', low.includes(project.brand.toLowerCase()) ? 'pass' : 'fail', project.brand, 'blocking') : qaCheck('Brand presente', 'unverifiable', 'Brand non configurato.'));
+  checks.push(project.location ? qaCheck('Località presente', hasLocation ? 'pass' : 'fail', project.location) : qaCheck('Località presente', 'unverifiable', 'Località non configurata.'));
+  checks.push(project.services?.length ? qaCheck('Servizi presenti', services.length ? 'pass' : 'fail', services.join(', ') || 'Nessuno') : qaCheck('Servizi presenti', 'unverifiable', 'Servizi non configurati.'));
+  checks.push(isHtml && target ? qaCheck('Link pagina target', links.some(link => link === target || Utils.domain(link) === Utils.domain(target)) ? 'pass' : 'fail', target) : qaCheck('Link pagina target', 'unverifiable', target ? 'Serve HTML per verificare i link.' : 'Pagina target non configurata.'));
+  checks.push(isHtml ? qaCheck('Heading non vuoti', emptyHeadings === 0 ? 'pass' : 'fail', `${emptyHeadings} vuoti`) : qaCheck('Heading non vuoti', 'unverifiable', 'Serve HTML per verificare i heading.'));
+  checks.push(qaCheck('Segnaposto rimossi', placeholders.length ? 'fail' : 'pass', placeholders.join(', ') || 'Assenti', 'blocking'));
+  checks.push(qaCheck('Claim assoluti', riskyClaims.length ? 'fail' : 'pass', riskyClaims.join(', ') || 'Nessuno', 'blocking'));
+  checks.push(qaCheck('Dati numerici supportati', unsupportedNumeric.length ? 'fail' : 'pass', unsupportedNumeric.join(', ') || 'Supportati o assenti', 'blocking'));
+  checks.push(qaCheck('CTA presente', /contatt|prenot|richied|scopri|chiama|scriv|preventiv/i.test(text) ? 'pass' : 'fail', 'Controllo testuale'));
+  checks.push(qaCheck('FAQ presenti', /faq|domande frequenti/i.test(text) || (isHtml && [...doc.querySelectorAll('h2,h3')].some(x => x.textContent.includes('?'))) ? 'pass' : 'fail', 'Controllo testuale'));
+  checks.push(isHtml && images.length ? qaCheck('Alt immagini', images.every(img => img.getAttribute('alt')?.trim()) ? 'pass' : 'fail', `${images.filter(img => img.getAttribute('alt')?.trim()).length}/${images.length} immagini con alt`) : qaCheck('Alt immagini', 'unverifiable', images.length ? 'Immagini non verificabili.' : 'Nessuna immagine nel contenuto.'));
+  const blockers = checks.filter(x => x.status === 'fail' && x.severity === 'blocking');
+  const warnings = checks.filter(x => x.status === 'fail' && x.severity === 'warning');
+  const verifiable = checks.filter(x => x.status !== 'unverifiable');
+  const passed = verifiable.filter(x => x.status === 'pass').length;
+  const score = verifiable.length ? Math.round(passed / verifiable.length * 100) : 0;
+  return { score, blockers, warnings, unverifiable: checks.filter(x => x.status === 'unverifiable'), checks, title, meta, h1, services, unsupportedNumeric, riskyClaims, ready: blockers.length === 0 && warnings.length === 0 };
+};
+
+renderQa = function(result) {
+  const checks = result?.checks || [];
+  const blockers = result?.blockers || [];
+  const warnings = result?.warnings || [];
+  const unverifiable = result?.unverifiable || checks.filter(x => x.skipped);
+  const score = Number.isFinite(Number(result?.score)) ? Number(result.score) : 0;
+  return `<div class="qa-score">${score}/100</div><div class="help">Prontezza editoriale sui controlli verificabili</div>${blockers.length ? `<div class="notice danger" style="margin-top:12px"><strong>Problemi bloccanti:</strong><ul style="margin:8px 0 0;padding-left:20px">${blockers.map(x => `<li><strong>${Utils.esc(x.label)}</strong>${x.detail ? ` — ${Utils.esc(x.detail)}` : ''}</li>`).join('')}</ul></div>` : '<div class="notice success" style="margin-top:12px">Nessun problema bloccante automatico.</div>'}${warnings.length ? `<div class="notice warning" style="margin-top:12px"><strong>Miglioramenti richiesti:</strong> ${warnings.length}</div>` : ''}${unverifiable.length ? `<div class="notice" style="margin-top:12px"><strong>Controlli non verificabili con questo input:</strong> ${unverifiable.length}. Incolla il sorgente HTML per una verifica strutturale completa.</div>` : ''}<div style="margin-top:12px">${checks.map(x => `<div class="diagnosis-item ${x.status === 'pass' ? 'status-confirmed' : x.status === 'unverifiable' ? 'qa-unverifiable' : 'status-verify'}"><strong>${x.status === 'pass' ? '✓' : x.status === 'unverifiable' ? '—' : '!'} ${Utils.esc(x.label)}</strong><div class="help">${Utils.esc(x.detail || (x.status === 'pass' ? 'Controllo superato' : 'Intervento richiesto'))}</div></div>`).join('')}</div>`;
+};
+
+const analyzeManualAuditBefore51 = analyzeManualAudit;
+analyzeManualAudit = function(project, audit = {}) {
+  const output = analyzeManualAuditBefore51(project, audit);
+  const proof = output.checks.find(check => check.key === 'reviews');
+  const count = Number(audit.reviews || 0);
+  if (proof) { proof.status = count > 0 ? 'confirmed' : 'verify'; proof.detail = count > 0 ? `${count} prove o recensioni registrate` : 'Non confermato'; }
+  return output;
+};
+
+makeWpPackage = function(project, html, type) {
+  const text = stripHtml(html);
+  const doc = document.implementation.createHTMLDocument('wp');
+  doc.body.innerHTML = html;
+  const h1 = doc.querySelector('h1')?.textContent?.trim() || promptBy(state.checks.filter(c => c.projectId === project.id).sort((a,b) => new Date(b.date) - new Date(a.date))[0]?.promptId)?.text || project.brand;
+  const officialUrl = Utils.absoluteUrl(project.targetUrl || project.domain);
+  const title = Utils.truncateWords(`${h1}${project.brand && !h1.toLowerCase().includes(project.brand.toLowerCase()) ? ` | ${project.brand}` : ''}`, 60);
+  const firstSentence = (text.match(/^.{60,220}?[.!?](?:\s|$)/) || [])[0] || text;
+  const meta = Utils.truncateWords(firstSentence, 160);
+  const slug = Utils.slug(h1).replace(/\s+/g, '-');
+  const faq = [...html.matchAll(/<h[23][^>]*>([^<]*\?[^<]*)<\/h[23]>\s*<p[^>]*>([\s\S]*?)<\/p>/gi)].map(match => ({ q: stripHtml(match[1]), a: stripHtml(match[2]) }));
+  const context = { '@context': 'https://schema.org' };
+  let schema;
+  if (type === 'FAQPage') schema = { ...context, '@type': 'FAQPage', mainEntity: faq.map(x => ({ '@type': 'Question', name: x.q, acceptedAnswer: { '@type': 'Answer', text: x.a } })) };
+  else if (type === 'Service') schema = { ...context, '@type': 'Service', name: h1, provider: { '@type': 'Organization', name: project.brand, url: Utils.absoluteUrl(project.domain) || officialUrl || undefined }, areaServed: project.location || undefined, url: officialUrl || undefined, description: meta || undefined };
+  else if (type === 'LocalBusiness') schema = { ...context, '@type': 'LocalBusiness', name: project.brand, url: Utils.absoluteUrl(project.domain) || officialUrl || undefined, areaServed: project.location || undefined, description: meta || undefined };
+  else schema = { ...context, '@type': 'Article', headline: h1, description: meta || undefined, author: state.settings.consultant ? { '@type': 'Person', name: state.settings.consultant } : { '@type': 'Organization', name: project.brand }, publisher: { '@type': 'Organization', name: project.brand, url: Utils.absoluteUrl(project.domain) || undefined }, mainEntityOfPage: officialUrl || undefined, inLanguage: project.language || undefined };
+  const warnings = [];
+  if (title.length < 25) warnings.push('Title inferiore a 25 caratteri');
+  if (meta.length < 110) warnings.push('Meta description inferiore a 110 caratteri');
+  if (!officialUrl) warnings.push('URL ufficiale non valido o non configurato');
+  if (type === 'FAQPage' && !faq.length) warnings.push('Nessuna FAQ reale rilevata nel contenuto');
+  return { title, meta, slug, html, schema, warnings, checklist: ['H1 unico','Title 25–60 caratteri','Meta 110–165 caratteri','URL leggibile','Link interno alla pagina target','Alt immagini compilati','Schema specifico validato','Dati verificati nella Knowledge Base','Salva come bozza','Revisione umana finale'] };
+};
+
+actionHandlers['generate-wp-package'] = () => {
+  const pid = document.getElementById('wpProject')?.value, project = projectBy(pid), html = document.getElementById('wpHtml')?.value || '', type = document.getElementById('wpType')?.value || 'Article';
+  if (!project || html.length < 20) { Utils.toast('Seleziona progetto e inserisci HTML.', 'error'); return; }
+  const pkg = makeWpPackage(project, html, type);
+  state.wpPackages.push({ id: Utils.uid(), projectId: pid, date: Utils.now(), ...pkg }); saveState(true);
+  document.getElementById('wpOutput').innerHTML = `<h2>Pacchetto WordPress</h2>${pkg.warnings.length ? `<div class="notice warning"><strong>Da completare prima della pubblicazione:</strong><ul>${pkg.warnings.map(x => `<li>${Utils.esc(x)}</li>`).join('')}</ul></div>` : '<div class="notice success">Nessuna anomalia automatica nel pacchetto.</div>'}<div class="field"><label>Title SEO</label><input value="${Utils.esc(pkg.title)}"></div><div class="field"><label>Meta description</label><textarea>${Utils.esc(pkg.meta)}</textarea></div><div class="field"><label>Permalink</label><input value="${Utils.esc(pkg.slug)}"></div><h3>Schema JSON-LD</h3><div class="mini-code">${Utils.esc(JSON.stringify(pkg.schema, null, 2))}</div><h3>Checklist</h3><div class="checklist">${pkg.checklist.map(x => `<div class="check-item">□ ${Utils.esc(x)}</div>`).join('')}</div><div class="compact-actions" style="margin-top:12px"><button class="btn" data-action="copy-wp-schema">Copia schema</button><button class="btn" data-action="download-wp-html">Scarica HTML</button></div>`;
+  window.__wpPkg = pkg;
+};
+
+function compareSemver(a = '0', b = '0') {
+  const pa = String(a).split('.').map(Number), pb = String(b).split('.').map(Number);
+  for (let i = 0; i < Math.max(pa.length, pb.length); i++) { const diff = (pa[i] || 0) - (pb[i] || 0); if (diff) return diff; }
+  return 0;
+}
+validateImportedState = function(candidate) {
+  const errors = [], warnings = [];
+  if (!candidate || typeof candidate !== 'object' || Array.isArray(candidate)) errors.push('Il file non contiene un oggetto JSON valido.');
+  for (const key of ['projects','prompts','checks']) if (!Array.isArray(candidate?.[key])) errors.push(`Campo obbligatorio non valido: ${key}`);
+  const total = Object.values(candidate || {}).reduce((n, value) => n + (Array.isArray(value) ? value.length : 0), 0);
+  if (total > 100000) errors.push('Il backup contiene troppi record.');
+  const duplicateIds = [];
+  for (const key of ['projects','prompts','checks','opportunities','campaigns','knowledge','tasks']) {
+    const ids = (candidate?.[key] || []).map(x => x?.id).filter(Boolean);
+    if (ids.length !== new Set(ids).size) duplicateIds.push(key);
+  }
+  if (duplicateIds.length) errors.push(`ID duplicati in: ${duplicateIds.join(', ')}`);
+  if (candidate?.version && compareSemver(candidate.version, CONFIG.VERSION) > 0) warnings.push(`Backup creato con versione ${candidate.version}, più recente dell’app ${CONFIG.VERSION}.`);
+  return { valid: errors.length === 0, errors, warnings };
+};
+
+diagnosticsRun = function() {
+  const tests = [], add = (name, pass, detail, priority = 'P2') => tests.push({ name, pass, detail, priority });
+  add('Versione e schema', state.version === CONFIG.VERSION && Number(state.schemaVersion) === CONFIG.DATA_SCHEMA_VERSION, `App ${CONFIG.VERSION} · dati ${state.version} · schema ${state.schemaVersion}`, 'P1');
+  add('Sezioni navigabili', [...document.querySelectorAll('[data-section]')].every(item => document.getElementById(item.dataset.section) && PAGES[item.dataset.section]), 'Ogni voce di navigazione punta a una sezione configurata', 'P1');
+  add('Relazioni progetti', state.prompts.every(x => state.projects.some(p => p.id === x.projectId)), 'Prompt collegati a progetti esistenti', 'P1');
+  add('Relazioni verifiche', state.checks.every(x => state.projects.some(p => p.id === x.projectId) && state.prompts.some(p => p.id === x.promptId)), 'Verifiche collegate', 'P1');
+  add('Snapshot prompt', state.checks.every(x => x.promptTextSnapshot && x.promptHash), 'Ogni verifica conserva testo e hash del prompt', 'P1');
+  add('Campagne comparabili', state.campaigns.every(x => x.createdAt && x.environment && x.promptHash && x.platformIds?.length), 'Periodo, ambiente, prompt e piattaforme definiti', 'P1');
+  add('Knowledge Base affidabile', state.knowledge.filter(x => x.verified).every(x => x.source || x.internalEvidence), 'Dati verificati con fonte/evidenza', 'P1');
+  add('Task senza orfani', state.tasks.every(x => state.projects.some(p => p.id === x.projectId)), 'Attività collegate', 'P2');
+  add('Fonti senza orfani', Object.keys(state.sourceValidations).every(id => state.checks.some(c => c.id === id)), 'Revisioni fonti collegate', 'P2');
+  add('Pesi GEO Score', Object.values(state.settings.scoreWeights).reduce((a,b) => a + Number(b), 0) === 100, `Totale ${Object.values(state.settings.scoreWeights).reduce((a,b) => a + Number(b), 0)}%`, 'P2');
+  add('Persistenza browser', storageIsPersistent(), storageIsPersistent() ? 'localStorage disponibile' : 'Modalità temporanea: esporta un backup prima di chiudere', 'P3');
+  add('Backup esterno', state.backups.length > 0, state.backups.length ? 'Backup registrato' : 'Esporta periodicamente un JSON', 'P3');
+  return tests;
+};
+
+const renderDashboardBefore51 = renderDashboard;
+renderDashboard = function() {
+  renderDashboardBefore51();
+  const projectId = dashboardProjectId;
+  const planned = (state.tasks || []).filter(task => (!projectId || task.projectId === projectId) && !['Completata','Non applicabile'].includes(task.status));
+  const pending = (state.opportunities || []).filter(item => (!projectId || item.projectId === projectId) && item.status !== 'Completata' && !(state.dismissedOpportunityIds || []).includes(item.id));
+  if (!planned.length && pending.length) {
+    const kpi = document.querySelectorAll('#dashboard .dashboard-kpi')[3];
+    if (kpi) {
+      kpi.querySelector('.dashboard-kpi-value').textContent = String(pending.length);
+      kpi.querySelector('.dashboard-kpi-meta').textContent = pending.length === 1 ? 'Opportunità da valutare' : 'Opportunità da valutare';
+    }
+  }
+  enhanceRenderedAccessibility(document.getElementById('dashboard'));
+};
+
+if (AdvancedStore?.mirror) {
+  AdvancedStore.mirror = function() {
+    clearTimeout(this._mirrorTimer51);
+    this._mirrorTimer51 = setTimeout(async () => {
+      if (this.disabled51 || typeof indexedDB === 'undefined') return false;
+      try {
+        const db = this.db || await this.open();
+        await new Promise((resolve, reject) => {
+          const tx = db.transaction('backups', 'readwrite');
+          tx.objectStore('backups').put({ id: 'latest', date: Utils.now(), state: structuredClone(state) });
+          tx.oncomplete = () => resolve(true);
+          tx.onerror = () => reject(tx.error);
+          tx.onabort = () => reject(tx.error || new Error('Mirror IndexedDB interrotto'));
+        });
+        return true;
+      } catch {
+        this.disabled51 = true;
+        return false;
+      }
+    }, 700);
+    return true;
+  };
+}
+const saveStateBefore51 = saveState;
+saveState = function(silent = false) {
+  window.__state = state;
+  const ok = saveStateBefore51(silent);
+  updateStorageStatus();
+  return ok;
+};
+
+const saveBrandingBefore51 = saveBranding;
+function relativeLuminance(hex) {
+  const match = /^#([0-9a-f]{6})$/i.exec(String(hex || ''));
+  if (!match) return null;
+  const rgb = [0,2,4].map(i => parseInt(match[1].slice(i, i + 2), 16) / 255).map(v => v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4));
+  return .2126 * rgb[0] + .7152 * rgb[1] + .0722 * rgb[2];
+}
+function contrastWithWhite(hex) { const l = relativeLuminance(hex); return l === null ? 0 : 1.05 / (l + .05); }
+saveBranding = function() {
+  const form = document.getElementById('brandingSettings');
+  if (!form) return;
+  if (contrastWithWhite(form.primary.value) < 4.5 || contrastWithWhite(form.secondary.value) < 4.5) {
+    Utils.toast('Scegli colori principali con contrasto almeno 4,5:1 rispetto al testo bianco.', 'error');
+    return;
+  }
+  const file = document.getElementById('logoInput')?.files?.[0];
+  if (file && !['image/png','image/jpeg','image/webp'].includes(file.type)) { Utils.toast('Formato logo non supportato.', 'error'); return; }
+  saveBrandingBefore51();
+};
+actionHandlers['save-branding'] = saveBranding;
+
+actionHandlers['save-score-settings'] = () => {
+  const form = document.getElementById('scoreSettings');
+  const values = Object.fromEntries(['brand','domain','position','mentions','competitors','sentiment'].map(key => [key, Number(form[key].value)]));
+  if (Object.values(values).some(value => !Number.isFinite(value) || value < 0)) {
+    Utils.toast('I pesi devono essere numeri non negativi.', 'error');
+    return;
+  }
+  if (Object.values(values).reduce((sum, value) => sum + value, 0) !== 100) {
+    Utils.toast('Il totale dei pesi deve essere 100%.', 'error');
+    return;
+  }
+  state.settings.scoreWeights = values;
+  state.checks.forEach(check => {
+    check.score = Analyzer.score(check);
+    check.visibilityScore = check.score;
+    check.algorithmVersion = CONFIG.VERSION;
+    check.scoreWeightsSnapshot = structuredClone(values);
+    check.updatedAt = Utils.now();
+  });
+  saveState();
+  renderSettings();
+};
+
+
+const bindEventsBefore51 = bindEvents;
+bindEvents = function() {
+  document.addEventListener('click', event => {
+    const step = event.target.closest('[data-wizard-step]');
+    if (step) { event.preventDefault(); event.stopImmediatePropagation(); goToWizardStep(step.dataset.wizardStep); }
+  }, true);
+  document.addEventListener('keydown', event => {
+    const modalOpen = document.getElementById('modalBackdrop')?.classList.contains('show');
+    if (event.key === 'Escape' && document.getElementById('sidebar')?.classList.contains('open') && !modalOpen) { event.preventDefault(); event.stopImmediatePropagation(); closeMobile(); return; }
+    const shortcut = (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k';
+    const slash = event.key === '/' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName || '');
+    if ((shortcut || slash) && matchMedia('(max-width:680px)').matches && !modalOpen) { event.preventDefault(); event.stopImmediatePropagation(); openMobileSearch(); return; }
+    if (event.target.id === 'globalSearch') {
+      if (event.key === 'ArrowDown') { event.preventDefault(); event.stopImmediatePropagation(); setSearchActive(searchActiveIndex51 + 1); }
+      else if (event.key === 'ArrowUp') { event.preventDefault(); event.stopImmediatePropagation(); setSearchActive(searchActiveIndex51 - 1); }
+      else if (event.key === 'Enter' && window.__searchMatches?.length) { event.preventDefault(); event.stopImmediatePropagation(); openSearchMatch(window.__searchMatches[Math.max(0, searchActiveIndex51)]); }
+    } else if (event.target.closest('#searchPopover .search-result')) {
+      const items = [...document.querySelectorAll('#searchPopover .search-result')];
+      const index = items.indexOf(event.target.closest('.search-result'));
+      if (event.key === 'ArrowDown') { event.preventDefault(); setSearchActive(index + 1); }
+      if (event.key === 'ArrowUp') { event.preventDefault(); setSearchActive(index - 1); }
+      if (event.key === 'Escape') { event.preventDefault(); closeSearchPopover(); document.getElementById('globalSearch')?.focus(); }
+    }
+  }, true);
+  document.addEventListener('input', event => {
+    if (event.target.matches('[aria-invalid="true"]')) { event.target.removeAttribute('aria-invalid'); event.target.setCustomValidity(''); }
+  }, true);
+  bindEventsBefore51();
+  document.getElementById('menuToggle').onclick = openMobileNav;
+  document.getElementById('mobileSearchBtn').onclick = openMobileSearch;
+  const sidebarMedia = matchMedia('(max-width:900px)');
+  sidebarMedia.addEventListener?.('change', syncSidebarAccessibility);
+  syncSidebarAccessibility();
+  matchMedia('(prefers-color-scheme:dark)').addEventListener?.('change', () => { if (state.settings.theme === 'auto') applyTheme(); });
+  let pending = false;
+  const observer = new MutationObserver(() => {
+    if (pending) return;
+    pending = true;
+    requestAnimationFrame(() => { pending = false; enhanceRenderedAccessibility(document.querySelector('.section.active') || document); if (document.getElementById('modalBackdrop')?.classList.contains('show')) enhanceRenderedAccessibility(document.getElementById('modalBackdrop')); });
+  });
+  observer.observe(document.getElementById('app'), { childList: true, subtree: true });
+  updateStorageStatus();
+  enhanceRenderedAccessibility(document);
+};
+
+
+// ============================================================
 // INIT
 // ============================================================
 window.currentSection = 'dashboard';
@@ -3900,7 +5204,7 @@ applyTheme();
 bindEvents();
 renderDashboard();
 
-console.log(`GEO Citation Monitor v${CONFIG.VERSION} caricato`);
+console.log(`GEO Citation Monitor v${CONFIG.VERSION} caricato — build verificata`);
 console.log(`Progetti: ${state.projects.length}, Prompt: ${state.prompts.length}, Verifiche: ${state.checks.length}`);
 console.log('Spazio utilizzato:', Utils.storage().kb, 'KB');
 </script>
