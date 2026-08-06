@@ -5,10 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="description" content="Strumento locale per monitorare citazioni, fonti e visibilità GEO con verifiche manuali, report e controlli di qualità.">
 <meta name="robots" content="noindex,nofollow,noarchive">
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<meta name="app-build" content="5.2.0">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#f7f9fc">
 <meta name="color-scheme" content="light dark">
-<title>GEO Citation Monitor 5.1</title>
+<title>GEO Citation Monitor 5.2.0</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2064%2064%22%3E%3Crect%20width=%2264%22%20height=%2264%22%20rx=%2214%22%20fill=%22%23155eef%22/%3E%3Cpath%20d=%22M32%2011%2014%2021v22l18%2010%2018-10V21L32%2011Zm0%209%209%205-9%205-9-5%209-5ZM22%2033l7%204v8l-7-4v-8Zm13%2012v-8l7-4v8l-7%204Z%22%20fill=%22white%22/%3E%3C/svg%3E">
 <style>
 :root{
@@ -265,7 +267,7 @@ input[aria-invalid="true"],select[aria-invalid="true"],textarea[aria-invalid="tr
 const CONFIG = {
   APP_KEY: 'geoCitationMonitor_v42',
   LEGACY_APP_KEYS: ['geoCitationMonitor_v3'],
-  VERSION: '5.1.0',
+  VERSION: '5.2.0',
   DATA_SCHEMA_VERSION: 8,
   MAX_LOGO_SIZE: 350000,
   MIN_RESPONSE_LENGTH: 120,
@@ -819,7 +821,7 @@ const Analyzer = {
     const low = clean.toLowerCase();
     const brand = this.findVariant(clean, project);
     const domain = Utils.domain(project.domain);
-    const domainPattern = domain ? new RegExp('(?:https?:\\/\\/)?(?:www\\.)?' + domain.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&'), 'i') : null;
+    const domainPattern = domain ? new RegExp('(?:https?:\\/\\/)?(?:www\\.)?' + domain.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i') : null;
     const domainMentionedText = Boolean(domainPattern && domainPattern.test(clean));
     const urls = Utils.unique([...Utils.urls(clean), ...Utils.urls(sourcesText)]);
     const domains = urls.map(Utils.domain);
@@ -1339,8 +1341,9 @@ function generateOpportunities() {
     }
   }
 
+  const previousOpportunitiesJson = JSON.stringify(state.opportunities || []);
   state.opportunities = output;
-  saveState(true);
+  if (JSON.stringify(output) !== previousOpportunitiesJson) saveState(true);
   return output;
 }
 
@@ -1536,7 +1539,7 @@ function dashboardQuality(checks) {
 
 function resultsTable(checks, selectable = true, showReportAction = false) {
   if (!checks.length) return empty('Nessuna verifica', 'Incolla e analizza una risposta reale.');
-  return `<div class="table-wrap"><table><thead><tr>${selectable ? '<th><input type="checkbox" id="selectAllResults" aria-label="Seleziona tutte"></th>' : ''}<th>Prompt / progetto</th><th>AI</th><th>Esito</th><th>Score</th><th>Confidenza</th><th>Data</th><th>Azioni</th></tr></thead><tbody>${checks.map(c => `<tr data-result-row data-id="${c.id}" data-search="${Utils.esc(Utils.slug(JSON.stringify(c)))}" data-project="${c.projectId}" data-platform="${c.platformId}" data-brand="${c.brandMentioned ? 'yes' : 'no'}" data-domain="${c.domainCited ? 'yes' : 'no'}" data-sources="${(c.urls || []).length ? 'yes' : 'no'}">${selectable ? `<td><input type="checkbox" class="result-select" value="${c.id}" ${window.selectedResultIds?.has(c.id) ? 'checked' : ''}></td>` : ''}<td><strong>${Utils.esc(promptBy(c.promptId)?.text || 'Prompt eliminato')}</strong><div class="help">${Utils.esc(projectBy(c.projectId)?.name || 'Progetto eliminato')}</div></td><td>${Utils.esc(platformBy(c.platformId).name)}<div class="help">${Utils.esc(c.responseType || '')}</div></td><td>${c.brandMentioned ? badge('Brand', 'success') : badge('Assente', 'danger')} ${c.domainCited ? badge('Dominio', 'info') : ''}</td><td><strong>${c.score || 0}</strong>/100</td><td>${c.confidence || 0}/100</td><td>${Utils.date(c.date, true)}</td><td><div class="flex gap-8 wrap"><button class="btn btn-sm" data-view-check="${c.id}">Dettagli</button><button class="btn btn-sm" data-edit-check="${c.id}">Modifica</button><button class="btn btn-sm" data-duplicate-check="${c.id}">Duplica</button>${showReportAction ? `<button class="btn btn-sm btn-primary" data-report-check="${c.id}">Report</button>` : ''}</div></td></tr>`).join('')}</tbody></table></div>`;
+  return `<div class="table-wrap"><table><thead><tr>${selectable ? '<th><input type="checkbox" id="selectAllResults" aria-label="Seleziona tutte"></th>' : ''}<th>Prompt / progetto</th><th>AI</th><th>Esito</th><th>Score</th><th>Confidenza</th><th>Data</th><th>Azioni</th></tr></thead><tbody>${checks.map(c => `<tr data-result-row data-id="${c.id}" data-search="${Utils.esc(Utils.slug(JSON.stringify(c)))}" data-project="${c.projectId}" data-platform="${c.platformId}" data-brand="${c.brandMentioned ? 'yes' : 'no'}" data-domain="${c.domainCited ? 'yes' : 'no'}" data-sources="${(c.urls || []).length ? 'yes' : 'no'}">${selectable ? `<td><input type="checkbox" class="result-select" value="${c.id}" ${selectedResultIds.has(c.id) ? 'checked' : ''}></td>` : ''}<td><strong>${Utils.esc(promptBy(c.promptId)?.text || 'Prompt eliminato')}</strong><div class="help">${Utils.esc(projectBy(c.projectId)?.name || 'Progetto eliminato')}</div></td><td>${Utils.esc(platformBy(c.platformId).name)}<div class="help">${Utils.esc(c.responseType || '')}</div></td><td>${c.brandMentioned ? badge('Brand', 'success') : badge('Assente', 'danger')} ${c.domainCited ? badge('Dominio', 'info') : ''}</td><td><strong>${c.score || 0}</strong>/100</td><td>${c.confidence || 0}/100</td><td>${Utils.date(c.date, true)}</td><td><div class="flex gap-8 wrap"><button class="btn btn-sm" data-view-check="${c.id}">Dettagli</button><button class="btn btn-sm" data-edit-check="${c.id}">Modifica</button><button class="btn btn-sm" data-duplicate-check="${c.id}">Duplica</button>${showReportAction ? `<button class="btn btn-sm btn-primary" data-report-check="${c.id}">Report</button>` : ''}</div></td></tr>`).join('')}</tbody></table></div>`;
 }
 
 function renderEvidence(a) {
@@ -2249,6 +2252,7 @@ function buildGeneratedPrompt() {
   const check = state.checks.find(c => c.id === document.getElementById('generatorCheck').value);
   if (!check) { Utils.toast('Seleziona una verifica.', 'error'); return; }
   const project = projectBy(check.projectId);
+  if (!project) { Utils.toast('Progetto non disponibile per questa verifica.', 'error'); return; }
   const prompt = promptBy(check.promptId);
   const type = document.getElementById('generatorTemplate').value;
 
@@ -3551,7 +3555,7 @@ saveState=function(silent=false){const ok=originalSaveState(silent); if(ok) Adva
 function evidenceBadge(status){const m={confirmed:['Confermato','confirmed'],probable:['Probabile','probable'],verify:['Da verificare','verify'],resolved:['Già risolto','confirmed'],unknown:['Non valutabile','verify']};const x=m[status]||m.verify;return `<span class="evidence-label evidence-${x[1]}">${x[0]}</span>`;}
 function projectKnowledge(projectId){return state.knowledge.filter(x=>x.projectId===projectId && x.verified);}
 function latestPageSnapshot(projectId){return state.pageSnapshots.filter(x=>x.projectId===projectId).sort((a,b)=>new Date(b.date)-new Date(a.date))[0];}
-function stripHtml(html){const d=document.createElement('div');d.innerHTML=html;return (d.textContent||'').replace(/\s+/g,' ').trim();}
+function stripHtml(html){const doc=document.implementation.createHTMLDocument('strip');doc.body.innerHTML=String(html||'');return (doc.body.textContent||'').replace(/\s+/g,' ').trim();}
 function analyzePageInput(project,raw){
   const isHtml=/<[a-z][\s\S]*>/i.test(raw); const doc=document.implementation.createHTMLDocument('audit'); if(isHtml) doc.documentElement.innerHTML=raw; else doc.body.textContent=raw;
   const text=isHtml?(doc.body?.innerText||doc.body?.textContent||''):raw;
@@ -3627,7 +3631,7 @@ function taskDelta(t){const b=state.checks.find(c=>c.id===t.beforeCheckId),a=sta
 function taskForm(){return `<form id="taskForm" class="form-grid"><div class="field"><label>Progetto</label><select name="projectId" required><option value="">Seleziona</option>${options(state.projects,'')}</select></div>${field('title','Attività','',true)}<div class="field"><label>Priorità</label><select name="priority"><option>P1</option><option>P2</option><option selected>P3</option><option>P4</option></select></div>${field('owner','Responsabile','')}${field('due','Scadenza','','','','date')}${field('url','URL interessato','','','https://…','url')}${textareaField('notes','Istruzioni e prova richiesta','', '',4)}</form>`;}
 
 function parseCsv(text){const rows=[];let row=[],cell='',q=false;for(let i=0;i<text.length;i++){const ch=text[i],n=text[i+1];if(ch==='"'&&q&&n==='"'){cell+='"';i++;}else if(ch==='"')q=!q;else if(ch===','&&!q){row.push(cell);cell='';}else if((ch==='\n'||ch==='\r')&&!q){if(ch==='\r'&&n==='\n')i++;row.push(cell);if(row.some(x=>x.trim()))rows.push(row);row=[];cell='';}else cell+=ch;}row.push(cell);if(row.some(x=>x.trim()))rows.push(row);return rows;}
-function normalizeGsc(rows){if(rows.length<2)return[];const h=rows[0].map(x=>Utils.slug(x));const idx=(...names)=>h.findIndex(x=>names.some(n=>x.includes(n)));const iq=idx('query','query principali'),ip=idx('pagina','page'),ic=idx('clic','click'),ii=idx('impression'),ict=idx('ctr'),ipos=idx('posizione','position');return rows.slice(1).map(r=>({query:r[iq]||'',page:r[ip]||'',clicks:Number(String(r[ic]||0).replace(',','.'))||0,impressions:Number(String(r[ii]||0).replace(/[.\s]/g,'').replace(',','.'))||0,ctr:r[ict]||'',position:Number(String(r[ipos]||0).replace(',','.'))||0})).filter(x=>x.query||x.page);}
+function normalizeGsc(rows){if(rows.length<2)return[];const h=rows[0].map(x=>Utils.slug(x));const idx=(...names)=>h.findIndex(x=>names.some(n=>x.includes(n)));const iq=idx('query','query principali'),ip=idx('pagina','page'),ic=idx('clic','click'),ii=idx('impression'),ict=idx('ctr'),ipos=idx('posizione','position');return rows.slice(1).map(r=>({query:r[iq]||'',page:r[ip]||'',clicks:Number(String(r[ic]||0).replace(/[.\s]/g,'').replace(',','.'))||0,impressions:Number(String(r[ii]||0).replace(/[.\s]/g,'').replace(',','.'))||0,ctr:r[ict]||'',position:Number(String(r[ipos]||0).replace(',','.'))||0})).filter(x=>x.query||x.page);}
 let gscProject='';
 function renderGsc(){const pid=document.getElementById('gscProject')?.value||gscProject||state.projects[0]?.id||'';gscProject=pid;const imports=state.gscImports.filter(x=>x.projectId===pid);const latest=imports.sort((a,b)=>new Date(b.date)-new Date(a.date))[0];document.getElementById('gsc').innerHTML=`<div class="toolbar"><select id="gscProject"><option value="">Seleziona progetto</option>${options(state.projects,pid)}</select><input type="file" id="gscFile" accept=".csv,text/csv"><button class="btn btn-primary" data-action="import-gsc">Importa CSV</button></div><div class="notice">Importa il CSV “Query” o “Pagine” di Search Console. Per ZIP usa prima l’esportazione CSV estratta.</div>${latest?renderGscData(latest):empty('Nessun dato Search Console','Importa un CSV per supportare la decisione tra aggiornamento e nuovo contenuto.')}`;}
 function renderGscData(im){const top=im.rows.slice().sort((a,b)=>b.impressions-a.impressions).slice(0,50);return `<div class="grid grid-4">${metric('Righe',im.rows.length,'Importate')}${metric('Impression',im.rows.reduce((s,x)=>s+x.impressions,0),'Totale')}${metric('Clic',im.rows.reduce((s,x)=>s+x.clicks,0),'Totale')}${metric('Query pagina target',im.rows.filter(x=>x.page&&x.page.includes(projectBy(im.projectId)?.targetUrl||'___')).length,'Corrispondenze')}</div><div class="table-wrap" style="margin-top:16px"><table><thead><tr><th>Query</th><th>Pagina</th><th>Clic</th><th>Impression</th><th>Posizione</th><th>Decisione</th></tr></thead><tbody>${top.map(x=>`<tr><td>${Utils.esc(x.query)}</td><td>${Utils.esc(x.page)}</td><td>${x.clicks}</td><td>${x.impressions}</td><td>${x.position||'—'}</td><td>${x.impressions>20&&x.position>5?badge('Aggiorna pagina','warning'):x.impressions===0?badge('Dato insufficiente','info'):badge('Mantieni e rafforza','success')}</td></tr>`).join('')}</tbody></table></div>`;}
@@ -4055,7 +4059,7 @@ function updateStorageStatus() {
   const version = document.querySelector('.sidebar-footer strong');
   if (label) label.textContent = storageIsPersistent() ? 'Dati salvati nel browser' : 'Dati temporanei nella sessione';
   dot?.classList.toggle('session-only', !storageIsPersistent());
-  if (version) version.textContent = `v${CONFIG.VERSION.split('.').slice(0, 2).join('.')}`;
+  if (version) version.textContent = `v${CONFIG.VERSION}`;
 }
 
 function enhanceRenderedAccessibility(root = document) {
@@ -4707,7 +4711,7 @@ resultsTable = function(checks, selectable = true, showReportAction = false) {
   if (!checks.length) return empty('Nessuna verifica', 'Incolla e analizza una risposta reale.');
   return `<div class="table-wrap results-table-wrap"><table class="results-data-table"><thead><tr>${selectable ? '<th scope="col"><input type="checkbox" id="selectAllResults" aria-label="Seleziona tutte le verifiche visibili"></th>' : ''}<th scope="col">Prompt / progetto</th><th scope="col">AI</th><th scope="col">Esito</th><th scope="col">Score</th><th scope="col">Confidenza</th><th scope="col">Data</th><th scope="col">Azioni</th></tr></thead><tbody>${checks.map(check => {
     const promptText = promptBy(check.promptId)?.text || 'Prompt eliminato';
-    return `<tr data-result-row data-id="${check.id}" data-search="${Utils.esc(Utils.slug(JSON.stringify(check)))}" data-project="${check.projectId}" data-platform="${check.platformId}" data-brand="${check.brandMentioned ? 'yes' : 'no'}" data-domain="${check.domainCited ? 'yes' : 'no'}" data-sources="${(check.urls || []).length ? 'yes' : 'no'}">${selectable ? `<td class="result-select-cell" data-label="Seleziona"><input type="checkbox" class="result-select" value="${check.id}" aria-label="Seleziona: ${Utils.esc(promptText)}" ${window.selectedResultIds?.has(check.id) ? 'checked' : ''}></td>` : ''}<td data-label="Prompt / progetto"><strong>${Utils.esc(promptText)}</strong><div class="help">${Utils.esc(projectBy(check.projectId)?.name || 'Progetto eliminato')}</div></td><td data-label="AI">${Utils.esc(platformBy(check.platformId).name)}<div class="help">${Utils.esc(check.responseType || '')}</div></td><td data-label="Esito">${check.brandMentioned ? badge('Brand', 'success') : badge('Assente', 'danger')} ${check.domainCited ? badge('Dominio', 'info') : ''}</td><td data-label="Score"><strong>${check.score || 0}</strong>/100</td><td data-label="Confidenza">${check.confidence || 0}/100</td><td data-label="Data">${Utils.date(check.date, true)}</td><td class="result-actions" data-label="Azioni"><div class="flex gap-8 wrap"><button class="btn btn-sm" data-view-check="${check.id}">Dettagli</button><button class="btn btn-sm" data-edit-check="${check.id}">Modifica</button><button class="btn btn-sm" data-duplicate-check="${check.id}">Duplica</button>${!check.manualReview?.completed ? `<button class="btn btn-sm btn-primary" data-action="review-check" data-id="${check.id}">Rivedi</button>` : ''}${showReportAction ? `<button class="btn btn-sm ${check.manualReview?.completed ? 'btn-primary' : ''}" data-report-check="${check.id}">Report</button>` : ''}</div></td></tr>`;
+    return `<tr data-result-row data-id="${check.id}" data-search="${Utils.esc(Utils.slug(JSON.stringify(check)))}" data-project="${check.projectId}" data-platform="${check.platformId}" data-brand="${check.brandMentioned ? 'yes' : 'no'}" data-domain="${check.domainCited ? 'yes' : 'no'}" data-sources="${(check.urls || []).length ? 'yes' : 'no'}">${selectable ? `<td class="result-select-cell" data-label="Seleziona"><input type="checkbox" class="result-select" value="${check.id}" aria-label="Seleziona: ${Utils.esc(promptText)}" ${selectedResultIds.has(check.id) ? 'checked' : ''}></td>` : ''}<td data-label="Prompt / progetto"><strong>${Utils.esc(promptText)}</strong><div class="help">${Utils.esc(projectBy(check.projectId)?.name || 'Progetto eliminato')}</div></td><td data-label="AI">${Utils.esc(platformBy(check.platformId).name)}<div class="help">${Utils.esc(check.responseType || '')}</div></td><td data-label="Esito">${check.brandMentioned ? badge('Brand', 'success') : badge('Assente', 'danger')} ${check.domainCited ? badge('Dominio', 'info') : ''}</td><td data-label="Score"><strong>${check.score || 0}</strong>/100</td><td data-label="Confidenza">${check.confidence || 0}/100</td><td data-label="Data">${Utils.date(check.date, true)}</td><td class="result-actions" data-label="Azioni"><div class="flex gap-8 wrap"><button class="btn btn-sm" data-view-check="${check.id}">Dettagli</button><button class="btn btn-sm" data-edit-check="${check.id}">Modifica</button><button class="btn btn-sm" data-duplicate-check="${check.id}">Duplica</button>${!check.manualReview?.completed ? `<button class="btn btn-sm btn-primary" data-action="review-check" data-id="${check.id}">Rivedi</button>` : ''}${showReportAction ? `<button class="btn btn-sm ${check.manualReview?.completed ? 'btn-primary' : ''}" data-report-check="${check.id}">Report</button>` : ''}</div></td></tr>`;
   }).join('')}</tbody></table></div>`;
 };
 
@@ -4721,6 +4725,7 @@ dashboardActions = function(projectId) {
 
 const renderResultsBefore51 = renderResults;
 renderResults = function() {
+  selectedResultIds = new Set([...selectedResultIds].filter(id => state.checks.some(c => c.id === id)));
   renderResultsBefore51();
   document.querySelectorAll('[data-action="bulk-export"],[data-action="bulk-archive"],[data-action="bulk-status"],[data-action="bulk-delete"]').forEach(button => button.dataset.requiresResultsSelection = 'true');
   updateSelectedCount();
@@ -5200,6 +5205,7 @@ bindEvents = function() {
 // INIT
 // ============================================================
 window.currentSection = 'dashboard';
+document.title = `GEO Citation Monitor ${CONFIG.VERSION}`;
 applyTheme();
 bindEvents();
 renderDashboard();
