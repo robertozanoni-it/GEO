@@ -6,11 +6,11 @@
 <meta name="description" content="Strumento locale per monitorare citazioni, fonti e visibilità GEO con verifiche manuali, report e controlli di qualità.">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
-<meta name="app-build" content="5.6.0">
+<meta name="app-build" content="5.7.0">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#f7f9fc">
 <meta name="color-scheme" content="light dark">
-<title>GEO Citation Monitor 5.6.0</title>
+<title>GEO Citation Monitor 5.7.0</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2064%2064%22%3E%3Crect%20width=%2264%22%20height=%2264%22%20rx=%2214%22%20fill=%22%23155eef%22/%3E%3Cpath%20d=%22M32%2011%2014%2021v22l18%2010%2018-10V21L32%2011Zm0%209%209%205-9%205-9-5%209-5ZM22%2033l7%204v8l-7-4v-8Zm13%2012v-8l7-4v8l-7%204Z%22%20fill=%22white%22/%3E%3C/svg%3E">
 <style>
 :root{
@@ -249,6 +249,29 @@ body.guided-lock{overflow:hidden}.guided-mode .nav-more,.guided-mode .sidebar-sy
 @media(max-width:600px){:root{--guided-font-scale:1.5}.guided-shell-inner{padding-left:8px;padding-right:8px}.guided-stage{padding:18px 14px}.guided-stage h1{font-size:calc(24px * var(--guided-font-scale))}.guided-font-label{display:none}.guided-font-btn{min-width:44px;height:44px}.guided-header .btn{font-size:16px;min-height:44px}.guided-progress-top{flex-wrap:wrap}.guided-progress-top span{margin-left:0}.guided-steps{display:flex}.guided-simple-block{grid-template-columns:44px minmax(0,1fr)}}
 </style>
 
+
+<style id="guidedWizard57Styles">
+/* 5.7: large text without scaling every box, safer wrapping, clearer action hierarchy */
+.guided-shell-inner{max-width:1120px}
+.guided-header{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 96%,transparent);backdrop-filter:blur(10px);padding:10px 0;border-bottom:1px solid var(--border);margin-bottom:14px;flex-wrap:wrap}
+.guided-header-brand{font-size:clamp(22px,calc(14px * var(--guided-font-scale)),34px)}
+.guided-header .spacer{min-width:8px}
+.guided-header .btn{font-size:clamp(15px,calc(9px * var(--guided-font-scale)),21px);min-height:44px;padding:8px 12px}
+.guided-font-tools{flex:0 0 auto}.guided-font-btn{min-width:48px;height:48px;font-size:clamp(18px,calc(10px * var(--guided-font-scale)),25px)}
+.guided-progress{padding:16px 18px}.guided-progress-top strong{font-size:clamp(18px,calc(10px * var(--guided-font-scale)),25px)}.guided-progress-top span{font-size:clamp(16px,calc(9px * var(--guided-font-scale)),22px)}
+.guided-step{font-size:clamp(15px,calc(8px * var(--guided-font-scale)),20px);padding-top:12px}.guided-next-hint{font-size:clamp(16px,calc(9px * var(--guided-font-scale)),22px);margin-top:12px}
+.guided-stage{padding:clamp(22px,4vw,40px)}.guided-stage h1{font-size:clamp(34px,calc(22px * var(--guided-font-scale)),58px);line-height:1.08;max-width:18ch}.guided-stage>p,.guided-stage p{font-size:clamp(20px,calc(12px * var(--guided-font-scale)),31px);line-height:1.5;max-width:48ch}
+.guided-eyebrow{font-size:clamp(15px,calc(8px * var(--guided-font-scale)),20px)}
+.guided-primary{font-size:clamp(20px,calc(11px * var(--guided-font-scale)),29px);min-height:58px;padding:13px 20px}.guided-footer-actions .btn:not(.guided-primary){font-size:clamp(16px,calc(9px * var(--guided-font-scale)),22px);min-height:48px}
+.guided-simple-block{grid-template-columns:52px minmax(0,1fr);gap:16px;padding:20px;margin:14px 0}.guided-simple-number{width:48px;height:48px;font-size:21px}.guided-simple-block strong{font-size:clamp(22px,calc(12px * var(--guided-font-scale)),30px)}.guided-simple-block p{font-size:clamp(19px,calc(10px * var(--guided-font-scale)),26px)!important;max-width:50ch!important}
+.guided-example,.guided-action-box,.guided-overall,.guided-one-line{max-width:none}.guided-example{font-size:clamp(18px,calc(9px * var(--guided-font-scale)),24px);padding:18px}.guided-action-title{font-size:clamp(23px,calc(12px * var(--guided-font-scale)),31px)}.guided-action-box>p,.guided-untouched{font-size:clamp(18px,calc(9px * var(--guided-font-scale)),24px)!important}.guided-big-steps li{font-size:clamp(19px,calc(10px * var(--guided-font-scale)),26px);grid-template-columns:48px minmax(0,1fr);gap:14px}.guided-big-steps li>span{width:44px;height:44px}
+.guided-check{grid-template-columns:46px minmax(0,1fr);padding:16px}.guided-check-icon{width:42px;height:42px;font-size:20px}.guided-check strong{font-size:clamp(20px,calc(10px * var(--guided-font-scale)),27px)}.guided-check .help{font-size:clamp(16px,calc(8px * var(--guided-font-scale)),21px)}
+.guided-technical{font-size:16px}.guided-technical-body{font-size:15px;max-height:280px;overflow:auto}
+.guided-return-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;z-index:350;width:min(760px,calc(100% - 24px));display:flex;gap:12px;align-items:center;background:var(--text);color:var(--surface);border-radius:14px;padding:14px 16px;box-shadow:0 20px 60px rgba(0,0,0,.28)}.guided-return-bar strong{font-size:16px}.guided-return-bar span{font-size:14px;opacity:.82}.guided-return-bar .btn{margin-left:auto;white-space:nowrap;background:var(--surface);color:var(--text);border-color:transparent}
+.guided-where{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0 4px}.guided-where>div{padding:13px;border:1px solid var(--border);border-radius:10px;background:var(--surface-2)}.guided-where small{display:block;color:var(--muted);font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}.guided-where strong{display:block;font-size:18px;margin-top:3px}
+@media(max-width:760px){.guided-shell-inner{padding:8px 8px 100px}.guided-header{gap:8px}.guided-header-brand{width:100%}.guided-font-tools{order:2}.guided-header .guided-close{margin-left:auto}.guided-stage{padding:22px 16px}.guided-stage h1{font-size:clamp(32px,11vw,46px)}.guided-stage>p,.guided-stage p{font-size:clamp(20px,6vw,26px)}.guided-steps{display:flex;overflow-x:auto;scrollbar-width:thin}.guided-step{min-width:110px}.guided-where{grid-template-columns:1fr}.guided-footer-actions .btn{width:100%}.guided-return-bar{bottom:max(10px,env(safe-area-inset-bottom));flex-wrap:wrap}.guided-return-bar .btn{width:100%;margin-left:0}.guided-simple-block{grid-template-columns:44px minmax(0,1fr);padding:16px}.guided-simple-number{width:40px;height:40px}.guided-font-label{display:none}}
+</style>
+
 </head>
 <body>
 <a class="skip-link" href="#mainContent">Vai al contenuto principale</a>
@@ -347,7 +370,7 @@ body.guided-lock{overflow:hidden}.guided-mode .nav-more,.guided-mode .sidebar-sy
 const CONFIG = {
   APP_KEY: 'geoCitationMonitor_v42',
   LEGACY_APP_KEYS: ['geoCitationMonitor_v3'],
-  VERSION: '5.6.0',
+  VERSION: '5.7.0',
   DATA_SCHEMA_VERSION: 8,
   MAX_LOGO_SIZE: 350000,
   MIN_RESPONSE_LENGTH: 120,
@@ -490,7 +513,7 @@ const Utils = {
     };
   },
   storage() {
-    const bytes = new Blob([JSON.stringify(window.__state || {})]).size;
+    const bytes = new Blob([JSON.stringify(state || {})]).size;
     const mb = bytes / (1024 * 1024);
     return {
       bytes,
@@ -990,7 +1013,7 @@ const Analyzer = {
     score += data.domainCited ? w.domain : 0;
 
     if (data.brandMentioned) {
-      score += w.position * (data.position <= 1 ? 1 : data.position === 2 ? .8 : data.position === 3 ? .65 : data.position <= 5 ? .45 : .25);
+      if (Number(data.position) > 0) score += w.position * (data.position === 1 ? 1 : data.position === 2 ? .8 : data.position === 3 ? .65 : data.position <= 5 ? .45 : .25);
       score += w.mentions * Math.min(1, (data.mentions || 0) / 3);
     }
 
@@ -5985,12 +6008,12 @@ function guidedBuildIssues(){
     if(!(c.urls||[]).length)issues.push({...base,id:`opt-sources-${c.id}`,type:'sources_missing',priority:'P2',title:'Non abbiamo fonti da controllare',summary:'La verifica non contiene URL registrati, quindi non possiamo capire quali fonti abbiano sostenuto la risposta.',recommendation:'Ripeti la domanda chiedendo fonti verificabili e salva soltanto i link realmente mostrati.',manualSteps:['Ripeti la stessa domanda nella stessa modalità di test.','Chiedi esplicitamente fonti o link, se la piattaforma lo consente.','Salva gli URL mostrati e torna qui.'],verify:()=>newer()&&(latest().urls||[]).length>0});
     if(p.services?.length&&!(c.servicesPresent||[]).length)issues.push({...base,id:`opt-services-${c.id}`,type:'services_weak',priority:'P2',title:'I servizi del brand non vengono riconosciuti',summary:`La risposta non associa chiaramente ${p.brand} ai servizi configurati.`,recommendation:'Rendi più esplicita e verificabile la relazione tra brand e servizi nelle pagine principali.',manualSteps:['Scegli il servizio più importante collegato alla domanda.','Controlla che la pagina spieghi chiaramente a chi serve, cosa risolve e come funziona.','Ripeti il test e verifica se il servizio viene associato al brand.'],verify:()=>newer()&&(latest().servicesPresent||[]).length>0});
     if(p.location&&!(c.locationsPresent||[]).length)issues.push({...base,id:`opt-location-${c.id}`,type:'location_weak',priority:'P2',title:'La località non è associata chiaramente al brand',summary:`La risposta non collega in modo evidente il risultato a ${p.location}.`,recommendation:'Rafforza solo segnali geografici reali: area servita, contatti, pagine locali utili e profili coerenti.',manualSteps:['Controlla che sito e profili ufficiali indichino correttamente l’area servita.','Aggiorna la pagina pertinente con riferimenti locali reali, senza duplicazioni artificiali.','Ripeti la stessa domanda con la località e confronta il risultato.'],verify:()=>newer()&&(latest().locationsPresent||[]).length>0});
-    if((c.competitors||[]).length)issues.push({...base,id:`opt-comp-${c.id}`,type:'competitor_gap',priority:'P2',title:'L’AI preferisce anche altri concorrenti',summary:`Nella risposta compaiono ${c.competitors.length} concorrenti. Non significa che devi copiarli: serve capire quali segnali li sostengono.`,recommendation:'Confronta fonti, prove, copertura dell’intento e chiarezza delle loro pagine; colma soltanto gap reali e documentabili.',manualSteps:['Scegli al massimo 3 concorrenti citati.','Annota fonti, prove e contenuti che possono spiegare la loro presenza.','Migliora soltanto gli aspetti che puoi dimostrare e ripeti il test.'],verify:()=>newer()&&(latest().competitors||[]).length<(c.competitors||[]).length});
+    if((c.competitors||[]).length)issues.push({...base,id:`opt-comp-${c.id}`,type:'competitor_gap',priority:'P3',optional:true,title:'Confronta i concorrenti citati',summary:`Nella risposta compaiono ${c.competitors.length} concorrenti. Non significa che devi copiarli: serve capire quali segnali li sostengono.`,recommendation:'Confronta fonti, prove, copertura dell’intento e chiarezza delle loro pagine; colma soltanto gap reali e documentabili.',manualSteps:['Scegli al massimo 3 concorrenti citati.','Annota fonti, prove e contenuti che possono spiegare la loro presenza.','Migliora soltanto gli aspetti che puoi dimostrare e ripeti il test.'],verify:()=>newer()&&(latest().competitors||[]).length<(c.competitors||[]).length});
     if((c.sourceDetails||[]).some(s=>s.quality<=2))issues.push({...base,id:`opt-sourcequality-${c.id}`,type:'source_dependency',priority:'P3',optional:true,title:'Le fonti sono soprattutto directory o social',summary:'Il risultato dipende da fonti che possono essere utili ma poco forti come prova indipendente.',recommendation:'Nel medio periodo prova ad aumentare citazioni pertinenti da fonti editoriali, professionali o istituzionali reali.',manualSteps:['Individua fonti indipendenti pertinenti al settore o alla località.','Prepara dati o contenuti originali realmente citabili.','Dopo nuove citazioni, ripeti il test e confronta le fonti.'],verify:()=>newer()&&(latest().sourceDetails||[]).some(s=>s.quality>=4)});
   }
   const required=issues.filter(x=>!x.optional&&guidedPriorityOrder(x.priority)<=2);
   const missingTasks=required.filter(x=>x.baselineCheckId).filter(x=>!state.tasks.some(t=>t.checkId===x.baselineCheckId&&t.title===x.title));
-  if(missingTasks.length)issues.unshift({id:'safe-plan-sync',type:'plan_sync',priority:'P2',title:'Il piano di lavoro non è ancora pronto',summary:`Abbiamo ${missingTasks.length} correzioni importanti che non sono ancora raccolte nel Piano di lavoro.`,recommendation:'Possiamo creare automaticamente le attività interne. Questa operazione non modifica il sito, i contenuti o servizi esterni.',canAutoFix:true,reversible:true,whatChanges:'Aggiungiamo al Piano di lavoro una voce per ogni correzione importante rilevata.',whatUntouched:'Non modifichiamo il sito, le verifiche, i prompt, le fonti o configurazioni esterne.',autoFix:()=>{for(const i of missingTasks){if(!state.tasks.some(t=>t.checkId===i.baselineCheckId&&t.title===i.title))state.tasks.push({id:Utils.uid(),opportunityId:'',projectId:i.projectId,checkId:i.baselineCheckId,title:i.title,priority:i.priority,status:'Da fare',owner:'',due:'',url:projectBy(i.projectId)?.targetUrl||'',notes:'Creato dal Wizard Guidato.',evidence:'',beforeCheckId:i.baselineCheckId,afterCheckId:'',createdAt:Utils.now()});}saveState(true);},verify:()=>missingTasks.every(i=>state.tasks.some(t=>t.checkId===i.baselineCheckId&&t.title===i.title)),technical:`Attività da creare: ${missingTasks.length}`});
+  if(missingTasks.length)issues.unshift({id:'safe-plan-sync',type:'plan_sync',priority:'P3',optional:true,title:'Preparare il piano di lavoro',summary:`Abbiamo ${missingTasks.length} correzioni importanti che non sono ancora raccolte nel Piano di lavoro.`,recommendation:'Possiamo creare automaticamente le attività interne. Questa operazione non modifica il sito, i contenuti o servizi esterni.',canAutoFix:true,reversible:true,whatChanges:'Aggiungiamo al Piano di lavoro una voce per ogni correzione importante rilevata.',whatUntouched:'Non modifichiamo il sito, le verifiche, i prompt, le fonti o configurazioni esterne.',autoFix:()=>{for(const i of missingTasks){if(!state.tasks.some(t=>t.checkId===i.baselineCheckId&&t.title===i.title))state.tasks.push({id:Utils.uid(),opportunityId:'',projectId:i.projectId,checkId:i.baselineCheckId,title:i.title,priority:i.priority,status:'Da fare',owner:'',due:'',url:projectBy(i.projectId)?.targetUrl||'',notes:'Creato dal Wizard Guidato.',evidence:'',beforeCheckId:i.baselineCheckId,afterCheckId:'',createdAt:Utils.now()});}saveState(true);},verify:()=>missingTasks.every(i=>state.tasks.some(t=>t.checkId===i.baselineCheckId&&t.title===i.title)),technical:`Attività da creare: ${missingTasks.length}`});
   return issues.sort((a,b)=>guidedPriorityOrder(a.priority)-guidedPriorityOrder(b.priority));
 }
 function guidedIssueResolved(issue){try{return Boolean(issue.verify?.())}catch{return false}}
@@ -6052,12 +6075,12 @@ function guidedSetFontScale(direction){
   guidedRender();
 }
 function guidedFontControls(){
-  const scale=guidedFontScale();
+  const scale=guidedFontScale(),pct=Math.round(scale*100);
   return `<div class="guided-font-tools" role="group" aria-label="Dimensione testo">
-    <span class="guided-font-label">Testo</span>
-    <button class="guided-font-btn" data-guided="font-down" aria-label="Riduci testo" title="Riduci testo">A−</button>
-    <button class="guided-font-btn ${scale===2?'active':''}" data-guided="font-reset" aria-label="Dimensione testo consigliata" title="Dimensione consigliata">A</button>
-    <button class="guided-font-btn" data-guided="font-up" aria-label="Aumenta testo" title="Aumenta testo">A+</button>
+    <span class="guided-font-label">Testo ${pct}%</span>
+    <button class="guided-font-btn ${scale===GUIDED_FONT_LEVELS[0]?'active':''}" data-guided="font-down" aria-label="Riduci testo" title="Riduci testo">A−</button>
+    <button class="guided-font-btn ${scale===2?'active':''}" data-guided="font-reset" aria-label="Dimensione testo consigliata 200%" title="Dimensione consigliata 200%">A</button>
+    <button class="guided-font-btn ${scale===GUIDED_FONT_LEVELS.at(-1)?'active':''}" data-guided="font-up" aria-label="Aumenta testo" title="Aumenta testo">A+</button>
   </div>`;
 }
 
@@ -6131,6 +6154,71 @@ document.addEventListener('click',event=>{
   else if(b.dataset.guided==='font-up')guidedSetFontScale('up');
   else guidedSetFontScale('reset');
 },true);
+
+
+
+// ============================================================
+// GUIDED WIZARD 5.7 — QA fixes and stronger guidance
+// ============================================================
+function guidedRemoveReturnBar(){ document.getElementById('guidedReturnBar')?.remove(); }
+function guidedSyncReturnBar(){
+  guidedRemoveReturnBar();
+  const g=guidedEnsureState();
+  const shell=document.getElementById('guidedShell');
+  if(!g.active || shell?.classList.contains('show') || ['intro','complete'].includes(g.stage)) return;
+  const issue=guidedActiveIssue();
+  const bar=document.createElement('div');
+  bar.id='guidedReturnBar';bar.className='guided-return-bar';bar.setAttribute('role','status');
+  bar.innerHTML=`<div><strong>Controllo guidato in corso</strong><br><span>${Utils.esc(issue?.title||'Torna al wizard per continuare')}</span></div><button class="btn btn-sm" data-guided="return-to-wizard">Torna al controllo</button>`;
+  document.body.appendChild(bar);
+}
+const guidedOpenBefore57=guidedOpen;
+guidedOpen=function(){guidedRemoveReturnBar();guidedOpenBefore57();const shell=document.getElementById('guidedShell');const heading=shell?.querySelector('h1');if(heading){heading.setAttribute('tabindex','-1');setTimeout(()=>heading.focus(),0)}};
+const guidedCloseBefore57=guidedClose;
+guidedClose=function(){guidedCloseBefore57();guidedSyncReturnBar()};
+const guidedGoRouteBefore57=guidedGoRoute;
+guidedGoRoute=function(route){guidedGoRouteBefore57(route);guidedSyncReturnBar()};
+const setSectionBefore57=setSection;
+setSection=function(id){setSectionBefore57(id);guidedSyncReturnBar()};
+
+function guidedContextStrip(stage){
+  const map={intro:['Inizio','Premi il pulsante principale','Controlleremo i dati senza modificare nulla'],analysis:['Controllo','Non devi fare nulla','Ti mostreremo solo ciò che richiede attenzione'],result:['Risultato','Scegli la prima correzione','Affronteremo un problema alla volta'],correction:['Correzione','Segui una sola indicazione','Poi verificheremo il risultato'],verify:['Verifica','Guarda l’esito','Se funziona passeremo al prossimo problema'],complete:['Fine','Controlla il riepilogo','Potrai avviare un nuovo controllo']};
+  const x=map[stage]||map.intro;
+  return `<div class="guided-where"><div><small>Dove sei</small><strong>${x[0]}</strong></div><div><small>Cosa fai adesso</small><strong>${x[1]}</strong></div><div><small>Cosa succede dopo</small><strong>${x[2]}</strong></div></div>`;
+}
+const guidedFrameBefore57=guidedFrame;
+guidedFrame=function(body){const g=guidedEnsureState();return guidedFrameBefore57(guidedContextStrip(g.stage)+body)};
+
+// Do not duplicate the generic "fonti mancanti" quality issue when the wizard
+// already has a concrete per-verification source problem.
+const guidedRequiredIssuesBefore57=guidedRequiredIssues;
+guidedRequiredIssues=function(issues=guidedCurrentIssues()){
+  const base=guidedRequiredIssuesBefore57(issues);
+  const hasConcreteSources=base.some(i=>i.type==='sources_missing');
+  return base.filter(i=>!(hasConcreteSources && i.id==='quality-sources') && i.type!=='plan_sync');
+};
+
+// Font controls should update without rebuilding the current wizard screen,
+// preventing accidental loss of transient UI/focus state.
+guidedSetFontScale=function(direction){
+  const current=guidedFontScale();let idx=GUIDED_FONT_LEVELS.indexOf(current);
+  if(direction==='reset')idx=1;else idx=Math.max(0,Math.min(GUIDED_FONT_LEVELS.length-1,idx+(direction==='up'?1:-1)));
+  state.settings.guidedFontScale=GUIDED_FONT_LEVELS[idx];saveState(true);guidedApplyFontScale();
+  const tools=document.querySelector('.guided-font-tools');
+  if(tools){
+    const label=tools.querySelector('.guided-font-label');if(label)label.textContent=`Testo ${Math.round(GUIDED_FONT_LEVELS[idx]*100)}%`;
+    tools.querySelectorAll('.guided-font-btn').forEach(x=>x.classList.remove('active'));
+    const sel=GUIDED_FONT_LEVELS[idx]===2?'font-reset':GUIDED_FONT_LEVELS[idx]===GUIDED_FONT_LEVELS[0]?'font-down':'font-up';
+    tools.querySelector(`[data-guided="${sel}"]`)?.classList.add('active');
+  }
+};
+
+// Return-to-wizard action lives in the page outside the modal.
+document.addEventListener('click',event=>{
+  const b=event.target.closest('[data-guided="return-to-wizard"]');if(!b)return;
+  event.preventDefault();event.stopImmediatePropagation();guidedOpen();
+},true);
+window.addEventListener('resize',Utils.debounce(()=>guidedApplyFontScale(),120));
 
 
 // ============================================================
