@@ -6,11 +6,11 @@
 <meta name="description" content="Strumento locale per monitorare citazioni, fonti e visibilità GEO con verifiche manuali, report e controlli di qualità.">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
-<meta name="app-build" content="5.2.0">
+<meta name="app-build" content="5.3.0">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#f7f9fc">
 <meta name="color-scheme" content="light dark">
-<title>GEO Citation Monitor 5.2.0</title>
+<title>GEO Citation Monitor 5.3.0</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2064%2064%22%3E%3Crect%20width=%2264%22%20height=%2264%22%20rx=%2214%22%20fill=%22%23155eef%22/%3E%3Cpath%20d=%22M32%2011%2014%2021v22l18%2010%2018-10V21L32%2011Zm0%209%209%205-9%205-9-5%209-5ZM22%2033l7%204v8l-7-4v-8Zm13%2012v-8l7-4v8l-7%204Z%22%20fill=%22white%22/%3E%3C/svg%3E">
 <style>
 :root{
@@ -267,7 +267,7 @@ input[aria-invalid="true"],select[aria-invalid="true"],textarea[aria-invalid="tr
 const CONFIG = {
   APP_KEY: 'geoCitationMonitor_v42',
   LEGACY_APP_KEYS: ['geoCitationMonitor_v3'],
-  VERSION: '5.2.0',
+  VERSION: '5.3.0',
   DATA_SCHEMA_VERSION: 8,
   MAX_LOGO_SIZE: 350000,
   MIN_RESPONSE_LENGTH: 120,
@@ -1032,7 +1032,7 @@ const Derived = {
         check.promptId,
         check.platformId,
         new Date(check.date).toISOString().slice(0, 10),
-        Utils.slug(check.response).slice(0, 180)
+        Utils.slug(String(check.response || '').slice(0, 400)).slice(0, 180)
       ].join('|');
 
       if (seen.has(key)) {
@@ -1637,7 +1637,7 @@ function renderPrompts() {
 
 function promptTable() {
   if (!state.prompts.length) return empty('Nessun prompt', 'Aggiungi le query da monitorare.');
-  return `<div class="table-wrap"><table><thead><tr><th>Prompt</th><th>Progetto</th><th>Categoria</th><th>Priorità</th><th>Ultimo test</th><th>Azioni</th></tr></thead><tbody>${state.prompts.map(p => `<tr data-search="${Utils.esc(Utils.slug(JSON.stringify(p)))}" data-project="${p.projectId}" data-priority="${p.priority}"><td><strong>${Utils.esc(p.text)}</strong><div class="help">${Utils.esc((p.tags || []).join(', '))}</div></td><td>${Utils.esc(projectBy(p.projectId)?.name || '—')}</td><td>${Utils.esc(p.category || '—')}</td><td>${badge(p.priority || 'P3', p.priority === 'P1' ? 'danger' : p.priority === 'P2' ? 'warning' : 'info')}</td><td>${Utils.date(p.lastChecked)}</td><td><div class="flex gap-8 wrap"><button class="btn btn-sm" data-start-prompt="${p.id}">Verifica</button><button class="btn btn-sm" data-edit-prompt="${p.id}">Modifica</button><button class="btn btn-sm" data-copy-text="${Utils.esc(p.text)}">Copia</button><button class="btn btn-sm btn-danger" data-delete-prompt="${p.id}">Elimina</button></div></td></tr>`).join('')}</tbody></table></div>`;
+  return `<div class="table-wrap"><table><thead><tr><th scope="col">Prompt</th><th scope="col">Progetto</th><th scope="col">Categoria</th><th scope="col">Priorità</th><th scope="col">Ultimo test</th><th scope="col">Azioni</th></tr></thead><tbody>${state.prompts.map(p => `<tr data-search="${Utils.esc(Utils.slug(JSON.stringify(p)))}" data-project="${p.projectId}" data-priority="${p.priority}"><td><strong>${Utils.esc(p.text)}</strong><div class="help">${Utils.esc((p.tags || []).join(', '))}</div></td><td>${Utils.esc(projectBy(p.projectId)?.name || '—')}</td><td>${Utils.esc(p.category || '—')}</td><td>${badge(p.priority || 'P3', p.priority === 'P1' ? 'danger' : p.priority === 'P2' ? 'warning' : 'info')}</td><td>${Utils.date(p.lastChecked)}</td><td><div class="flex gap-8 wrap"><button class="btn btn-sm" data-start-prompt="${p.id}">Verifica</button><button class="btn btn-sm" data-edit-prompt="${p.id}">Modifica</button><button class="btn btn-sm" data-copy-text="${Utils.esc(p.text)}">Copia</button><button class="btn btn-sm btn-danger" data-delete-prompt="${p.id}">Elimina</button></div></td></tr>`).join('')}</tbody></table></div>`;
 }
 
 function promptForm(p = {}) {
@@ -2128,7 +2128,7 @@ function renderMatrixTable(active, projectId) {
     return empty('Matrice vuota', 'Crea prompt e attiva piattaforme.');
   }
 
-  return `<div class="matrix"><table><thead><tr><th>Prompt</th>${active.map(p => `<th>${Utils.esc(p.name)}</th>`).join('')}</tr></thead><tbody>${prompts.map(prompt => `<tr><td><strong>${Utils.esc(prompt.text)}</strong><div class="help">${Utils.esc(projectBy(prompt.projectId)?.name || '')}</div></td>${active.map(ai => { const c = state.checks.filter(x => x.promptId === prompt.id && x.platformId === ai.id).sort((a, b) => new Date(b.date) - new Date(a.date))[0]; return `<td class="matrix-cell"><button data-matrix-start data-prompt="${prompt.id}" data-platform="${ai.id}">${c ? `<strong>${c.score}/100</strong><div class="help">${Utils.date(c.date)}</div>` : '<strong>Da testare</strong>'}</button></td>`; }).join('')}</tr>`).join('')}</tbody></table></div>`;
+  return `<div class="matrix"><table><thead><tr><th scope="col">Prompt</th>${active.map(p => `<th scope="col">${Utils.esc(p.name)}</th>`).join('')}</tr></thead><tbody>${prompts.map(prompt => `<tr><td><strong>${Utils.esc(prompt.text)}</strong><div class="help">${Utils.esc(projectBy(prompt.projectId)?.name || '')}</div></td>${active.map(ai => { const c = state.checks.filter(x => x.promptId === prompt.id && x.platformId === ai.id).sort((a, b) => new Date(b.date) - new Date(a.date))[0]; return `<td class="matrix-cell"><button data-matrix-start data-prompt="${prompt.id}" data-platform="${ai.id}">${c ? `<strong>${c.score}/100</strong><div class="help">${Utils.date(c.date)}</div>` : '<strong>Da testare</strong>'}</button></td>`; }).join('')}</tr>`).join('')}</tbody></table></div>`;
 }
 
 // ============================================================
@@ -2760,7 +2760,7 @@ const actionHandlers = {
     modal('Importa più prompt', `<form id="bulkPromptForm" class="form-grid"><div class="field"><label>Progetto</label><select name="projectId" required><option value="">Seleziona</option>${options(state.projects, '')}</select></div><div class="field"><label>Priorità</label><select name="priority"><option>P1</option><option>P2</option><option selected>P3</option><option>P4</option></select></div>${textareaField('texts', 'Prompt, uno per riga', '', '', 10)}</form>`, '<button class="btn" data-close-modal>Annulla</button><button class="btn btn-primary" id="saveBulkPrompts">Importa</button>');
     document.getElementById('saveBulkPrompts').onclick = () => {
       const f = document.getElementById('bulkPromptForm');
-      if (!f.reportValidity()) return;
+      if (!f || !f.reportValidity()) return;
       const d = Utils.form(f);
       Utils.lines(d.texts).forEach(text => {
         state.prompts.push({ id: Utils.uid(), projectId: d.projectId, text, category: 'Locale', priority: d.priority, tags: [], createdAt: Utils.now(), updatedAt: Utils.now() });
@@ -2858,7 +2858,7 @@ const actionHandlers = {
       if (!f.reportValidity()) return;
       state.savedFilters.push({
         id: Utils.uid(),
-        name: f.name.value,
+        name: f.elements.name.value,
         search: document.getElementById('resultSearch')?.value || '',
         project: document.getElementById('resultProjectFilter')?.value || '',
         platform: document.getElementById('resultPlatformFilter')?.value || '',
@@ -2943,10 +2943,10 @@ const actionHandlers = {
   },
   'save-analysis-settings': () => {
     const f = document.getElementById('analysisSettings');
-    state.settings.analysis.cleanNoise = f.cleanNoise.checked;
-    state.settings.analysis.dedupeBlocks = f.dedupeBlocks.checked;
-    state.settings.analysis.minimumResponseLength = Number(f.minimumResponseLength.value);
-    state.settings.analysis.anomalyThreshold = Number(f.anomalyThreshold.value);
+    state.settings.analysis.cleanNoise = f.elements.cleanNoise.checked;
+    state.settings.analysis.dedupeBlocks = f.elements.dedupeBlocks.checked;
+    state.settings.analysis.minimumResponseLength = Number(f.elements.minimumResponseLength.value);
+    state.settings.analysis.anomalyThreshold = Number(f.elements.anomalyThreshold.value);
     saveState();
   },
   'save-score-settings': () => {
@@ -3048,7 +3048,7 @@ function savePlatform() {
   const form = document.getElementById('platformForm');
   if (!form.reportValidity()) return;
   const d = Utils.form(form);
-  const item = { id: d.id || Utils.uid(), name: d.name, url: d.url, active: form.active.checked };
+  const item = { id: d.id || Utils.uid(), name: d.name, url: d.url, active: form.elements.active.checked };
   const old = state.platforms.find(x => x.id === item.id);
   old ? Object.assign(old, item) : state.platforms.push(item);
   saveState();
@@ -3634,7 +3634,7 @@ function parseCsv(text){const rows=[];let row=[],cell='',q=false;for(let i=0;i<t
 function normalizeGsc(rows){if(rows.length<2)return[];const h=rows[0].map(x=>Utils.slug(x));const idx=(...names)=>h.findIndex(x=>names.some(n=>x.includes(n)));const iq=idx('query','query principali'),ip=idx('pagina','page'),ic=idx('clic','click'),ii=idx('impression'),ict=idx('ctr'),ipos=idx('posizione','position');return rows.slice(1).map(r=>({query:r[iq]||'',page:r[ip]||'',clicks:Number(String(r[ic]||0).replace(/[.\s]/g,'').replace(',','.'))||0,impressions:Number(String(r[ii]||0).replace(/[.\s]/g,'').replace(',','.'))||0,ctr:r[ict]||'',position:Number(String(r[ipos]||0).replace(',','.'))||0})).filter(x=>x.query||x.page);}
 let gscProject='';
 function renderGsc(){const pid=document.getElementById('gscProject')?.value||gscProject||state.projects[0]?.id||'';gscProject=pid;const imports=state.gscImports.filter(x=>x.projectId===pid);const latest=imports.sort((a,b)=>new Date(b.date)-new Date(a.date))[0];document.getElementById('gsc').innerHTML=`<div class="toolbar"><select id="gscProject"><option value="">Seleziona progetto</option>${options(state.projects,pid)}</select><input type="file" id="gscFile" accept=".csv,text/csv"><button class="btn btn-primary" data-action="import-gsc">Importa CSV</button></div><div class="notice">Importa il CSV “Query” o “Pagine” di Search Console. Per ZIP usa prima l’esportazione CSV estratta.</div>${latest?renderGscData(latest):empty('Nessun dato Search Console','Importa un CSV per supportare la decisione tra aggiornamento e nuovo contenuto.')}`;}
-function renderGscData(im){const top=im.rows.slice().sort((a,b)=>b.impressions-a.impressions).slice(0,50);return `<div class="grid grid-4">${metric('Righe',im.rows.length,'Importate')}${metric('Impression',im.rows.reduce((s,x)=>s+x.impressions,0),'Totale')}${metric('Clic',im.rows.reduce((s,x)=>s+x.clicks,0),'Totale')}${metric('Query pagina target',im.rows.filter(x=>x.page&&x.page.includes(projectBy(im.projectId)?.targetUrl||'___')).length,'Corrispondenze')}</div><div class="table-wrap" style="margin-top:16px"><table><thead><tr><th>Query</th><th>Pagina</th><th>Clic</th><th>Impression</th><th>Posizione</th><th>Decisione</th></tr></thead><tbody>${top.map(x=>`<tr><td>${Utils.esc(x.query)}</td><td>${Utils.esc(x.page)}</td><td>${x.clicks}</td><td>${x.impressions}</td><td>${x.position||'—'}</td><td>${x.impressions>20&&x.position>5?badge('Aggiorna pagina','warning'):x.impressions===0?badge('Dato insufficiente','info'):badge('Mantieni e rafforza','success')}</td></tr>`).join('')}</tbody></table></div>`;}
+function renderGscData(im){const top=im.rows.slice().sort((a,b)=>b.impressions-a.impressions).slice(0,50);return `<div class="grid grid-4">${metric('Righe',im.rows.length,'Importate')}${metric('Impression',im.rows.reduce((s,x)=>s+x.impressions,0),'Totale')}${metric('Clic',im.rows.reduce((s,x)=>s+x.clicks,0),'Totale')}${metric('Query pagina target',im.rows.filter(x=>x.page&&x.page.includes(projectBy(im.projectId)?.targetUrl||'___')).length,'Corrispondenze')}</div><div class="table-wrap" style="margin-top:16px"><table><thead><tr><th scope="col">Query</th><th scope="col">Pagina</th><th scope="col">Clic</th><th scope="col">Impression</th><th scope="col">Posizione</th><th scope="col">Decisione</th></tr></thead><tbody>${top.map(x=>`<tr><td>${Utils.esc(x.query)}</td><td>${Utils.esc(x.page)}</td><td>${x.clicks}</td><td>${x.impressions}</td><td>${x.position||'—'}</td><td>${x.impressions>20&&x.position>5?badge('Aggiorna pagina','warning'):x.impressions===0?badge('Dato insufficiente','info'):badge('Mantieni e rafforza','success')}</td></tr>`).join('')}</tbody></table></div>`;}
 
 function renderWordpress(){const pid=document.getElementById('wpProject')?.value||state.projects[0]?.id||'';const p=projectBy(pid);const facts=projectKnowledge(pid);document.getElementById('wordpress').innerHTML=`<div class="toolbar"><select id="wpProject"><option value="">Seleziona progetto</option>${options(state.projects,pid)}</select><button class="btn btn-primary" data-action="generate-wp-package">Genera pacchetto</button></div>${!p?empty('Seleziona progetto','Serve un progetto configurato.'):`<div class="advanced-grid"><div class="card"><h2>Input</h2><label>Tipo</label><select id="wpType"><option>Article</option><option>Service</option><option>LocalBusiness</option></select><label style="margin-top:10px">HTML contenuto</label><textarea id="wpHtml" class="response-text" placeholder="Incolla la bozza HTML oppure usa l’output del Content Resolution Engine">${Utils.esc(contentEngineOutput&&contentEngineOutput.includes('<')?contentEngineOutput:'')}</textarea></div><div class="card" id="wpOutput">${empty('Pacchetto non generato','Il pacchetto include HTML, title, meta, permalink, FAQ/schema e checklist Rank Math.')}</div></div><div class="notice warning" style="margin-top:16px">La versione standalone prepara una bozza. Non pubblica automaticamente e non conserva credenziali WordPress.</div>`}`;}
 function makeWpPackage(p,html,type){const text=stripHtml(html);const h1=(html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)||[])[1]||promptBy(state.checks.filter(c=>c.projectId===p.id).sort((a,b)=>new Date(b.date)-new Date(a.date))[0]?.promptId)?.text||p.brand;const cleanH1=stripHtml(h1);const title=(cleanH1+' | '+p.brand).slice(0,60);const meta=text.slice(0,155);const slug=Utils.slug(cleanH1).replace(/\s+/g,'-');const faq=[...html.matchAll(/<h[23][^>]*>([^<]*\?[^<]*)<\/h[23]>\s*<p[^>]*>([\s\S]*?)<\/p>/gi)].map(m=>({q:stripHtml(m[1]),a:stripHtml(m[2])}));const schema={"@context":"https://schema.org","@type":type,headline:cleanH1,name:p.brand,url:p.targetUrl||undefined,areaServed:p.location||undefined,mainEntity:faq.length?faq.map(x=>({"@type":"Question",name:x.q,acceptedAnswer:{"@type":"Answer",text:x.a}})):undefined};return {title,meta,slug,html,schema,checklist:['H1 unico','Title ≤ 60 caratteri','Meta ≤ 155 caratteri','URL leggibile','Link interno alla pagina target','Alt immagini da compilare','Schema validato','Revisione dati verificati','Salva come bozza, non pubblicare direttamente']};}
@@ -5121,7 +5121,7 @@ function contrastWithWhite(hex) { const l = relativeLuminance(hex); return l ===
 saveBranding = function() {
   const form = document.getElementById('brandingSettings');
   if (!form) return;
-  if (contrastWithWhite(form.primary.value) < 4.5 || contrastWithWhite(form.secondary.value) < 4.5) {
+  if (contrastWithWhite(form.elements.primary.value) < 4.5 || contrastWithWhite(form.elements.secondary.value) < 4.5) {
     Utils.toast('Scegli colori principali con contrasto almeno 4,5:1 rispetto al testo bianco.', 'error');
     return;
   }
@@ -5133,7 +5133,7 @@ actionHandlers['save-branding'] = saveBranding;
 
 actionHandlers['save-score-settings'] = () => {
   const form = document.getElementById('scoreSettings');
-  const values = Object.fromEntries(['brand','domain','position','mentions','competitors','sentiment'].map(key => [key, Number(form[key].value)]));
+  const values = Object.fromEntries(['brand','domain','position','mentions','competitors','sentiment'].map(key => [key, Number(form.elements[key].value)]));
   if (Object.values(values).some(value => !Number.isFinite(value) || value < 0)) {
     Utils.toast('I pesi devono essere numeri non negativi.', 'error');
     return;
@@ -5200,6 +5200,392 @@ bindEvents = function() {
   enhanceRenderedAccessibility(document);
 };
 
+
+// ============================================================
+// RELEASE 5.3 — correttezza analisi, performance e accessibilita'
+// ============================================================
+
+/* 1. Posizione nelle risposte a elenco corto ------------------------------
+   Prima la posizione veniva calcolata solo per i tipi "Elenco editoriale" o
+   "Local Pack", che richiedono almeno 3 marcatori di lista: un brand primo in
+   un elenco di 2 voci restava a 0 e perdeva l'intero peso "posizione". */
+const LIST_MARKER_RE_53 = /(?:^|\n)\s*(?:\d+[.)]|[-•*])\s+/g;
+const analyzeBefore53 = Analyzer.analyze.bind(Analyzer);
+Analyzer.analyze = function (project, response, sourcesText = '') {
+  const result = analyzeBefore53(project, response, sourcesText);
+  if (result.brandMentioned) {
+    const clean = result.cleanResponse || '';
+    const needle = String(result.foundVariant || project?.brand || '').toLowerCase();
+    const index = needle ? clean.toLowerCase().indexOf(needle) : -1;
+    const markers = (clean.match(LIST_MARKER_RE_53) || []).length;
+    if (index >= 0 && markers >= 2) {
+      // Il marcatore della voce che contiene il brand va incluso, non sommato:
+      // "1. Brand" e' posizione 1, non 2.
+      const position = (clean.slice(0, index).match(LIST_MARKER_RE_53) || []).length;
+      if (position !== result.position) {
+        result.position = position;
+        result.score = Analyzer.score(result);
+        result.visibilityScore = result.score;
+      }
+    }
+  }
+  return result;
+};
+
+/* 2. ID duplicati quando un modale e' aperto -----------------------------
+   Le sezioni restano nel DOM: i form dei modali generavano id gia' presenti
+   nel wizard, rompendo l'associazione label -> campo. */
+let modalIdCounter53 = 0;
+const modalBefore53 = modal;
+modal = function (title, body, actions = '') {
+  modalBefore53(title, body, actions);
+  const host = document.getElementById('modalBody');
+  if (!host) return;
+  host.querySelectorAll('[id]').forEach(el => {
+    const id = el.id;
+    if (!id) return;
+    const selector = '[id="' + CSS.escape(id) + '"]';
+    const clash = [...document.querySelectorAll(selector)].some(other => other !== el && !host.contains(other));
+    if (!clash) return;
+    const next = id + '-m' + (++modalIdCounter53);
+    host.querySelectorAll('label[for="' + CSS.escape(id) + '"]').forEach(label => label.setAttribute('for', next));
+    el.id = next;
+  });
+};
+
+/* 3. Gerarchia degli heading senza salti ---------------------------------
+   Il titolo di pagina e' aria-level 1: le card usavano h3/h4 come primo
+   heading della sezione. Si corregge il livello esposto senza toccare il CSS. */
+const enhanceBefore53 = enhanceRenderedAccessibility;
+enhanceRenderedAccessibility = function (root = document) {
+  enhanceBefore53(root);
+  if (!root || typeof root.querySelectorAll !== 'function') return;
+  let previous = 1;
+  root.querySelectorAll('h1,h2,h3,h4,h5,h6').forEach(heading => {
+    const natural = Number(heading.tagName[1]);
+    const level = Math.min(natural, previous + 1);
+    if (level === natural) heading.removeAttribute('aria-level');
+    else heading.setAttribute('aria-level', String(level));
+    previous = level;
+  });
+};
+
+/* 4. Ricerca nei risultati fuori dal DOM ---------------------------------
+   L'attributo data-search conteneva l'intero JSON della verifica: con 300
+   verifiche pesava ~2,2 MB, l'88% dell'HTML della sezione. Ora l'indice vive
+   in memoria, e' calcolato una volta per verifica e la ricerca resta completa. */
+const resultSearchIndex53 = new Map();
+function checkSearchText53(check) {
+  const cached = resultSearchIndex53.get(check.id);
+  if (cached && cached.stamp === check.updatedAt) return cached.text;
+  const text = Utils.slug([
+    promptBy(check.promptId)?.text || '',
+    projectBy(check.projectId)?.name || '',
+    platformBy(check.platformId).name,
+    check.responseType || '', check.model || '', check.location || '', check.notes || '',
+    (check.competitors || []).join(' '), (check.urls || []).join(' '),
+    check.cleanResponse || check.response || ''
+  ].join(' '));
+  resultSearchIndex53.set(check.id, { stamp: check.updatedAt, text });
+  return text;
+}
+
+resultsTable = function (checks, selectable = true, showReportAction = false) {
+  if (!checks.length) return empty('Nessuna verifica', 'Incolla e analizza una risposta reale.');
+  return `<div class="table-wrap results-table-wrap"><table class="results-data-table"><thead><tr>${selectable ? '<th scope="col"><input type="checkbox" id="selectAllResults" aria-label="Seleziona tutte le verifiche visibili"></th>' : ''}<th scope="col">Prompt / progetto</th><th scope="col">AI</th><th scope="col">Esito</th><th scope="col">Score</th><th scope="col">Confidenza</th><th scope="col">Data</th><th scope="col">Azioni</th></tr></thead><tbody>${checks.map(check => {
+    const promptText = promptBy(check.promptId)?.text || 'Prompt eliminato';
+    return `<tr data-result-row data-id="${check.id}" data-project="${check.projectId}" data-platform="${check.platformId}" data-brand="${check.brandMentioned ? 'yes' : 'no'}" data-domain="${check.domainCited ? 'yes' : 'no'}" data-sources="${(check.urls || []).length ? 'yes' : 'no'}">${selectable ? `<td class="result-select-cell" data-label="Seleziona"><input type="checkbox" class="result-select" value="${check.id}" aria-label="Seleziona: ${Utils.esc(promptText)}" ${selectedResultIds.has(check.id) ? 'checked' : ''}></td>` : ''}<td data-label="Prompt / progetto"><strong>${Utils.esc(promptText)}</strong><div class="help">${Utils.esc(projectBy(check.projectId)?.name || 'Progetto eliminato')}</div></td><td data-label="AI">${Utils.esc(platformBy(check.platformId).name)}<div class="help">${Utils.esc(check.responseType || '')}</div></td><td data-label="Esito">${check.brandMentioned ? badge('Brand', 'success') : badge('Assente', 'danger')} ${check.domainCited ? badge('Dominio', 'info') : ''}</td><td data-label="Score"><strong>${check.score || 0}</strong>/100</td><td data-label="Confidenza">${check.confidence || 0}/100</td><td data-label="Data">${Utils.date(check.date, true)}</td><td class="result-actions" data-label="Azioni"><div class="flex gap-8 wrap"><button class="btn btn-sm" data-view-check="${check.id}">Dettagli</button><button class="btn btn-sm" data-edit-check="${check.id}">Modifica</button><button class="btn btn-sm" data-duplicate-check="${check.id}">Duplica</button>${!check.manualReview?.completed ? `<button class="btn btn-sm btn-primary" data-action="review-check" data-id="${check.id}">Rivedi</button>` : ''}${showReportAction ? `<button class="btn btn-sm ${check.manualReview?.completed ? 'btn-primary' : ''}" data-report-check="${check.id}">Report</button>` : ''}</div></td></tr>`;
+  }).join('')}</tbody></table></div>`;
+};
+
+applyResultFilters = function () {
+  const query = Utils.slug(document.getElementById('resultSearch')?.value || '');
+  const project = document.getElementById('resultProjectFilter')?.value || '';
+  const platform = document.getElementById('resultPlatformFilter')?.value || '';
+  const mention = document.getElementById('resultMentionFilter')?.value || '';
+  const byId = new Map(state.checks.map(check => [check.id, check]));
+  let visible = 0, total = 0;
+  document.querySelectorAll('[data-result-row]').forEach(row => {
+    total++;
+    const check = byId.get(row.dataset.id);
+    const ok =
+      (!query || (check ? checkSearchText53(check).includes(query) : false)) &&
+      (!project || row.dataset.project === project) &&
+      (!platform || row.dataset.platform === platform) &&
+      (!mention ||
+        (mention === 'brand' && row.dataset.brand === 'yes') ||
+        (mention === 'domain' && row.dataset.domain === 'yes') ||
+        (mention === 'absent' && row.dataset.brand === 'no') ||
+        (mention === 'sources' && row.dataset.sources === 'yes'));
+    row.style.display = ok ? '' : 'none';
+    if (ok) visible++;
+  });
+  const counter = document.getElementById('resultVisibleCount');
+  if (counter) counter.textContent = `${visible} di ${total}`;
+};
+
+const renderResultsBefore53 = renderResults;
+renderResults = function () {
+  renderResultsBefore53();
+  const toolbar = document.getElementById('bulkToolbar');
+  if (toolbar && !document.getElementById('resultVisibleCount')) {
+    const info = document.createElement('span');
+    info.className = 'help';
+    info.innerHTML = '<strong id="resultVisibleCount">0</strong> verifiche mostrate';
+    toolbar.insertBefore(info, toolbar.firstChild);
+  }
+  applyResultFilters();
+};
+
+/* 5. Opportunita': rendering progressivo ---------------------------------
+   Ogni verifica genera fino a 6 schede complete (impatto, diagnosi, checklist,
+   KPI): con 300 verifiche la sezione impiegava alcuni secondi. */
+const PRIORITY_ORDER_53 = { P1: 1, P2: 2, P3: 3, P4: 4 };
+const OPPORTUNITY_PAGE_53 = 40;
+let opportunityLimit53 = OPPORTUNITY_PAGE_53;
+
+renderOpportunities = function () {
+  const all = generateOpportunities().slice().sort((a, b) =>
+    (PRIORITY_ORDER_53[a.priority] || 5) - (PRIORITY_ORDER_53[b.priority] || 5) ||
+    new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+  selectedOpportunityIds = new Set([...selectedOpportunityIds].filter(id => all.some(o => o.id === id)));
+  if (opportunityLimit53 > Math.max(OPPORTUNITY_PAGE_53, all.length)) opportunityLimit53 = OPPORTUNITY_PAGE_53;
+  const items = all.slice(0, opportunityLimit53);
+  const remaining = all.length - items.length;
+
+  document.getElementById('opportunities').innerHTML = `
+    <div class="toolbar"><select id="oppProject" aria-label="Filtra per progetto"><option value="">Tutti i progetti</option>${options(state.projects, '')}</select><select id="oppPriority" aria-label="Filtra per priorità"><option value="">Tutte le priorità</option><option>P1</option><option>P2</option><option>P3</option><option>P4</option></select><select id="oppStatus" aria-label="Filtra per stato"><option value="">Tutti gli stati</option><option>Da fare</option><option>In corso</option><option>Completata</option></select><div class="spacer"></div><button class="btn" data-action="select-visible-opportunities">Seleziona visibili</button><button class="btn" data-action="clear-opportunity-selection">Deseleziona</button><button class="btn" data-action="regenerate-opportunities">Rigenera</button></div>
+    <div class="toolbar"><strong><span id="selectedOpportunityCount">${selectedOpportunityIds.size}</span> opportunità selezionate</strong><button class="btn btn-sm" data-action="opp-mark-progress">Segna in corso</button><button class="btn btn-sm" data-action="opp-mark-done">Segna completate</button><button class="btn btn-sm" data-action="opp-add-report">Usa nel report</button></div>
+    <div class="notice">Seleziona soltanto le opportunità che vuoi eseguire o inserire nel report. Ogni scheda contiene priorità, spiegazione semplice, piano operativo e metodo di verifica. Le cause restano ipotesi da controllare.${all.length ? ` <strong>${items.length} di ${all.length}</strong> schede mostrate, dalla priorità più alta.` : ''}</div>
+    <div id="opportunityList">${items.length ? items.map(o => renderOpportunityCard(o, true)).join('') : empty('Nessuna opportunità', 'Salva una verifica per generare suggerimenti.')}</div>
+    ${remaining > 0 ? `<div style="margin-top:14px;display:flex;justify-content:center"><button class="btn" data-action="show-more-opportunities">Mostra altre ${Math.min(OPPORTUNITY_PAGE_53, remaining)} opportunità</button></div>` : ''}
+  `;
+  document.querySelectorAll('[data-action="opp-mark-progress"],[data-action="opp-mark-done"],[data-action="opp-add-report"]')
+    .forEach(button => button.dataset.requiresOpportunitySelection = 'true');
+  updateOpportunitySelection();
+};
+
+actionHandlers['show-more-opportunities'] = () => {
+  opportunityLimit53 += OPPORTUNITY_PAGE_53;
+  renderOpportunities();
+  enhanceRenderedAccessibility(document.getElementById('opportunities'));
+};
+
+/* 6. Bozza del wizard: scrittura su storage limitata ----------------------
+   saveDraft serializzava l'intero stato a ogni battitura (misurati ~108 ms
+   con 300 verifiche). Ora lo stato in memoria e' sempre aggiornato e la
+   persistenza avviene al massimo ogni 1,2 s, con scrittura finale garantita. */
+let draftFlushTimer53 = null, lastDraftSave53 = 0;
+saveDraft = function (force = false) {
+  const form = document.getElementById('checkForm');
+  if (!form) return;
+  const values = Utils.form(form);
+  ['reviewBrand', 'reviewDomain', 'reviewCompetitors', 'reviewSources']
+    .forEach(name => values[name] = Boolean(form.elements[name]?.checked));
+  state.checkDraft = { ...state.checkDraft, ...values, wizardStep: currentWizardStep, updatedAt: Utils.now() };
+
+  const flush = () => {
+    clearTimeout(draftFlushTimer53);
+    draftFlushTimer53 = null;
+    lastDraftSave53 = Date.now();
+    saveState(true);
+    const status = document.getElementById('draftStatus');
+    if (status) status.textContent = `Bozza salvata alle ${new Intl.DateTimeFormat('it-IT', { hour: '2-digit', minute: '2-digit' }).format(new Date())}`;
+  };
+
+  if (force === true || Date.now() - lastDraftSave53 > 1200) { flush(); return; }
+  const status = document.getElementById('draftStatus');
+  if (status) status.textContent = 'Bozza in salvataggio…';
+  clearTimeout(draftFlushTimer53);
+  draftFlushTimer53 = setTimeout(flush, 1200);
+};
+window.addEventListener('beforeunload', () => {
+  if (draftFlushTimer53) { clearTimeout(draftFlushTimer53); draftFlushTimer53 = null; saveState(true); }
+});
+
+/* 7. Passata di integrita' senza riallocazioni ---------------------------
+   normalizeAdvancedState ricostruiva tutti gli array a ogni salvataggio. */
+normalizeAdvancedState = function (target = state) {
+  target.pageSnapshots ||= [];
+  target.campaigns ||= [];
+  target.knowledge ||= [];
+  target.tasks ||= [];
+  target.gscImports ||= [];
+  target.contentAudits ||= [];
+  target.implementationAudits ||= [];
+  target.sourceValidations ||= {};
+  target.wpPackages ||= [];
+  target.dismissedOpportunityIds ||= [];
+  target.activityLog ||= [];
+  target.backups ||= [];
+  target.schemaVersion = CONFIG.DATA_SCHEMA_VERSION;
+
+  const fill = (obj, key, value) => { if (obj[key] === undefined || obj[key] === null) obj[key] = value; };
+  for (const fact of target.knowledge) {
+    fill(fact, 'verifiedAt', ''); fill(fact, 'verifiedBy', ''); fill(fact, 'internalEvidence', '');
+    fill(fact, 'expiresAt', ''); fill(fact, 'notes', ''); fill(fact, 'updatedAt', fact.createdAt || Utils.now());
+  }
+  for (const campaign of target.campaigns) {
+    fill(campaign, 'environment', '');
+    if (!campaign.promptTextSnapshot) campaign.promptTextSnapshot = promptBy(campaign.promptId)?.text || '';
+    if (!campaign.promptHash) campaign.promptHash = hashText(campaign.promptTextSnapshot || '');
+  }
+  for (const check of target.checks) {
+    if (!check.promptTextSnapshot) check.promptTextSnapshot = promptBy(check.promptId)?.text || '';
+    if (!check.promptHash) check.promptHash = hashText(check.promptTextSnapshot || '');
+  }
+  return target;
+};
+
+cleanupOrphans = function () {
+  const projectIds = new Set(state.projects.map(x => x.id));
+  const promptIds = new Set(state.prompts.map(x => x.id));
+  const checkIds = new Set(state.checks.map(x => x.id));
+  const opportunityIds = new Set(state.opportunities.map(x => x.id));
+  const prune = (key, keep) => {
+    const list = state[key] || [];
+    for (let i = 0; i < list.length; i++) {
+      if (!keep(list[i])) { state[key] = list.filter(keep); return; }
+    }
+  };
+  prune('pageSnapshots', x => projectIds.has(x.projectId));
+  prune('campaigns', x => projectIds.has(x.projectId) && promptIds.has(x.promptId));
+  prune('knowledge', x => projectIds.has(x.projectId));
+  prune('tasks', x => projectIds.has(x.projectId) && (!x.checkId || checkIds.has(x.checkId)) && (!x.beforeCheckId || checkIds.has(x.beforeCheckId)) && (!x.afterCheckId || checkIds.has(x.afterCheckId)));
+  prune('gscImports', x => projectIds.has(x.projectId));
+  prune('contentAudits', x => projectIds.has(x.projectId));
+  prune('implementationAudits', x => projectIds.has(x.projectId));
+  prune('wpPackages', x => projectIds.has(x.projectId));
+  prune('dismissedOpportunityIds', id => opportunityIds.has(id));
+  for (const id of Object.keys(state.sourceValidations)) if (!checkIds.has(id)) delete state.sourceValidations[id];
+};
+
+/* 8. Guardie sugli elementi non piu' disponibili -------------------------- */
+function guardAction53(name, isAvailable, message = 'Elemento non più disponibile: aggiorna la sezione.') {
+  const original = actionHandlers[name];
+  if (typeof original !== 'function') return;
+  actionHandlers[name] = event => {
+    let ok = false;
+    try { ok = Boolean(isAvailable(event)); } catch { ok = false; }
+    if (!ok) { Utils.toast(message, 'error'); return; }
+    return original(event);
+  };
+}
+const checkExists53 = id => state.checks.some(check => check.id === id);
+guardAction53('edit-project', e => projectBy(e.target.dataset.editProject));
+guardAction53('duplicate-project', e => projectBy(e.target.dataset.duplicateProject));
+guardAction53('archive-project', e => projectBy(e.target.dataset.archiveProject));
+guardAction53('start-project', e => projectBy(e.target.dataset.startProject));
+guardAction53('edit-prompt', e => promptBy(e.target.dataset.editPrompt));
+guardAction53('start-prompt', e => promptBy(e.target.dataset.startPrompt));
+guardAction53('view-check', e => checkExists53(e.target.dataset.viewCheck));
+guardAction53('edit-check', e => checkExists53(e.target.dataset.editCheck));
+guardAction53('reanalyze-check', e => checkExists53(e.target.dataset.reanalyzeCheck));
+guardAction53('duplicate-check', e => checkExists53(e.target.dataset.duplicateCheck));
+guardAction53('review-check', e => checkExists53(e.target.dataset.id));
+guardAction53('matrix-start', e => promptBy(e.target.dataset.prompt));
+guardAction53('save-analysis-settings', () => document.getElementById('analysisSettings'), 'Apri la scheda Analisi prima di salvare.');
+guardAction53('save-score-settings', () => document.getElementById('scoreSettings'), 'Apri la scheda GEO Score prima di salvare.');
+guardAction53('save-branding', () => document.getElementById('brandingSettings'), 'Apri la scheda White label prima di salvare.');
+guardAction53('load-latest-page-snapshot', () => document.getElementById('implementationPage'), 'Apri “Verifica implementazione” prima di caricare lo snapshot.');
+guardAction53('create-implementation-tasks', e => state.implementationAudits.some(a => a.id === e.target.dataset.id));
+guardAction53('download-implementation-report', e => state.implementationAudits.some(a => a.id === e.target.dataset.id));
+guardAction53('campaign-start-test', e => state.campaigns.some(c => c.id === e.target.dataset.id));
+guardAction53('campaign-baseline', e => state.campaigns.some(c => c.id === e.target.dataset.id));
+guardAction53('campaign-complete', e => state.campaigns.some(c => c.id === e.target.dataset.id));
+
+/* 9. Toggle piattaforma su una voce inesistente ---------------------------
+   platformBy() restituisce un oggetto segnaposto: la modifica si perdeva
+   in silenzio invece di segnalare l'errore. */
+changeHandlers['[data-toggle-platform]'] = event => {
+  const platform = state.platforms.find(item => item.id === event.target.dataset.togglePlatform);
+  if (!platform) {
+    event.target.checked = !event.target.checked;
+    Utils.toast('Piattaforma non trovata: ricarica la scheda Piattaforme.', 'error');
+    return;
+  }
+  platform.active = event.target.checked;
+  saveState(true);
+};
+
+/* 10. Diagnostica: due controlli aggiuntivi ------------------------------- */
+const diagnosticsRunBefore53 = diagnosticsRun;
+diagnosticsRun = function () {
+  const tests = diagnosticsRunBefore53();
+  const rowsWithLegacyAttribute = document.querySelectorAll('[data-result-row][data-search]').length;
+  tests.push({
+    name: 'Indice di ricerca fuori dal DOM',
+    pass: rowsWithLegacyAttribute === 0,
+    detail: rowsWithLegacyAttribute ? `${rowsWithLegacyAttribute} righe con attributo legacy` : 'Nessun attributo di ricerca duplicato nel DOM',
+    priority: 'P3'
+  });
+  const orphanTotals = Object.values(orphanReport()).reduce((sum, list) => sum + list.length, 0);
+  tests.push({
+    name: 'Nessun record orfano',
+    pass: orphanTotals === 0,
+    detail: orphanTotals ? `${orphanTotals} record da ripulire in Backup` : 'Collegamenti coerenti',
+    priority: 'P2'
+  });
+  return tests;
+};
+
+/* 11. Orfani profondi: rilevamento e pulizia esplicita ---------------------
+   cleanupOrphans (che gira a ogni salvataggio) non tocca prompt e verifiche,
+   per non cancellare dati dell'utente in modo implicito. Di conseguenza gli
+   orfani generati da un import potevano essere segnalati come P1 dalla
+   diagnostica senza che nessuna funzione fosse in grado di risolverli. */
+const orphanReportBefore53 = orphanReport;
+orphanReport = function () {
+  const report = orphanReportBefore53();
+  const projectIds = new Set(state.projects.map(project => project.id));
+  const promptIds = new Set(state.prompts.map(prompt => prompt.id));
+  report.prompts = state.prompts.filter(prompt => !projectIds.has(prompt.projectId));
+  report.checks = state.checks.filter(check => !projectIds.has(check.projectId) || !promptIds.has(check.promptId));
+  return report;
+};
+
+function cleanupOrphansDeep53() {
+  const projectIds = new Set(state.projects.map(project => project.id));
+  state.prompts = state.prompts.filter(prompt => projectIds.has(prompt.projectId));
+  const promptIds = new Set(state.prompts.map(prompt => prompt.id));
+  state.checks = state.checks.filter(check => projectIds.has(check.projectId) && promptIds.has(check.promptId));
+  state.opportunities = (state.opportunities || []).filter(item => projectIds.has(item.projectId));
+  cleanupOrphans();
+}
+
+actionHandlers['inspect-orphans'] = () => {
+  const report = orphanReport();
+  const counts = Object.fromEntries(Object.entries(report).map(([key, list]) => [key, list.length]));
+  const total = Object.values(counts).reduce((sum, value) => sum + value, 0);
+  modal('Pulizia dati orfani',
+    `<div class="notice ${total ? 'warning' : 'success'}">${total ? `Sono stati trovati ${total} record orfani, cioè collegati a progetti, prompt o verifiche non più esistenti.` : 'Nessun dato orfano rilevato.'}</div>
+     <div class="card">${Object.entries(counts).map(([key, value]) => `<div class="kpi-row"><strong>${Utils.esc(key)}</strong><span>${value}</span></div>`).join('')}</div>
+     ${total ? '<div class="notice">Prima della pulizia viene creato uno snapshot locale ripristinabile da “Ripristina ultima operazione”.</div>' : ''}`,
+    total
+      ? '<button class="btn" data-close-modal>Annulla</button><button class="btn btn-danger" id="confirmOrphanCleanup">Crea snapshot e pulisci</button>'
+      : '<button class="btn" data-close-modal>Chiudi</button>');
+  if (!total) return;
+  document.getElementById('confirmOrphanCleanup').onclick = () => {
+    if (!createSafetySnapshot('orphan-cleanup')) return;
+    cleanupOrphansDeep53();
+    state.activityLog.push({ id: Utils.uid(), at: Utils.now(), action: 'cleanup-orphans', detail: `${total} record` });
+    saveState();
+    closeModal();
+    renderBackup();
+    Utils.toast(`${total} record orfani rimossi.`, 'success');
+  };
+};
+
+actionHandlers['repair-data'] = () => {
+  cleanupOrphans();
+  normalizeAdvancedState();
+  saveState();
+  const deep = orphanReport();
+  const remaining = (deep.prompts?.length || 0) + (deep.checks?.length || 0);
+  renderDiagnostics();
+  if (remaining) Utils.toast(`Riparazione completata. Restano ${remaining} record orfani: usa Backup → “Analizza e pulisci dati orfani”, che crea uno snapshot prima di rimuoverli.`, 'warning');
+  else Utils.toast('Dati riparati e normalizzati.', 'success');
+};
 
 // ============================================================
 // INIT
