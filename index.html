@@ -5,10 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="description" content="Strumento locale per monitorare citazioni, fonti e visibilità GEO con verifiche manuali, report e controlli di qualità.">
 <meta name="robots" content="noindex,nofollow,noarchive">
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<meta name="app-build" content="5.8.1">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#f7f9fc">
 <meta name="color-scheme" content="light dark">
-<title>GEO Citation Monitor 5.1</title>
+<title>GEO Citation Monitor 5.8.1</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2064%2064%22%3E%3Crect%20width=%2264%22%20height=%2264%22%20rx=%2214%22%20fill=%22%23155eef%22/%3E%3Cpath%20d=%22M32%2011%2014%2021v22l18%2010%2018-10V21L32%2011Zm0%209%209%205-9%205-9-5%209-5ZM22%2033l7%204v8l-7-4v-8Zm13%2012v-8l7-4v8l-7%204Z%22%20fill=%22white%22/%3E%3C/svg%3E">
 <style>
 :root{
@@ -166,6 +168,194 @@ input[aria-invalid="true"],select[aria-invalid="true"],textarea[aria-invalid="tr
 }
 @media print{.results-data-table{display:table!important;min-width:0}.results-data-table thead{position:static!important;width:auto!important;height:auto!important;margin:0!important;overflow:visible!important;clip:auto!important;white-space:normal!important}.results-data-table tbody{display:table-row-group!important}.results-data-table tr{display:table-row!important}.results-data-table td{display:table-cell!important}.results-data-table td::before{display:none!important}}
 
+
+/* ============================================================
+   SIMPLE UX 5.4 — percorso guidato per utenti non tecnici
+   ============================================================ */
+.simple-hero{background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 8%,var(--surface)),var(--surface));border:1px solid color-mix(in srgb,var(--accent) 22%,var(--border));border-radius:14px;padding:22px;margin-bottom:16px}
+.simple-hero h1{margin:0 0 8px;font-size:26px;letter-spacing:-.035em}.simple-hero p{margin:0;color:var(--muted);max-width:820px;font-size:15px}
+.next-step{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center;background:var(--surface);border:2px solid color-mix(in srgb,var(--accent) 32%,var(--border));border-radius:14px;padding:18px;margin:16px 0}
+.next-step-number{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:#fff;font-size:18px;font-weight:900}
+.next-step h2{font-size:18px;margin:0 0 3px}.next-step p{margin:0;color:var(--muted)}
+.simple-flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:16px 0}.simple-flow-step{border:1px solid var(--border);border-radius:11px;padding:14px;background:var(--surface)}.simple-flow-step b{display:block;margin-bottom:4px}.simple-flow-step span{font-size:12px;color:var(--muted)}
+.simple-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--border);border-radius:12px;background:var(--surface);overflow:hidden}.simple-kpi{padding:16px;border-right:1px solid var(--border)}.simple-kpi:last-child{border-right:0}.simple-kpi-label{font-size:12px;color:var(--muted);font-weight:750}.simple-kpi-value{font-size:26px;font-weight:900;margin:7px 0 2px}.simple-kpi-help{font-size:11px;color:var(--muted)}
+.simple-result{border:1px solid var(--border);border-radius:13px;background:var(--surface);padding:18px;margin-bottom:12px}.simple-result-head{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap}.simple-result h3{margin:0;font-size:17px}.simple-result p{margin:8px 0;color:var(--text)}.simple-result .why{color:var(--muted)}
+.simple-action-box{background:color-mix(in srgb,var(--accent) 6%,var(--surface));border:1px solid color-mix(in srgb,var(--accent) 24%,var(--border));border-radius:11px;padding:14px;margin:12px 0}.simple-action-box h4{margin:0 0 8px;font-size:14px}.simple-action-box ol{margin:0;padding-left:22px}.simple-action-box li{margin:7px 0}
+.example-box{border-left:4px solid var(--info);background:color-mix(in srgb,var(--info) 6%,var(--surface));padding:12px 14px;border-radius:0 10px 10px 0;margin:12px 0}.example-box strong{display:block;margin-bottom:4px}
+.simple-status{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}.simple-status-card{border:1px solid var(--border);border-radius:11px;padding:15px;background:var(--surface-2)}.simple-status-card .big{font-size:22px;font-weight:900;margin-top:4px}
+.simple-good{border-left:5px solid var(--success)}.simple-bad{border-left:5px solid var(--danger)}.simple-warn{border-left:5px solid var(--warning)}
+.simple-help{padding:14px 16px;border-radius:11px;background:var(--surface-2);border:1px solid var(--border);margin:12px 0}.simple-help h3,.simple-help h4{margin-top:0}
+.simple-details{margin-top:14px;border-top:1px solid var(--border);padding-top:10px}.simple-details summary{cursor:pointer;color:var(--accent);font-weight:800;padding:5px 0}
+.wizard-nav{width:220px}.wizard-step-nav small{font-size:11px}.wizard-step-nav strong{font-size:13px}
+.advanced-settings{border:1px solid var(--border);border-radius:10px;margin-top:14px;background:var(--surface-2)}.advanced-settings summary{cursor:pointer;padding:12px 14px;font-weight:800}.advanced-settings-body{padding:0 14px 14px}
+.plain-language{font-size:15px;line-height:1.65}.plain-language strong{color:var(--text)}
+.action-card-simple{border:1px solid var(--border);border-radius:12px;background:var(--surface);padding:16px;margin-bottom:12px}.action-card-simple h3{font-size:16px;margin:0}.action-card-simple .task-fields{display:grid;grid-template-columns:1fr 180px 180px;gap:10px;margin-top:12px}.action-card-simple textarea{min-height:80px}
+.term-help{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;border:1px solid var(--border);font-size:11px;color:var(--muted);cursor:help;margin-left:4px}
+@media(max-width:900px){.simple-flow,.simple-kpis{grid-template-columns:repeat(2,1fr)}.simple-kpi:nth-child(2){border-right:0}.next-step{grid-template-columns:auto 1fr}.next-step .btn{grid-column:2;justify-self:start}.action-card-simple .task-fields{grid-template-columns:1fr}}
+@media(max-width:600px){.simple-flow,.simple-kpis,.simple-status{grid-template-columns:1fr}.simple-kpi{border-right:0;border-bottom:1px solid var(--border)}.simple-kpi:last-child{border-bottom:0}.simple-hero{padding:17px}.simple-hero h1{font-size:22px}.next-step{grid-template-columns:1fr}.next-step-number{width:36px;height:36px}.next-step .btn{grid-column:1;width:100%}}
+
+
+/* ============================================================
+   GUIDED WIZARD 5.5 — simple decision-led workflow
+   ============================================================ */
+.guided-launch{border:1px solid color-mix(in srgb,var(--accent) 24%,var(--border));background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 7%,var(--surface)),var(--surface));border-radius:14px;padding:22px;margin-bottom:18px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:22px;align-items:center}
+.guided-launch h2{font-size:22px;line-height:1.2;margin:0 0 6px;letter-spacing:-.025em}.guided-launch p{margin:0;color:var(--muted);max-width:720px}.guided-launch-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.guided-mode-choice{display:flex;gap:8px;align-items:center;margin-top:13px;flex-wrap:wrap}.guided-mode-pill{border:1px solid var(--border);background:var(--surface);border-radius:999px;padding:5px 9px;font-size:11px;color:var(--muted)}.guided-mode-pill.active{border-color:var(--accent);color:var(--accent);background:color-mix(in srgb,var(--accent) 7%,var(--surface))}
+.guided-resume{margin-bottom:16px;border-left:4px solid var(--warning)}
+.guided-shell{position:fixed;inset:0;z-index:400;background:var(--bg);display:none;overflow:auto}.guided-shell.show{display:block}.guided-shell-inner{width:min(980px,100%);min-height:100dvh;margin:auto;padding:22px 22px 90px}.guided-header{display:flex;align-items:center;gap:12px;margin-bottom:20px}.guided-header-brand{font-weight:900;font-size:15px}.guided-header .spacer{flex:1}.guided-close{white-space:nowrap}.guided-progress{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:18px}.guided-progress-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}.guided-progress-top strong{font-size:13px}.guided-progress-top span{font-size:12px;color:var(--muted);margin-left:auto}.guided-steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}.guided-step{position:relative;padding-top:12px;font-size:11px;color:var(--muted);font-weight:750}.guided-step:before{content:'';position:absolute;left:0;right:0;top:0;height:4px;border-radius:999px;background:var(--surface-3)}.guided-step.done{color:var(--success)}.guided-step.done:before{background:var(--success)}.guided-step.current{color:var(--accent)}.guided-step.current:before{background:var(--accent)}
+.guided-stage{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:26px;box-shadow:var(--shadow)}.guided-stage h1{font-size:26px;line-height:1.18;margin:0 0 9px;letter-spacing:-.035em}.guided-stage>p{font-size:15px;color:var(--muted);margin:0 0 18px;max-width:760px}.guided-primary{min-height:48px;padding:11px 18px;font-size:14px}.guided-footer-actions{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-top:22px}.guided-footer-actions .secondary-link{margin-left:auto}.guided-safety{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:16px 0}.guided-safety>div{padding:13px;border:1px solid var(--border);border-radius:10px;background:var(--surface-2)}.guided-safety strong{display:block;margin-bottom:4px}.guided-checks{display:grid;gap:10px;margin:18px 0}.guided-check{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:start;padding:12px;border:1px solid var(--border);border-radius:10px;background:var(--surface-2)}.guided-check-icon{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--surface-3);font-weight:900}.guided-check.done .guided-check-icon{background:color-mix(in srgb,var(--success) 14%,var(--surface));color:var(--success)}.guided-check.current .guided-check-icon{background:color-mix(in srgb,var(--accent) 14%,var(--surface));color:var(--accent)}
+.guided-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:18px 0}.guided-summary-card{padding:16px;border:1px solid var(--border);border-radius:11px;background:var(--surface-2)}.guided-summary-card .value{font-size:30px;font-weight:900;line-height:1}.guided-summary-card .label{font-size:12px;color:var(--muted);margin-top:6px}.guided-overall{padding:15px;border-radius:11px;border:1px solid var(--border);background:var(--surface-2);margin-bottom:16px}.guided-overall.good{border-color:color-mix(in srgb,var(--success) 35%,var(--border));background:color-mix(in srgb,var(--success) 7%,var(--surface))}.guided-overall.attention{border-color:color-mix(in srgb,var(--warning) 35%,var(--border));background:color-mix(in srgb,var(--warning) 7%,var(--surface))}
+.guided-issue-head{display:flex;gap:10px;align-items:flex-start;margin-bottom:14px}.guided-issue-head .spacer{flex:1}.guided-issue-count{font-size:12px;color:var(--muted)}.guided-explain{padding:15px;border-left:4px solid var(--accent);background:var(--surface-2);border-radius:0 10px 10px 0;margin:14px 0}.guided-recommendation{padding:16px;border:1px solid color-mix(in srgb,var(--accent) 28%,var(--border));background:color-mix(in srgb,var(--accent) 6%,var(--surface));border-radius:11px;margin:14px 0}.guided-recommendation h3,.guided-manual h3{margin:0 0 7px;font-size:16px}.guided-example{padding:13px;border:1px dashed var(--border);border-radius:10px;margin:12px 0;background:var(--surface)}.guided-manual{padding:16px;border:1px solid var(--border);border-radius:11px;background:var(--surface-2);margin:14px 0}.guided-manual ol{padding-left:22px;margin:10px 0}.guided-manual li{margin:10px 0}.guided-technical{margin-top:14px}.guided-technical summary{cursor:pointer;color:var(--muted);font-weight:750}.guided-technical-body{margin-top:9px;padding:12px;background:var(--surface-3);border-radius:9px;font:12px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;word-break:break-word}.guided-verify-result{padding:15px;border-radius:11px;margin:16px 0}.guided-verify-result.success{background:color-mix(in srgb,var(--success) 8%,var(--surface));border:1px solid color-mix(in srgb,var(--success) 35%,var(--border))}.guided-verify-result.fail{background:color-mix(in srgb,var(--warning) 8%,var(--surface));border:1px solid color-mix(in srgb,var(--warning) 35%,var(--border))}.guided-safe-list{margin:12px 0;padding-left:22px}.guided-safe-list li{margin:6px 0}.guided-complete-icon{width:60px;height:60px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--success) 13%,var(--surface));color:var(--success);font-size:30px;font-weight:900;margin-bottom:14px}
+body.guided-lock{overflow:hidden}.guided-mode .nav-more,.guided-mode .sidebar-system,.guided-mode [data-section="matrix"],.guided-mode [data-section="compare"],.guided-mode [data-section="quality"],.guided-mode [data-section="generator"],.guided-mode [data-section="content-engine"],.guided-mode [data-section="gsc"],.guided-mode [data-section="reports"]{display:none!important}.guided-mode .nav-label{opacity:.8}.guided-mode .brand-sub:after{content:' · modalità guidata'}
+@media(max-width:760px){.guided-launch{grid-template-columns:1fr}.guided-launch-actions{justify-content:flex-start}.guided-shell-inner{padding:12px 12px 84px}.guided-header{position:sticky;top:0;z-index:2;background:var(--bg);padding:8px 0}.guided-stage{padding:19px 15px}.guided-stage h1{font-size:22px}.guided-steps{grid-template-columns:1fr;gap:5px}.guided-step{padding:6px 0 6px 16px}.guided-step:before{left:0;right:auto;top:8px;width:5px;height:18px}.guided-summary,.guided-safety{grid-template-columns:1fr}.guided-footer-actions{align-items:stretch}.guided-footer-actions .btn{width:100%}.guided-footer-actions .secondary-link{margin-left:0}}
+
+</style>
+
+<style id="guidedWizard56Styles">
+:root{--guided-font-scale:2}
+.guided-shell{font-size:calc(14px * var(--guided-font-scale))}
+.guided-shell-inner{width:min(1180px,100%);padding-top:18px}
+.guided-header{gap:14px;min-height:58px}
+.guided-header-brand{font-size:calc(15px * var(--guided-font-scale));letter-spacing:-.02em}
+.guided-header .btn{font-size:calc(12px * var(--guided-font-scale));min-height:calc(36px * var(--guided-font-scale));padding:calc(6px * var(--guided-font-scale)) calc(10px * var(--guided-font-scale))}
+.guided-font-tools{display:flex;align-items:center;gap:6px;padding:5px;border:1px solid var(--border);background:var(--surface);border-radius:10px}
+.guided-font-label{font-size:calc(10px * var(--guided-font-scale));font-weight:800;color:var(--muted);padding:0 5px}
+.guided-font-btn{min-width:calc(34px * var(--guided-font-scale));height:calc(34px * var(--guided-font-scale));border:1px solid transparent;background:transparent;color:var(--text);border-radius:7px;font-size:calc(12px * var(--guided-font-scale));font-weight:900;cursor:pointer}
+.guided-font-btn:hover,.guided-font-btn.active{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,var(--surface));color:var(--accent)}
+.guided-progress{padding:calc(10px * var(--guided-font-scale)) calc(12px * var(--guided-font-scale));margin-bottom:calc(12px * var(--guided-font-scale))}
+.guided-progress-top strong{font-size:calc(12px * var(--guided-font-scale))}.guided-progress-top span{font-size:calc(11px * var(--guided-font-scale))}
+.guided-step{font-size:calc(10px * var(--guided-font-scale));padding-top:calc(10px * var(--guided-font-scale))}
+.guided-next-hint{margin-top:calc(8px * var(--guided-font-scale));font-size:calc(11px * var(--guided-font-scale));color:var(--muted);font-weight:650}
+.guided-stage{padding:calc(19px * var(--guided-font-scale));border-radius:14px}
+.guided-stage h1{font-size:calc(26px * var(--guided-font-scale));line-height:1.08;max-width:16ch;margin-bottom:calc(7px * var(--guided-font-scale))}
+.guided-stage>p,.guided-stage p{font-size:calc(14px * var(--guided-font-scale));line-height:1.45;max-width:42ch}
+.guided-eyebrow{font-size:calc(10px * var(--guided-font-scale));font-weight:900;letter-spacing:.09em;color:var(--accent);margin-bottom:calc(5px * var(--guided-font-scale))}
+.guided-primary{min-height:calc(46px * var(--guided-font-scale));padding:calc(9px * var(--guided-font-scale)) calc(15px * var(--guided-font-scale));font-size:calc(14px * var(--guided-font-scale));border-radius:10px}
+.guided-footer-actions{gap:calc(7px * var(--guided-font-scale));margin-top:calc(15px * var(--guided-font-scale))}.guided-footer-actions .btn:not(.guided-primary){font-size:calc(11px * var(--guided-font-scale));min-height:calc(36px * var(--guided-font-scale))}
+.guided-one-line{display:flex;gap:calc(7px * var(--guided-font-scale));align-items:center;padding:calc(10px * var(--guided-font-scale));border-radius:10px;background:color-mix(in srgb,var(--success) 8%,var(--surface));font-size:calc(12px * var(--guided-font-scale));margin-top:calc(12px * var(--guided-font-scale));max-width:32ch}
+.guided-checks{gap:calc(7px * var(--guided-font-scale));margin:calc(13px * var(--guided-font-scale)) 0}.guided-check{grid-template-columns:calc(24px * var(--guided-font-scale)) minmax(0,1fr);gap:calc(7px * var(--guided-font-scale));padding:calc(9px * var(--guided-font-scale))}.guided-check-icon{width:calc(22px * var(--guided-font-scale));height:calc(22px * var(--guided-font-scale));font-size:calc(11px * var(--guided-font-scale))}.guided-check strong{font-size:calc(12px * var(--guided-font-scale))}.guided-check .help{font-size:calc(10px * var(--guided-font-scale))}
+.guided-overall{padding:calc(12px * var(--guided-font-scale));font-size:calc(13px * var(--guided-font-scale));max-width:34ch}.guided-overall strong{display:block;font-size:calc(14px * var(--guided-font-scale));margin-bottom:4px}
+.guided-muted-note{font-size:calc(11px * var(--guided-font-scale));color:var(--muted);margin-top:calc(8px * var(--guided-font-scale))}
+.guided-simple-block{display:grid;grid-template-columns:calc(30px * var(--guided-font-scale)) minmax(0,1fr);gap:calc(9px * var(--guided-font-scale));padding:calc(12px * var(--guided-font-scale));margin:calc(9px * var(--guided-font-scale)) 0;border:1px solid var(--border);border-radius:12px;background:var(--surface-2)}
+.guided-simple-block.recommended{border-color:color-mix(in srgb,var(--accent) 38%,var(--border));background:color-mix(in srgb,var(--accent) 6%,var(--surface))}.guided-simple-block.next{background:var(--surface)}
+.guided-simple-number{width:calc(28px * var(--guided-font-scale));height:calc(28px * var(--guided-font-scale));border-radius:50%;display:grid;place-items:center;background:var(--accent);color:#fff;font-size:calc(12px * var(--guided-font-scale));font-weight:900}.guided-simple-block strong{font-size:calc(14px * var(--guided-font-scale))}.guided-simple-block p{margin:4px 0 0!important;font-size:calc(12px * var(--guided-font-scale))!important;max-width:48ch!important}
+.guided-example{padding:calc(10px * var(--guided-font-scale));font-size:calc(11px * var(--guided-font-scale));line-height:1.45;margin:calc(8px * var(--guided-font-scale)) 0}
+.guided-action-box{padding:calc(13px * var(--guided-font-scale));margin-top:calc(12px * var(--guided-font-scale));border:2px solid color-mix(in srgb,var(--accent) 28%,var(--border));border-radius:13px;background:var(--surface)}.guided-action-title{font-size:calc(15px * var(--guided-font-scale));font-weight:900;margin-bottom:calc(6px * var(--guided-font-scale))}.guided-action-box>p{font-size:calc(12px * var(--guided-font-scale))!important}.guided-untouched{font-size:calc(11px * var(--guided-font-scale));color:var(--muted);padding-top:calc(6px * var(--guided-font-scale))}
+.guided-big-steps{list-style:none;padding:0;margin:calc(9px * var(--guided-font-scale)) 0;display:grid;gap:calc(8px * var(--guided-font-scale))}.guided-big-steps li{display:grid;grid-template-columns:calc(28px * var(--guided-font-scale)) minmax(0,1fr);gap:calc(8px * var(--guided-font-scale));align-items:start;font-size:calc(12px * var(--guided-font-scale));line-height:1.45}.guided-big-steps li>span{width:calc(26px * var(--guided-font-scale));height:calc(26px * var(--guided-font-scale));display:grid;place-items:center;border-radius:50%;background:var(--surface-3);font-weight:900}
+.guided-technical{margin-top:calc(12px * var(--guided-font-scale));font-size:calc(10px * var(--guided-font-scale))}.guided-technical-body{font-size:calc(9px * var(--guided-font-scale));line-height:1.5}
+.guided-complete-icon{width:calc(48px * var(--guided-font-scale));height:calc(48px * var(--guided-font-scale));font-size:calc(24px * var(--guided-font-scale));margin-bottom:calc(9px * var(--guided-font-scale))}.guided-warn-icon{color:var(--warning);background:color-mix(in srgb,var(--warning) 13%,var(--surface))}
+.guided-launch{padding:calc(14px * var(--guided-font-scale));gap:calc(14px * var(--guided-font-scale))}.guided-launch h2{font-size:calc(20px * var(--guided-font-scale));margin-bottom:calc(4px * var(--guided-font-scale))}.guided-launch p{font-size:calc(12px * var(--guided-font-scale));line-height:1.4;max-width:46ch}.guided-launch .guided-eyebrow{font-size:calc(8px * var(--guided-font-scale))}
+.guided-resume{font-size:calc(11px * var(--guided-font-scale));line-height:1.45}
+@media(max-width:900px){.guided-header{flex-wrap:wrap}.guided-header-brand{width:100%}.guided-font-tools{order:2}.guided-header .spacer{display:none}.guided-header .guided-close{margin-left:auto}.guided-shell-inner{padding:10px 10px 90px}.guided-stage h1{max-width:none}.guided-stage>p,.guided-stage p{max-width:none}.guided-steps{grid-template-columns:repeat(5,minmax(0,1fr));overflow:auto}.guided-step{min-width:100px}.guided-footer-actions{align-items:stretch}.guided-footer-actions .btn{width:100%}}
+@media(max-width:600px){:root{--guided-font-scale:1.5}.guided-shell-inner{padding-left:8px;padding-right:8px}.guided-stage{padding:18px 14px}.guided-stage h1{font-size:calc(24px * var(--guided-font-scale))}.guided-font-label{display:none}.guided-font-btn{min-width:44px;height:44px}.guided-header .btn{font-size:16px;min-height:44px}.guided-progress-top{flex-wrap:wrap}.guided-progress-top span{margin-left:0}.guided-steps{display:flex}.guided-simple-block{grid-template-columns:44px minmax(0,1fr)}}
+</style>
+
+
+<style id="guidedWizard57Styles">
+/* 5.7: large text without scaling every box, safer wrapping, clearer action hierarchy */
+.guided-shell-inner{max-width:1120px}
+.guided-header{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 96%,transparent);backdrop-filter:blur(10px);padding:10px 0;border-bottom:1px solid var(--border);margin-bottom:14px;flex-wrap:wrap}
+.guided-header-brand{font-size:clamp(22px,calc(14px * var(--guided-font-scale)),34px)}
+.guided-header .spacer{min-width:8px}
+.guided-header .btn{font-size:clamp(15px,calc(9px * var(--guided-font-scale)),21px);min-height:44px;padding:8px 12px}
+.guided-font-tools{flex:0 0 auto}.guided-font-btn{min-width:48px;height:48px;font-size:clamp(18px,calc(10px * var(--guided-font-scale)),25px)}
+.guided-progress{padding:16px 18px}.guided-progress-top strong{font-size:clamp(18px,calc(10px * var(--guided-font-scale)),25px)}.guided-progress-top span{font-size:clamp(16px,calc(9px * var(--guided-font-scale)),22px)}
+.guided-step{font-size:clamp(15px,calc(8px * var(--guided-font-scale)),20px);padding-top:12px}.guided-next-hint{font-size:clamp(16px,calc(9px * var(--guided-font-scale)),22px);margin-top:12px}
+.guided-stage{padding:clamp(22px,4vw,40px)}.guided-stage h1{font-size:clamp(34px,calc(22px * var(--guided-font-scale)),58px);line-height:1.08;max-width:18ch}.guided-stage>p,.guided-stage p{font-size:clamp(20px,calc(12px * var(--guided-font-scale)),31px);line-height:1.5;max-width:48ch}
+.guided-eyebrow{font-size:clamp(15px,calc(8px * var(--guided-font-scale)),20px)}
+.guided-primary{font-size:clamp(20px,calc(11px * var(--guided-font-scale)),29px);min-height:58px;padding:13px 20px}.guided-footer-actions .btn:not(.guided-primary){font-size:clamp(16px,calc(9px * var(--guided-font-scale)),22px);min-height:48px}
+.guided-simple-block{grid-template-columns:52px minmax(0,1fr);gap:16px;padding:20px;margin:14px 0}.guided-simple-number{width:48px;height:48px;font-size:21px}.guided-simple-block strong{font-size:clamp(22px,calc(12px * var(--guided-font-scale)),30px)}.guided-simple-block p{font-size:clamp(19px,calc(10px * var(--guided-font-scale)),26px)!important;max-width:50ch!important}
+.guided-example,.guided-action-box,.guided-overall,.guided-one-line{max-width:none}.guided-example{font-size:clamp(18px,calc(9px * var(--guided-font-scale)),24px);padding:18px}.guided-action-title{font-size:clamp(23px,calc(12px * var(--guided-font-scale)),31px)}.guided-action-box>p,.guided-untouched{font-size:clamp(18px,calc(9px * var(--guided-font-scale)),24px)!important}.guided-big-steps li{font-size:clamp(19px,calc(10px * var(--guided-font-scale)),26px);grid-template-columns:48px minmax(0,1fr);gap:14px}.guided-big-steps li>span{width:44px;height:44px}
+.guided-check{grid-template-columns:46px minmax(0,1fr);padding:16px}.guided-check-icon{width:42px;height:42px;font-size:20px}.guided-check strong{font-size:clamp(20px,calc(10px * var(--guided-font-scale)),27px)}.guided-check .help{font-size:clamp(16px,calc(8px * var(--guided-font-scale)),21px)}
+.guided-technical{font-size:16px}.guided-technical-body{font-size:15px;max-height:280px;overflow:auto}
+.guided-return-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;z-index:350;width:min(760px,calc(100% - 24px));display:flex;gap:12px;align-items:center;background:var(--text);color:var(--surface);border-radius:14px;padding:14px 16px;box-shadow:0 20px 60px rgba(0,0,0,.28)}.guided-return-bar strong{font-size:16px}.guided-return-bar span{font-size:14px;opacity:.82}.guided-return-bar .btn{margin-left:auto;white-space:nowrap;background:var(--surface);color:var(--text);border-color:transparent}
+.guided-where{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0 4px}.guided-where>div{padding:13px;border:1px solid var(--border);border-radius:10px;background:var(--surface-2)}.guided-where small{display:block;color:var(--muted);font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}.guided-where strong{display:block;font-size:18px;margin-top:3px}
+@media(max-width:760px){.guided-shell-inner{padding:8px 8px 100px}.guided-header{gap:8px}.guided-header-brand{width:100%}.guided-font-tools{order:2}.guided-header .guided-close{margin-left:auto}.guided-stage{padding:22px 16px}.guided-stage h1{font-size:clamp(32px,11vw,46px)}.guided-stage>p,.guided-stage p{font-size:clamp(20px,6vw,26px)}.guided-steps{display:flex;overflow-x:auto;scrollbar-width:thin}.guided-step{min-width:110px}.guided-where{grid-template-columns:1fr}.guided-footer-actions .btn{width:100%}.guided-return-bar{bottom:max(10px,env(safe-area-inset-bottom));flex-wrap:wrap}.guided-return-bar .btn{width:100%;margin-left:0}.guided-simple-block{grid-template-columns:44px minmax(0,1fr);padding:16px}.guided-simple-number{width:40px;height:40px}.guided-font-label{display:none}}
+</style>
+
+
+<style id="verificationWizard58Styles">
+/* 5.8 — verification wizard: stable, readable type at every step */
+#new-check{--check-font-scale:2;font-size:clamp(18px,calc(10px * var(--check-font-scale)),25px)}
+#new-check .check-font-bar{position:sticky;top:78px;z-index:12;display:flex;align-items:center;gap:8px;margin:0 0 14px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:color-mix(in srgb,var(--surface) 96%,transparent);backdrop-filter:blur(9px)}
+#new-check .check-font-bar strong{font-size:clamp(18px,calc(10px * var(--check-font-scale)),25px)}
+#new-check .check-font-bar .spacer{flex:1}
+#new-check .check-font-btn{min-width:46px;height:46px;padding:0 10px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);font-size:clamp(18px,calc(10px * var(--check-font-scale)),25px);font-weight:900}
+#new-check .check-font-btn.active{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,var(--surface));color:var(--accent)}
+#new-check .wizard-step-nav strong{font-size:clamp(17px,calc(9px * var(--check-font-scale)),22px);line-height:1.3}
+#new-check .wizard-step-nav small{font-size:clamp(14px,calc(7px * var(--check-font-scale)),18px);line-height:1.4}
+#new-check .step-number{width:36px;height:36px;flex-basis:36px;font-size:17px}
+#new-check .card-title{font-size:clamp(24px,calc(13px * var(--check-font-scale)),32px);line-height:1.2}
+#new-check .card-sub,#new-check .help,#new-check .field-note{font-size:clamp(16px,calc(8px * var(--check-font-scale)),21px);line-height:1.5}
+#new-check .field label,#new-check .check-row strong{font-size:clamp(18px,calc(9px * var(--check-font-scale)),24px);line-height:1.35}
+#new-check input,#new-check select,#new-check textarea,#new-check .btn{font-size:clamp(18px,calc(9px * var(--check-font-scale)),24px)}
+#new-check input,#new-check select{min-height:52px}
+#new-check .btn{min-height:50px;padding:10px 15px}
+#new-check .answer-view,#new-check .response-text{font-size:clamp(19px,calc(10px * var(--check-font-scale)),26px);line-height:1.65}
+#new-check .analysis-item small{font-size:clamp(16px,calc(8px * var(--check-font-scale)),21px)}
+#new-check .analysis-item strong{font-size:clamp(22px,calc(11px * var(--check-font-scale)),29px);line-height:1.25}
+#new-check .confidence-part{font-size:clamp(17px,calc(8.5px * var(--check-font-scale)),22px)}
+#new-check .evidence strong,#new-check .source-row strong{font-size:clamp(18px,calc(9px * var(--check-font-scale)),24px)}
+#new-check .evidence blockquote,#new-check .source-row{font-size:clamp(17px,calc(8.5px * var(--check-font-scale)),22px);line-height:1.5}
+#new-check .wizard-footer{font-size:clamp(17px,calc(8.5px * var(--check-font-scale)),22px)}
+#new-check .review-simple-intro{padding:16px 18px;border:1px solid color-mix(in srgb,var(--accent) 30%,var(--border));background:color-mix(in srgb,var(--accent) 6%,var(--surface));border-radius:12px;margin-bottom:14px}
+#new-check .review-simple-intro strong{display:block;font-size:clamp(22px,calc(11px * var(--check-font-scale)),29px);margin-bottom:5px}
+#new-check .review-summary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}
+#new-check .review-summary-item{padding:15px;border:1px solid var(--border);border-radius:11px;background:var(--surface-2)}
+#new-check .review-summary-item small{display:block;color:var(--muted);font-size:clamp(15px,calc(7.5px * var(--check-font-scale)),19px);margin-bottom:4px}
+#new-check .review-summary-item strong{font-size:clamp(21px,calc(10.5px * var(--check-font-scale)),28px);line-height:1.3}
+#new-check .review-confirm-box{padding:16px;border:2px solid color-mix(in srgb,var(--success) 35%,var(--border));border-radius:12px;background:color-mix(in srgb,var(--success) 6%,var(--surface));margin:14px 0}
+#new-check .review-confirm-box p{margin:0 0 12px;font-size:clamp(17px,calc(8.5px * var(--check-font-scale)),22px)}
+#new-check .review-confirm-status{margin-top:10px;font-weight:800;font-size:clamp(16px,calc(8px * var(--check-font-scale)),21px)}
+#new-check .review-corrections{margin-top:14px;border:1px solid var(--border);border-radius:12px;background:var(--surface)}
+#new-check .review-corrections>summary{cursor:pointer;padding:14px 16px;font-weight:850;font-size:clamp(18px,calc(9px * var(--check-font-scale)),24px)}
+#new-check .review-corrections-body{padding:0 16px 16px}
+#new-check .review-hidden-checks{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important}
+@media(max-width:900px){#new-check .check-font-bar{top:68px}#new-check .review-summary-grid{grid-template-columns:1fr}}
+@media(max-width:680px){#new-check .check-font-bar{top:64px;flex-wrap:wrap}#new-check .check-font-bar strong{width:100%}#new-check .check-font-bar .spacer{display:none}#new-check .check-font-btn{flex:1}#new-check .wizard-footer{position:sticky;left:auto;right:auto;bottom:max(8px,env(safe-area-inset-bottom))}}
+</style>
+
+<style id="uiConsistency581Styles">
+/* 5.8.1 — typography normalization and cross-section consistency */
+:root{
+  --ui-body-size:18px;
+  --ui-small-size:16px;
+  --ui-control-size:17px;
+  --ui-card-title-size:20px;
+  --ui-section-title-size:24px;
+}
+body{font-size:var(--ui-body-size);line-height:1.55}
+.content,.modal-body,.modal-actions{font-size:var(--ui-body-size)}
+.content p,.content li,.content td,.content .simple-explanation,.content .plain-language,.modal-body p,.modal-body li{font-size:var(--ui-body-size);line-height:1.6}
+.help,.card-sub,.field-note,.page-subtitle,.dashboard-kpi-meta,.action-meta,.score-note,.muted,.source-row .help,.diagnosis-item .help{font-size:var(--ui-small-size);line-height:1.5}
+.card-title,.panel-head h2,.simple-action-box h4,.implementation-box h4,.guided-recommendation h3,.guided-manual h3{font-size:var(--ui-card-title-size);line-height:1.3}
+.content h2,.report-section-title h2{font-size:var(--ui-section-title-size);line-height:1.25}
+.content h3{font-size:20px;line-height:1.3}
+.btn,input,select,textarea,.tab,.implementation-tab{font-size:var(--ui-control-size);line-height:1.4}
+.btn-sm{font-size:16px}.badge,.priority-tag,.status-pill,.audit-status,.evidence-label{font-size:14px}
+th{font-size:14px}td{font-size:17px}
+.nav-item{font-size:15px}.nav-more-body .nav-item{font-size:14px}.nav-label,.sidebar-footer,.brand-sub{font-size:12px}.brand-name{font-size:16px}
+.page-title{font-size:22px}.dashboard-head h1,.simple-hero h1{font-size:30px}.dashboard-head p,.simple-hero p{font-size:18px}
+.metric-label,.metric-change,.simple-kpi-label{font-size:16px}.metric-value,.simple-kpi-value{font-size:30px}
+.analysis-item small,.confidence-part,.impact-box span{font-size:16px}.analysis-item strong,.impact-box strong{font-size:22px}
+.answer-view,.response-text,.quick-preview{font-size:18px;line-height:1.65}
+/* Keep the verification wizard aligned with the rest of the application. */
+#new-check{font-size:var(--ui-body-size)}
+#new-check .check-font-bar strong,#new-check .check-font-btn,#new-check .wizard-step-nav strong,#new-check .field label,#new-check .check-row strong,#new-check input,#new-check select,#new-check textarea,#new-check .btn,#new-check .answer-view,#new-check .response-text,#new-check .evidence blockquote,#new-check .source-row,#new-check .wizard-footer{font-size:var(--ui-body-size)}
+#new-check .wizard-step-nav small,#new-check .card-sub,#new-check .help,#new-check .field-note,#new-check .analysis-item small,#new-check .review-summary-item small,#new-check .review-confirm-status{font-size:var(--ui-small-size)}
+#new-check .card-title,#new-check .review-simple-intro strong,#new-check .review-summary-item strong,#new-check .review-corrections>summary{font-size:var(--ui-card-title-size)}
+#new-check .analysis-item strong{font-size:22px}
+/* Guided mode uses the same hierarchy instead of oversized, section-specific typography. */
+.guided-shell{font-size:var(--ui-body-size)}
+.guided-header-brand{font-size:20px}.guided-header .btn,.guided-font-btn{font-size:16px}.guided-font-label,.guided-progress-top span,.guided-step,.guided-next-hint{font-size:var(--ui-small-size)}
+.guided-progress-top strong{font-size:18px}.guided-stage h1{font-size:30px;max-width:none}.guided-stage>p,.guided-stage p{font-size:18px;line-height:1.6;max-width:760px}
+.guided-eyebrow{font-size:15px}.guided-primary{font-size:18px}.guided-footer-actions .btn:not(.guided-primary){font-size:16px}
+.guided-simple-block strong,.guided-action-title,.guided-check strong{font-size:20px}.guided-simple-block p,.guided-action-box>p,.guided-untouched,.guided-big-steps li,.guided-example{font-size:18px!important}.guided-check .help{font-size:16px}
+.guided-technical,.guided-technical-body{font-size:15px}
+@media(max-width:680px){
+  :root{--ui-body-size:17px;--ui-small-size:15px;--ui-control-size:16px;--ui-card-title-size:19px;--ui-section-title-size:22px}
+  .dashboard-head h1,.simple-hero h1,.guided-stage h1{font-size:26px}
+  .page-title{font-size:20px}
+}
 </style>
 </head>
 <body>
@@ -174,26 +364,26 @@ input[aria-invalid="true"],select[aria-invalid="true"],textarea[aria-invalid="tr
 <div class="mobile-overlay" id="mobileOverlay" aria-hidden="true"></div>
 <div class="app" id="app">
 <aside class="sidebar" id="sidebar" aria-label="Navigazione principale">
-  <div class="brand"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2 3.5 7v10L12 22l8.5-5V7L12 2Zm0 4.2 4.9 2.9-4.9 2.8-4.9-2.8L12 6.2Zm-5.5 6 3.8 2.2v4.1l-3.8-2.3v-4Zm7.2 6.3v-4.1l3.8-2.2v4l-3.8 2.3Z"/></svg></div><div><div class="brand-name">GEO Monitor</div><div class="brand-sub">Intelligence sulle citazioni</div></div></div>
+  <div class="brand"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2 3.5 7v10L12 22l8.5-5V7L12 2Zm0 4.2 4.9 2.9-4.9 2.8-4.9-2.8L12 6.2Zm-5.5 6 3.8 2.2v4.1l-3.8-2.3v-4Zm7.2 6.3v-4.1l3.8-2.2v4l-3.8 2.3Z"/></svg></div><div><div class="brand-name">GEO Monitor</div><div class="brand-sub">Visibilità nelle risposte AI</div></div></div>
   <nav>
     <div class="nav-group"><div class="nav-label">Panoramica</div>
-      <button class="nav-item active" data-section="dashboard"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg></span><span>Dashboard</span></button>
-      <button class="nav-item" data-section="projects"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 7h7l2 2h9v10H3z"/></svg></span><span>Progetti</span></button>
+      <button class="nav-item active" data-section="dashboard"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg></span><span>Inizia</span></button>
+      <button class="nav-item" data-section="projects"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 7h7l2 2h9v10H3z"/></svg></span><span>I tuoi siti</span></button>
     </div>
     <div class="nav-group"><div class="nav-label">Monitoraggio</div>
-      <button class="nav-item" data-section="prompts"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></span><span>Prompt</span></button>
-      <button class="nav-item" data-section="new-check"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg></span><span>Nuova verifica</span></button>
+      <button class="nav-item" data-section="prompts"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></span><span>Domande da testare</span></button>
+      <button class="nav-item" data-section="new-check"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg></span><span>Fai una verifica</span></button>
       <button class="nav-item" data-section="results"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 19V9M12 19V5M19 19v-7"/></svg></span><span>Risultati</span></button>
     </div>
     <div class="nav-group"><div class="nav-label">Ottimizzazione</div>
-      <button class="nav-item" data-section="opportunities"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 22h4M8 14c-2-1.4-3-3.2-3-5a7 7 0 0 1 14 0c0 1.8-1 3.6-3 5-.7.5-1 1.2-1 2H9c0-.8-.3-1.5-1-2Z"/></svg></span><span>Opportunità GEO</span></button>
-      <button class="nav-item" data-section="actions"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 9l2 2 5-5M8 15h8"/></svg></span><span>Azioni</span></button>
-      <button class="nav-item" data-section="gsc"><span class="nav-icon nav-icon-text" aria-hidden="true">G</span><span>Search Console</span></button>
+      <button class="nav-item" data-section="opportunities"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 22h4M8 14c-2-1.4-3-3.2-3-5a7 7 0 0 1 14 0c0 1.8-1 3.6-3 5-.7.5-1 1.2-1 2H9c0-.8-.3-1.5-1-2Z"/></svg></span><span>Cosa migliorare</span></button>
+      <button class="nav-item" data-section="actions"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 9l2 2 5-5M8 15h8"/></svg></span><span>Piano di lavoro</span></button>
+      <button class="nav-item" data-section="gsc"><span class="nav-icon nav-icon-text" aria-hidden="true">G</span><span>Dati Google</span></button>
       <button class="nav-item" data-section="reports"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6zM9 11h6M9 15h6"/></svg></span><span>Report</span></button>
     </div>
-    <details class="nav-more" id="navMore"><summary><span class="nav-icon" aria-hidden="true">•••</span><span>Altri strumenti</span><span class="nav-chevron" aria-hidden="true">⌄</span></summary>
+    <details class="nav-more" id="navMore"><summary><span class="nav-icon" aria-hidden="true">•••</span><span>Strumenti avanzati</span><span class="nav-chevron" aria-hidden="true">⌄</span></summary>
       <div class="nav-more-body">
-        <button class="nav-item" data-section="onboarding"><span>Configurazione guidata</span></button>
+        <button class="nav-item" data-section="onboarding"><span>Primi passi</span></button>
         <button class="nav-item" data-section="matrix"><span>Matrice Prompt–AI</span></button>
         <button class="nav-item" data-section="compare"><span>Confronto</span></button>
         <button class="nav-item" data-section="quality"><span>Qualità dati</span></button>
@@ -207,12 +397,12 @@ input[aria-invalid="true"],select[aria-invalid="true"],textarea[aria-invalid="tr
         <button class="nav-item" data-section="wordpress"><span>WordPress Assistant</span></button>
         <button class="nav-item" data-section="backup"><span>Backup e ripristino</span></button>
         <button class="nav-item" data-section="diagnostics"><span>Diagnostica sistema</span></button>
-        <button class="nav-item" data-section="guide"><span>Guida</span></button>
+        <button class="nav-item" data-section="guide"><span>Come si usa</span></button>
       </div>
     </details>
   </nav>
   <div class="sidebar-system"><button class="nav-item" data-section="settings"><span class="nav-icon" aria-hidden="true">⚙</span><span>Impostazioni</span></button></div>
-  <div class="sidebar-footer"><span class="status-dot" aria-hidden="true"></span><span id="storageStatusText">Dati salvati nel browser</span><strong>v5.1</strong></div>
+  <div class="sidebar-footer"><span class="status-dot" aria-hidden="true"></span><span id="storageStatusText">Dati salvati nel browser</span><strong>v5.8.1</strong></div>
 </aside>
 <main class="main" id="mainContent" tabindex="-1">
   <header class="topbar">
@@ -265,7 +455,7 @@ input[aria-invalid="true"],select[aria-invalid="true"],textarea[aria-invalid="tr
 const CONFIG = {
   APP_KEY: 'geoCitationMonitor_v42',
   LEGACY_APP_KEYS: ['geoCitationMonitor_v3'],
-  VERSION: '5.1.0',
+  VERSION: '5.8.1',
   DATA_SCHEMA_VERSION: 8,
   MAX_LOGO_SIZE: 350000,
   MIN_RESPONSE_LENGTH: 120,
@@ -408,7 +598,7 @@ const Utils = {
     };
   },
   storage() {
-    const bytes = new Blob([JSON.stringify(window.__state || {})]).size;
+    const bytes = new Blob([JSON.stringify(state || {})]).size;
     const mb = bytes / (1024 * 1024);
     return {
       bytes,
@@ -819,7 +1009,7 @@ const Analyzer = {
     const low = clean.toLowerCase();
     const brand = this.findVariant(clean, project);
     const domain = Utils.domain(project.domain);
-    const domainPattern = domain ? new RegExp('(?:https?:\\/\\/)?(?:www\\.)?' + domain.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&'), 'i') : null;
+    const domainPattern = domain ? new RegExp('(?:https?:\\/\\/)?(?:www\\.)?' + domain.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i') : null;
     const domainMentionedText = Boolean(domainPattern && domainPattern.test(clean));
     const urls = Utils.unique([...Utils.urls(clean), ...Utils.urls(sourcesText)]);
     const domains = urls.map(Utils.domain);
@@ -908,7 +1098,7 @@ const Analyzer = {
     score += data.domainCited ? w.domain : 0;
 
     if (data.brandMentioned) {
-      score += w.position * (data.position <= 1 ? 1 : data.position === 2 ? .8 : data.position === 3 ? .65 : data.position <= 5 ? .45 : .25);
+      if (Number(data.position) > 0) score += w.position * (data.position === 1 ? 1 : data.position === 2 ? .8 : data.position === 3 ? .65 : data.position <= 5 ? .45 : .25);
       score += w.mentions * Math.min(1, (data.mentions || 0) / 3);
     }
 
@@ -1030,7 +1220,7 @@ const Derived = {
         check.promptId,
         check.platformId,
         new Date(check.date).toISOString().slice(0, 10),
-        Utils.slug(check.response).slice(0, 180)
+        Utils.slug(String(check.response || '').slice(0, 400)).slice(0, 180)
       ].join('|');
 
       if (seen.has(key)) {
@@ -1339,8 +1529,9 @@ function generateOpportunities() {
     }
   }
 
+  const previousOpportunitiesJson = JSON.stringify(state.opportunities || []);
   state.opportunities = output;
-  saveState(true);
+  if (JSON.stringify(output) !== previousOpportunitiesJson) saveState(true);
   return output;
 }
 
@@ -1377,16 +1568,22 @@ function loadingSpinner() {
 
 function modal(title, body, actions = '') {
   window.__modalReturnFocus = document.activeElement;
+  const backdrop = document.getElementById('modalBackdrop');
   document.getElementById('modalTitle').textContent = title;
   document.getElementById('modalBody').innerHTML = body;
   document.getElementById('modalActions').innerHTML = actions;
-  document.getElementById('modalBackdrop').classList.add('show');
+  backdrop.setAttribute('aria-hidden', 'false');
+  backdrop.classList.add('show');
+  document.body.classList.add('modal-open');
   document.getElementById('app').setAttribute('aria-hidden', 'true');
   setTimeout(() => document.getElementById('modalClose').focus(), 0);
 }
 
 function closeModal() {
-  document.getElementById('modalBackdrop').classList.remove('show');
+  const backdrop = document.getElementById('modalBackdrop');
+  backdrop.classList.remove('show');
+  backdrop.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('modal-open');
   document.getElementById('app').removeAttribute('aria-hidden');
   if (window.__modalReturnFocus?.isConnected) window.__modalReturnFocus.focus();
 }
@@ -1536,7 +1733,7 @@ function dashboardQuality(checks) {
 
 function resultsTable(checks, selectable = true, showReportAction = false) {
   if (!checks.length) return empty('Nessuna verifica', 'Incolla e analizza una risposta reale.');
-  return `<div class="table-wrap"><table><thead><tr>${selectable ? '<th><input type="checkbox" id="selectAllResults" aria-label="Seleziona tutte"></th>' : ''}<th>Prompt / progetto</th><th>AI</th><th>Esito</th><th>Score</th><th>Confidenza</th><th>Data</th><th>Azioni</th></tr></thead><tbody>${checks.map(c => `<tr data-result-row data-id="${c.id}" data-search="${Utils.esc(Utils.slug(JSON.stringify(c)))}" data-project="${c.projectId}" data-platform="${c.platformId}" data-brand="${c.brandMentioned ? 'yes' : 'no'}" data-domain="${c.domainCited ? 'yes' : 'no'}" data-sources="${(c.urls || []).length ? 'yes' : 'no'}">${selectable ? `<td><input type="checkbox" class="result-select" value="${c.id}" ${window.selectedResultIds?.has(c.id) ? 'checked' : ''}></td>` : ''}<td><strong>${Utils.esc(promptBy(c.promptId)?.text || 'Prompt eliminato')}</strong><div class="help">${Utils.esc(projectBy(c.projectId)?.name || 'Progetto eliminato')}</div></td><td>${Utils.esc(platformBy(c.platformId).name)}<div class="help">${Utils.esc(c.responseType || '')}</div></td><td>${c.brandMentioned ? badge('Brand', 'success') : badge('Assente', 'danger')} ${c.domainCited ? badge('Dominio', 'info') : ''}</td><td><strong>${c.score || 0}</strong>/100</td><td>${c.confidence || 0}/100</td><td>${Utils.date(c.date, true)}</td><td><div class="flex gap-8 wrap"><button class="btn btn-sm" data-view-check="${c.id}">Dettagli</button><button class="btn btn-sm" data-edit-check="${c.id}">Modifica</button><button class="btn btn-sm" data-duplicate-check="${c.id}">Duplica</button>${showReportAction ? `<button class="btn btn-sm btn-primary" data-report-check="${c.id}">Report</button>` : ''}</div></td></tr>`).join('')}</tbody></table></div>`;
+  return `<div class="table-wrap"><table><thead><tr>${selectable ? '<th><input type="checkbox" id="selectAllResults" aria-label="Seleziona tutte"></th>' : ''}<th>Prompt / progetto</th><th>AI</th><th>Esito</th><th>Score</th><th>Confidenza</th><th>Data</th><th>Azioni</th></tr></thead><tbody>${checks.map(c => `<tr data-result-row data-id="${c.id}" data-search="${Utils.esc(Utils.slug(JSON.stringify(c)))}" data-project="${c.projectId}" data-platform="${c.platformId}" data-brand="${c.brandMentioned ? 'yes' : 'no'}" data-domain="${c.domainCited ? 'yes' : 'no'}" data-sources="${(c.urls || []).length ? 'yes' : 'no'}">${selectable ? `<td><input type="checkbox" class="result-select" value="${c.id}" ${selectedResultIds.has(c.id) ? 'checked' : ''}></td>` : ''}<td><strong>${Utils.esc(promptBy(c.promptId)?.text || 'Prompt eliminato')}</strong><div class="help">${Utils.esc(projectBy(c.projectId)?.name || 'Progetto eliminato')}</div></td><td>${Utils.esc(platformBy(c.platformId).name)}<div class="help">${Utils.esc(c.responseType || '')}</div></td><td>${c.brandMentioned ? badge('Brand', 'success') : badge('Assente', 'danger')} ${c.domainCited ? badge('Dominio', 'info') : ''}</td><td><strong>${c.score || 0}</strong>/100</td><td>${c.confidence || 0}/100</td><td>${Utils.date(c.date, true)}</td><td><div class="flex gap-8 wrap"><button class="btn btn-sm" data-view-check="${c.id}">Dettagli</button><button class="btn btn-sm" data-edit-check="${c.id}">Modifica</button><button class="btn btn-sm" data-duplicate-check="${c.id}">Duplica</button>${showReportAction ? `<button class="btn btn-sm btn-primary" data-report-check="${c.id}">Report</button>` : ''}</div></td></tr>`).join('')}</tbody></table></div>`;
 }
 
 function renderEvidence(a) {
@@ -1634,7 +1831,7 @@ function renderPrompts() {
 
 function promptTable() {
   if (!state.prompts.length) return empty('Nessun prompt', 'Aggiungi le query da monitorare.');
-  return `<div class="table-wrap"><table><thead><tr><th>Prompt</th><th>Progetto</th><th>Categoria</th><th>Priorità</th><th>Ultimo test</th><th>Azioni</th></tr></thead><tbody>${state.prompts.map(p => `<tr data-search="${Utils.esc(Utils.slug(JSON.stringify(p)))}" data-project="${p.projectId}" data-priority="${p.priority}"><td><strong>${Utils.esc(p.text)}</strong><div class="help">${Utils.esc((p.tags || []).join(', '))}</div></td><td>${Utils.esc(projectBy(p.projectId)?.name || '—')}</td><td>${Utils.esc(p.category || '—')}</td><td>${badge(p.priority || 'P3', p.priority === 'P1' ? 'danger' : p.priority === 'P2' ? 'warning' : 'info')}</td><td>${Utils.date(p.lastChecked)}</td><td><div class="flex gap-8 wrap"><button class="btn btn-sm" data-start-prompt="${p.id}">Verifica</button><button class="btn btn-sm" data-edit-prompt="${p.id}">Modifica</button><button class="btn btn-sm" data-copy-text="${Utils.esc(p.text)}">Copia</button><button class="btn btn-sm btn-danger" data-delete-prompt="${p.id}">Elimina</button></div></td></tr>`).join('')}</tbody></table></div>`;
+  return `<div class="table-wrap"><table><thead><tr><th scope="col">Prompt</th><th scope="col">Progetto</th><th scope="col">Categoria</th><th scope="col">Priorità</th><th scope="col">Ultimo test</th><th scope="col">Azioni</th></tr></thead><tbody>${state.prompts.map(p => `<tr data-search="${Utils.esc(Utils.slug(JSON.stringify(p)))}" data-project="${p.projectId}" data-priority="${p.priority}"><td><strong>${Utils.esc(p.text)}</strong><div class="help">${Utils.esc((p.tags || []).join(', '))}</div></td><td>${Utils.esc(projectBy(p.projectId)?.name || '—')}</td><td>${Utils.esc(p.category || '—')}</td><td>${badge(p.priority || 'P3', p.priority === 'P1' ? 'danger' : p.priority === 'P2' ? 'warning' : 'info')}</td><td>${Utils.date(p.lastChecked)}</td><td><div class="flex gap-8 wrap"><button class="btn btn-sm" data-start-prompt="${p.id}">Verifica</button><button class="btn btn-sm" data-edit-prompt="${p.id}">Modifica</button><button class="btn btn-sm" data-copy-text="${Utils.esc(p.text)}">Copia</button><button class="btn btn-sm btn-danger" data-delete-prompt="${p.id}">Elimina</button></div></td></tr>`).join('')}</tbody></table></div>`;
 }
 
 function promptForm(p = {}) {
@@ -2125,7 +2322,7 @@ function renderMatrixTable(active, projectId) {
     return empty('Matrice vuota', 'Crea prompt e attiva piattaforme.');
   }
 
-  return `<div class="matrix"><table><thead><tr><th>Prompt</th>${active.map(p => `<th>${Utils.esc(p.name)}</th>`).join('')}</tr></thead><tbody>${prompts.map(prompt => `<tr><td><strong>${Utils.esc(prompt.text)}</strong><div class="help">${Utils.esc(projectBy(prompt.projectId)?.name || '')}</div></td>${active.map(ai => { const c = state.checks.filter(x => x.promptId === prompt.id && x.platformId === ai.id).sort((a, b) => new Date(b.date) - new Date(a.date))[0]; return `<td class="matrix-cell"><button data-matrix-start data-prompt="${prompt.id}" data-platform="${ai.id}">${c ? `<strong>${c.score}/100</strong><div class="help">${Utils.date(c.date)}</div>` : '<strong>Da testare</strong>'}</button></td>`; }).join('')}</tr>`).join('')}</tbody></table></div>`;
+  return `<div class="matrix"><table><thead><tr><th scope="col">Prompt</th>${active.map(p => `<th scope="col">${Utils.esc(p.name)}</th>`).join('')}</tr></thead><tbody>${prompts.map(prompt => `<tr><td><strong>${Utils.esc(prompt.text)}</strong><div class="help">${Utils.esc(projectBy(prompt.projectId)?.name || '')}</div></td>${active.map(ai => { const c = state.checks.filter(x => x.promptId === prompt.id && x.platformId === ai.id).sort((a, b) => new Date(b.date) - new Date(a.date))[0]; return `<td class="matrix-cell"><button data-matrix-start data-prompt="${prompt.id}" data-platform="${ai.id}">${c ? `<strong>${c.score}/100</strong><div class="help">${Utils.date(c.date)}</div>` : '<strong>Da testare</strong>'}</button></td>`; }).join('')}</tr>`).join('')}</tbody></table></div>`;
 }
 
 // ============================================================
@@ -2249,6 +2446,7 @@ function buildGeneratedPrompt() {
   const check = state.checks.find(c => c.id === document.getElementById('generatorCheck').value);
   if (!check) { Utils.toast('Seleziona una verifica.', 'error'); return; }
   const project = projectBy(check.projectId);
+  if (!project) { Utils.toast('Progetto non disponibile per questa verifica.', 'error'); return; }
   const prompt = promptBy(check.promptId);
   const type = document.getElementById('generatorTemplate').value;
 
@@ -2756,7 +2954,7 @@ const actionHandlers = {
     modal('Importa più prompt', `<form id="bulkPromptForm" class="form-grid"><div class="field"><label>Progetto</label><select name="projectId" required><option value="">Seleziona</option>${options(state.projects, '')}</select></div><div class="field"><label>Priorità</label><select name="priority"><option>P1</option><option>P2</option><option selected>P3</option><option>P4</option></select></div>${textareaField('texts', 'Prompt, uno per riga', '', '', 10)}</form>`, '<button class="btn" data-close-modal>Annulla</button><button class="btn btn-primary" id="saveBulkPrompts">Importa</button>');
     document.getElementById('saveBulkPrompts').onclick = () => {
       const f = document.getElementById('bulkPromptForm');
-      if (!f.reportValidity()) return;
+      if (!f || !f.reportValidity()) return;
       const d = Utils.form(f);
       Utils.lines(d.texts).forEach(text => {
         state.prompts.push({ id: Utils.uid(), projectId: d.projectId, text, category: 'Locale', priority: d.priority, tags: [], createdAt: Utils.now(), updatedAt: Utils.now() });
@@ -2854,7 +3052,7 @@ const actionHandlers = {
       if (!f.reportValidity()) return;
       state.savedFilters.push({
         id: Utils.uid(),
-        name: f.name.value,
+        name: f.elements.name.value,
         search: document.getElementById('resultSearch')?.value || '',
         project: document.getElementById('resultProjectFilter')?.value || '',
         platform: document.getElementById('resultPlatformFilter')?.value || '',
@@ -2939,10 +3137,10 @@ const actionHandlers = {
   },
   'save-analysis-settings': () => {
     const f = document.getElementById('analysisSettings');
-    state.settings.analysis.cleanNoise = f.cleanNoise.checked;
-    state.settings.analysis.dedupeBlocks = f.dedupeBlocks.checked;
-    state.settings.analysis.minimumResponseLength = Number(f.minimumResponseLength.value);
-    state.settings.analysis.anomalyThreshold = Number(f.anomalyThreshold.value);
+    state.settings.analysis.cleanNoise = f.elements.cleanNoise.checked;
+    state.settings.analysis.dedupeBlocks = f.elements.dedupeBlocks.checked;
+    state.settings.analysis.minimumResponseLength = Number(f.elements.minimumResponseLength.value);
+    state.settings.analysis.anomalyThreshold = Number(f.elements.anomalyThreshold.value);
     saveState();
   },
   'save-score-settings': () => {
@@ -3044,7 +3242,7 @@ function savePlatform() {
   const form = document.getElementById('platformForm');
   if (!form.reportValidity()) return;
   const d = Utils.form(form);
-  const item = { id: d.id || Utils.uid(), name: d.name, url: d.url, active: form.active.checked };
+  const item = { id: d.id || Utils.uid(), name: d.name, url: d.url, active: form.elements.active.checked };
   const old = state.platforms.find(x => x.id === item.id);
   old ? Object.assign(old, item) : state.platforms.push(item);
   saveState();
@@ -3551,7 +3749,7 @@ saveState=function(silent=false){const ok=originalSaveState(silent); if(ok) Adva
 function evidenceBadge(status){const m={confirmed:['Confermato','confirmed'],probable:['Probabile','probable'],verify:['Da verificare','verify'],resolved:['Già risolto','confirmed'],unknown:['Non valutabile','verify']};const x=m[status]||m.verify;return `<span class="evidence-label evidence-${x[1]}">${x[0]}</span>`;}
 function projectKnowledge(projectId){return state.knowledge.filter(x=>x.projectId===projectId && x.verified);}
 function latestPageSnapshot(projectId){return state.pageSnapshots.filter(x=>x.projectId===projectId).sort((a,b)=>new Date(b.date)-new Date(a.date))[0];}
-function stripHtml(html){const d=document.createElement('div');d.innerHTML=html;return (d.textContent||'').replace(/\s+/g,' ').trim();}
+function stripHtml(html){const doc=document.implementation.createHTMLDocument('strip');doc.body.innerHTML=String(html||'');return (doc.body.textContent||'').replace(/\s+/g,' ').trim();}
 function analyzePageInput(project,raw){
   const isHtml=/<[a-z][\s\S]*>/i.test(raw); const doc=document.implementation.createHTMLDocument('audit'); if(isHtml) doc.documentElement.innerHTML=raw; else doc.body.textContent=raw;
   const text=isHtml?(doc.body?.innerText||doc.body?.textContent||''):raw;
@@ -3627,10 +3825,10 @@ function taskDelta(t){const b=state.checks.find(c=>c.id===t.beforeCheckId),a=sta
 function taskForm(){return `<form id="taskForm" class="form-grid"><div class="field"><label>Progetto</label><select name="projectId" required><option value="">Seleziona</option>${options(state.projects,'')}</select></div>${field('title','Attività','',true)}<div class="field"><label>Priorità</label><select name="priority"><option>P1</option><option>P2</option><option selected>P3</option><option>P4</option></select></div>${field('owner','Responsabile','')}${field('due','Scadenza','','','','date')}${field('url','URL interessato','','','https://…','url')}${textareaField('notes','Istruzioni e prova richiesta','', '',4)}</form>`;}
 
 function parseCsv(text){const rows=[];let row=[],cell='',q=false;for(let i=0;i<text.length;i++){const ch=text[i],n=text[i+1];if(ch==='"'&&q&&n==='"'){cell+='"';i++;}else if(ch==='"')q=!q;else if(ch===','&&!q){row.push(cell);cell='';}else if((ch==='\n'||ch==='\r')&&!q){if(ch==='\r'&&n==='\n')i++;row.push(cell);if(row.some(x=>x.trim()))rows.push(row);row=[];cell='';}else cell+=ch;}row.push(cell);if(row.some(x=>x.trim()))rows.push(row);return rows;}
-function normalizeGsc(rows){if(rows.length<2)return[];const h=rows[0].map(x=>Utils.slug(x));const idx=(...names)=>h.findIndex(x=>names.some(n=>x.includes(n)));const iq=idx('query','query principali'),ip=idx('pagina','page'),ic=idx('clic','click'),ii=idx('impression'),ict=idx('ctr'),ipos=idx('posizione','position');return rows.slice(1).map(r=>({query:r[iq]||'',page:r[ip]||'',clicks:Number(String(r[ic]||0).replace(',','.'))||0,impressions:Number(String(r[ii]||0).replace(/[.\s]/g,'').replace(',','.'))||0,ctr:r[ict]||'',position:Number(String(r[ipos]||0).replace(',','.'))||0})).filter(x=>x.query||x.page);}
+function normalizeGsc(rows){if(rows.length<2)return[];const h=rows[0].map(x=>Utils.slug(x));const idx=(...names)=>h.findIndex(x=>names.some(n=>x.includes(n)));const iq=idx('query','query principali'),ip=idx('pagina','page'),ic=idx('clic','click'),ii=idx('impression'),ict=idx('ctr'),ipos=idx('posizione','position');return rows.slice(1).map(r=>({query:r[iq]||'',page:r[ip]||'',clicks:Number(String(r[ic]||0).replace(/[.\s]/g,'').replace(',','.'))||0,impressions:Number(String(r[ii]||0).replace(/[.\s]/g,'').replace(',','.'))||0,ctr:r[ict]||'',position:Number(String(r[ipos]||0).replace(',','.'))||0})).filter(x=>x.query||x.page);}
 let gscProject='';
 function renderGsc(){const pid=document.getElementById('gscProject')?.value||gscProject||state.projects[0]?.id||'';gscProject=pid;const imports=state.gscImports.filter(x=>x.projectId===pid);const latest=imports.sort((a,b)=>new Date(b.date)-new Date(a.date))[0];document.getElementById('gsc').innerHTML=`<div class="toolbar"><select id="gscProject"><option value="">Seleziona progetto</option>${options(state.projects,pid)}</select><input type="file" id="gscFile" accept=".csv,text/csv"><button class="btn btn-primary" data-action="import-gsc">Importa CSV</button></div><div class="notice">Importa il CSV “Query” o “Pagine” di Search Console. Per ZIP usa prima l’esportazione CSV estratta.</div>${latest?renderGscData(latest):empty('Nessun dato Search Console','Importa un CSV per supportare la decisione tra aggiornamento e nuovo contenuto.')}`;}
-function renderGscData(im){const top=im.rows.slice().sort((a,b)=>b.impressions-a.impressions).slice(0,50);return `<div class="grid grid-4">${metric('Righe',im.rows.length,'Importate')}${metric('Impression',im.rows.reduce((s,x)=>s+x.impressions,0),'Totale')}${metric('Clic',im.rows.reduce((s,x)=>s+x.clicks,0),'Totale')}${metric('Query pagina target',im.rows.filter(x=>x.page&&x.page.includes(projectBy(im.projectId)?.targetUrl||'___')).length,'Corrispondenze')}</div><div class="table-wrap" style="margin-top:16px"><table><thead><tr><th>Query</th><th>Pagina</th><th>Clic</th><th>Impression</th><th>Posizione</th><th>Decisione</th></tr></thead><tbody>${top.map(x=>`<tr><td>${Utils.esc(x.query)}</td><td>${Utils.esc(x.page)}</td><td>${x.clicks}</td><td>${x.impressions}</td><td>${x.position||'—'}</td><td>${x.impressions>20&&x.position>5?badge('Aggiorna pagina','warning'):x.impressions===0?badge('Dato insufficiente','info'):badge('Mantieni e rafforza','success')}</td></tr>`).join('')}</tbody></table></div>`;}
+function renderGscData(im){const top=im.rows.slice().sort((a,b)=>b.impressions-a.impressions).slice(0,50);return `<div class="grid grid-4">${metric('Righe',im.rows.length,'Importate')}${metric('Impression',im.rows.reduce((s,x)=>s+x.impressions,0),'Totale')}${metric('Clic',im.rows.reduce((s,x)=>s+x.clicks,0),'Totale')}${metric('Query pagina target',im.rows.filter(x=>x.page&&x.page.includes(projectBy(im.projectId)?.targetUrl||'___')).length,'Corrispondenze')}</div><div class="table-wrap" style="margin-top:16px"><table><thead><tr><th scope="col">Query</th><th scope="col">Pagina</th><th scope="col">Clic</th><th scope="col">Impression</th><th scope="col">Posizione</th><th scope="col">Decisione</th></tr></thead><tbody>${top.map(x=>`<tr><td>${Utils.esc(x.query)}</td><td>${Utils.esc(x.page)}</td><td>${x.clicks}</td><td>${x.impressions}</td><td>${x.position||'—'}</td><td>${x.impressions>20&&x.position>5?badge('Aggiorna pagina','warning'):x.impressions===0?badge('Dato insufficiente','info'):badge('Mantieni e rafforza','success')}</td></tr>`).join('')}</tbody></table></div>`;}
 
 function renderWordpress(){const pid=document.getElementById('wpProject')?.value||state.projects[0]?.id||'';const p=projectBy(pid);const facts=projectKnowledge(pid);document.getElementById('wordpress').innerHTML=`<div class="toolbar"><select id="wpProject"><option value="">Seleziona progetto</option>${options(state.projects,pid)}</select><button class="btn btn-primary" data-action="generate-wp-package">Genera pacchetto</button></div>${!p?empty('Seleziona progetto','Serve un progetto configurato.'):`<div class="advanced-grid"><div class="card"><h2>Input</h2><label>Tipo</label><select id="wpType"><option>Article</option><option>Service</option><option>LocalBusiness</option></select><label style="margin-top:10px">HTML contenuto</label><textarea id="wpHtml" class="response-text" placeholder="Incolla la bozza HTML oppure usa l’output del Content Resolution Engine">${Utils.esc(contentEngineOutput&&contentEngineOutput.includes('<')?contentEngineOutput:'')}</textarea></div><div class="card" id="wpOutput">${empty('Pacchetto non generato','Il pacchetto include HTML, title, meta, permalink, FAQ/schema e checklist Rank Math.')}</div></div><div class="notice warning" style="margin-top:16px">La versione standalone prepara una bozza. Non pubblica automaticamente e non conserva credenziali WordPress.</div>`}`;}
 function makeWpPackage(p,html,type){const text=stripHtml(html);const h1=(html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)||[])[1]||promptBy(state.checks.filter(c=>c.projectId===p.id).sort((a,b)=>new Date(b.date)-new Date(a.date))[0]?.promptId)?.text||p.brand;const cleanH1=stripHtml(h1);const title=(cleanH1+' | '+p.brand).slice(0,60);const meta=text.slice(0,155);const slug=Utils.slug(cleanH1).replace(/\s+/g,'-');const faq=[...html.matchAll(/<h[23][^>]*>([^<]*\?[^<]*)<\/h[23]>\s*<p[^>]*>([\s\S]*?)<\/p>/gi)].map(m=>({q:stripHtml(m[1]),a:stripHtml(m[2])}));const schema={"@context":"https://schema.org","@type":type,headline:cleanH1,name:p.brand,url:p.targetUrl||undefined,areaServed:p.location||undefined,mainEntity:faq.length?faq.map(x=>({"@type":"Question",name:x.q,acceptedAnswer:{"@type":"Answer",text:x.a}})):undefined};return {title,meta,slug,html,schema,checklist:['H1 unico','Title ≤ 60 caratteri','Meta ≤ 155 caratteri','URL leggibile','Link interno alla pagina target','Alt immagini da compilare','Schema validato','Revisione dati verificati','Salva come bozza, non pubblicare direttamente']};}
@@ -4055,7 +4253,7 @@ function updateStorageStatus() {
   const version = document.querySelector('.sidebar-footer strong');
   if (label) label.textContent = storageIsPersistent() ? 'Dati salvati nel browser' : 'Dati temporanei nella sessione';
   dot?.classList.toggle('session-only', !storageIsPersistent());
-  if (version) version.textContent = `v${CONFIG.VERSION.split('.').slice(0, 2).join('.')}`;
+  if (version) version.textContent = `v${CONFIG.VERSION}`;
 }
 
 function enhanceRenderedAccessibility(root = document) {
@@ -4707,7 +4905,7 @@ resultsTable = function(checks, selectable = true, showReportAction = false) {
   if (!checks.length) return empty('Nessuna verifica', 'Incolla e analizza una risposta reale.');
   return `<div class="table-wrap results-table-wrap"><table class="results-data-table"><thead><tr>${selectable ? '<th scope="col"><input type="checkbox" id="selectAllResults" aria-label="Seleziona tutte le verifiche visibili"></th>' : ''}<th scope="col">Prompt / progetto</th><th scope="col">AI</th><th scope="col">Esito</th><th scope="col">Score</th><th scope="col">Confidenza</th><th scope="col">Data</th><th scope="col">Azioni</th></tr></thead><tbody>${checks.map(check => {
     const promptText = promptBy(check.promptId)?.text || 'Prompt eliminato';
-    return `<tr data-result-row data-id="${check.id}" data-search="${Utils.esc(Utils.slug(JSON.stringify(check)))}" data-project="${check.projectId}" data-platform="${check.platformId}" data-brand="${check.brandMentioned ? 'yes' : 'no'}" data-domain="${check.domainCited ? 'yes' : 'no'}" data-sources="${(check.urls || []).length ? 'yes' : 'no'}">${selectable ? `<td class="result-select-cell" data-label="Seleziona"><input type="checkbox" class="result-select" value="${check.id}" aria-label="Seleziona: ${Utils.esc(promptText)}" ${window.selectedResultIds?.has(check.id) ? 'checked' : ''}></td>` : ''}<td data-label="Prompt / progetto"><strong>${Utils.esc(promptText)}</strong><div class="help">${Utils.esc(projectBy(check.projectId)?.name || 'Progetto eliminato')}</div></td><td data-label="AI">${Utils.esc(platformBy(check.platformId).name)}<div class="help">${Utils.esc(check.responseType || '')}</div></td><td data-label="Esito">${check.brandMentioned ? badge('Brand', 'success') : badge('Assente', 'danger')} ${check.domainCited ? badge('Dominio', 'info') : ''}</td><td data-label="Score"><strong>${check.score || 0}</strong>/100</td><td data-label="Confidenza">${check.confidence || 0}/100</td><td data-label="Data">${Utils.date(check.date, true)}</td><td class="result-actions" data-label="Azioni"><div class="flex gap-8 wrap"><button class="btn btn-sm" data-view-check="${check.id}">Dettagli</button><button class="btn btn-sm" data-edit-check="${check.id}">Modifica</button><button class="btn btn-sm" data-duplicate-check="${check.id}">Duplica</button>${!check.manualReview?.completed ? `<button class="btn btn-sm btn-primary" data-action="review-check" data-id="${check.id}">Rivedi</button>` : ''}${showReportAction ? `<button class="btn btn-sm ${check.manualReview?.completed ? 'btn-primary' : ''}" data-report-check="${check.id}">Report</button>` : ''}</div></td></tr>`;
+    return `<tr data-result-row data-id="${check.id}" data-search="${Utils.esc(Utils.slug(JSON.stringify(check)))}" data-project="${check.projectId}" data-platform="${check.platformId}" data-brand="${check.brandMentioned ? 'yes' : 'no'}" data-domain="${check.domainCited ? 'yes' : 'no'}" data-sources="${(check.urls || []).length ? 'yes' : 'no'}">${selectable ? `<td class="result-select-cell" data-label="Seleziona"><input type="checkbox" class="result-select" value="${check.id}" aria-label="Seleziona: ${Utils.esc(promptText)}" ${selectedResultIds.has(check.id) ? 'checked' : ''}></td>` : ''}<td data-label="Prompt / progetto"><strong>${Utils.esc(promptText)}</strong><div class="help">${Utils.esc(projectBy(check.projectId)?.name || 'Progetto eliminato')}</div></td><td data-label="AI">${Utils.esc(platformBy(check.platformId).name)}<div class="help">${Utils.esc(check.responseType || '')}</div></td><td data-label="Esito">${check.brandMentioned ? badge('Brand', 'success') : badge('Assente', 'danger')} ${check.domainCited ? badge('Dominio', 'info') : ''}</td><td data-label="Score"><strong>${check.score || 0}</strong>/100</td><td data-label="Confidenza">${check.confidence || 0}/100</td><td data-label="Data">${Utils.date(check.date, true)}</td><td class="result-actions" data-label="Azioni"><div class="flex gap-8 wrap"><button class="btn btn-sm" data-view-check="${check.id}">Dettagli</button><button class="btn btn-sm" data-edit-check="${check.id}">Modifica</button><button class="btn btn-sm" data-duplicate-check="${check.id}">Duplica</button>${!check.manualReview?.completed ? `<button class="btn btn-sm btn-primary" data-action="review-check" data-id="${check.id}">Rivedi</button>` : ''}${showReportAction ? `<button class="btn btn-sm ${check.manualReview?.completed ? 'btn-primary' : ''}" data-report-check="${check.id}">Report</button>` : ''}</div></td></tr>`;
   }).join('')}</tbody></table></div>`;
 };
 
@@ -4721,6 +4919,7 @@ dashboardActions = function(projectId) {
 
 const renderResultsBefore51 = renderResults;
 renderResults = function() {
+  selectedResultIds = new Set([...selectedResultIds].filter(id => state.checks.some(c => c.id === id)));
   renderResultsBefore51();
   document.querySelectorAll('[data-action="bulk-export"],[data-action="bulk-archive"],[data-action="bulk-status"],[data-action="bulk-delete"]').forEach(button => button.dataset.requiresResultsSelection = 'true');
   updateSelectedCount();
@@ -5116,7 +5315,7 @@ function contrastWithWhite(hex) { const l = relativeLuminance(hex); return l ===
 saveBranding = function() {
   const form = document.getElementById('brandingSettings');
   if (!form) return;
-  if (contrastWithWhite(form.primary.value) < 4.5 || contrastWithWhite(form.secondary.value) < 4.5) {
+  if (contrastWithWhite(form.elements.primary.value) < 4.5 || contrastWithWhite(form.elements.secondary.value) < 4.5) {
     Utils.toast('Scegli colori principali con contrasto almeno 4,5:1 rispetto al testo bianco.', 'error');
     return;
   }
@@ -5128,7 +5327,7 @@ actionHandlers['save-branding'] = saveBranding;
 
 actionHandlers['save-score-settings'] = () => {
   const form = document.getElementById('scoreSettings');
-  const values = Object.fromEntries(['brand','domain','position','mentions','competitors','sentiment'].map(key => [key, Number(form[key].value)]));
+  const values = Object.fromEntries(['brand','domain','position','mentions','competitors','sentiment'].map(key => [key, Number(form.elements[key].value)]));
   if (Object.values(values).some(value => !Number.isFinite(value) || value < 0)) {
     Utils.toast('I pesi devono essere numeri non negativi.', 'error');
     return;
@@ -5197,10 +5396,1051 @@ bindEvents = function() {
 
 
 // ============================================================
+// RELEASE 5.3 — correttezza analisi, performance e accessibilita'
+// ============================================================
+
+/* 1. Posizione nelle risposte a elenco corto ------------------------------
+   Prima la posizione veniva calcolata solo per i tipi "Elenco editoriale" o
+   "Local Pack", che richiedono almeno 3 marcatori di lista: un brand primo in
+   un elenco di 2 voci restava a 0 e perdeva l'intero peso "posizione". */
+const LIST_MARKER_RE_53 = /(?:^|\n)\s*(?:\d+[.)]|[-•*])\s+/g;
+const analyzeBefore53 = Analyzer.analyze.bind(Analyzer);
+Analyzer.analyze = function (project, response, sourcesText = '') {
+  const result = analyzeBefore53(project, response, sourcesText);
+  if (result.brandMentioned) {
+    const clean = result.cleanResponse || '';
+    const needle = String(result.foundVariant || project?.brand || '').toLowerCase();
+    const index = needle ? clean.toLowerCase().indexOf(needle) : -1;
+    const markers = (clean.match(LIST_MARKER_RE_53) || []).length;
+    if (index >= 0 && markers >= 2) {
+      // Il marcatore della voce che contiene il brand va incluso, non sommato:
+      // "1. Brand" e' posizione 1, non 2.
+      const position = (clean.slice(0, index).match(LIST_MARKER_RE_53) || []).length;
+      if (position !== result.position) {
+        result.position = position;
+        result.score = Analyzer.score(result);
+        result.visibilityScore = result.score;
+      }
+    }
+  }
+  return result;
+};
+
+/* 2. ID duplicati quando un modale e' aperto -----------------------------
+   Le sezioni restano nel DOM: i form dei modali generavano id gia' presenti
+   nel wizard, rompendo l'associazione label -> campo. */
+let modalIdCounter53 = 0;
+const modalBefore53 = modal;
+modal = function (title, body, actions = '') {
+  modalBefore53(title, body, actions);
+  const host = document.getElementById('modalBody');
+  if (!host) return;
+  host.querySelectorAll('[id]').forEach(el => {
+    const id = el.id;
+    if (!id) return;
+    const selector = '[id="' + CSS.escape(id) + '"]';
+    const clash = [...document.querySelectorAll(selector)].some(other => other !== el && !host.contains(other));
+    if (!clash) return;
+    const next = id + '-m' + (++modalIdCounter53);
+    host.querySelectorAll('label[for="' + CSS.escape(id) + '"]').forEach(label => label.setAttribute('for', next));
+    el.id = next;
+  });
+};
+
+/* 3. Gerarchia degli heading senza salti ---------------------------------
+   Il titolo di pagina e' aria-level 1: le card usavano h3/h4 come primo
+   heading della sezione. Si corregge il livello esposto senza toccare il CSS. */
+const enhanceBefore53 = enhanceRenderedAccessibility;
+enhanceRenderedAccessibility = function (root = document) {
+  enhanceBefore53(root);
+  if (!root || typeof root.querySelectorAll !== 'function') return;
+  let previous = 1;
+  root.querySelectorAll('h1,h2,h3,h4,h5,h6').forEach(heading => {
+    const natural = Number(heading.tagName[1]);
+    const level = Math.min(natural, previous + 1);
+    if (level === natural) heading.removeAttribute('aria-level');
+    else heading.setAttribute('aria-level', String(level));
+    previous = level;
+  });
+};
+
+/* 4. Ricerca nei risultati fuori dal DOM ---------------------------------
+   L'attributo data-search conteneva l'intero JSON della verifica: con 300
+   verifiche pesava ~2,2 MB, l'88% dell'HTML della sezione. Ora l'indice vive
+   in memoria, e' calcolato una volta per verifica e la ricerca resta completa. */
+const resultSearchIndex53 = new Map();
+function checkSearchText53(check) {
+  const cached = resultSearchIndex53.get(check.id);
+  if (cached && cached.stamp === check.updatedAt) return cached.text;
+  const text = Utils.slug([
+    promptBy(check.promptId)?.text || '',
+    projectBy(check.projectId)?.name || '',
+    platformBy(check.platformId).name,
+    check.responseType || '', check.model || '', check.location || '', check.notes || '',
+    (check.competitors || []).join(' '), (check.urls || []).join(' '),
+    check.cleanResponse || check.response || ''
+  ].join(' '));
+  resultSearchIndex53.set(check.id, { stamp: check.updatedAt, text });
+  return text;
+}
+
+resultsTable = function (checks, selectable = true, showReportAction = false) {
+  if (!checks.length) return empty('Nessuna verifica', 'Incolla e analizza una risposta reale.');
+  return `<div class="table-wrap results-table-wrap"><table class="results-data-table"><thead><tr>${selectable ? '<th scope="col"><input type="checkbox" id="selectAllResults" aria-label="Seleziona tutte le verifiche visibili"></th>' : ''}<th scope="col">Prompt / progetto</th><th scope="col">AI</th><th scope="col">Esito</th><th scope="col">Score</th><th scope="col">Confidenza</th><th scope="col">Data</th><th scope="col">Azioni</th></tr></thead><tbody>${checks.map(check => {
+    const promptText = promptBy(check.promptId)?.text || 'Prompt eliminato';
+    return `<tr data-result-row data-id="${check.id}" data-project="${check.projectId}" data-platform="${check.platformId}" data-brand="${check.brandMentioned ? 'yes' : 'no'}" data-domain="${check.domainCited ? 'yes' : 'no'}" data-sources="${(check.urls || []).length ? 'yes' : 'no'}">${selectable ? `<td class="result-select-cell" data-label="Seleziona"><input type="checkbox" class="result-select" value="${check.id}" aria-label="Seleziona: ${Utils.esc(promptText)}" ${selectedResultIds.has(check.id) ? 'checked' : ''}></td>` : ''}<td data-label="Prompt / progetto"><strong>${Utils.esc(promptText)}</strong><div class="help">${Utils.esc(projectBy(check.projectId)?.name || 'Progetto eliminato')}</div></td><td data-label="AI">${Utils.esc(platformBy(check.platformId).name)}<div class="help">${Utils.esc(check.responseType || '')}</div></td><td data-label="Esito">${check.brandMentioned ? badge('Brand', 'success') : badge('Assente', 'danger')} ${check.domainCited ? badge('Dominio', 'info') : ''}</td><td data-label="Score"><strong>${check.score || 0}</strong>/100</td><td data-label="Confidenza">${check.confidence || 0}/100</td><td data-label="Data">${Utils.date(check.date, true)}</td><td class="result-actions" data-label="Azioni"><div class="flex gap-8 wrap"><button class="btn btn-sm" data-view-check="${check.id}">Dettagli</button><button class="btn btn-sm" data-edit-check="${check.id}">Modifica</button><button class="btn btn-sm" data-duplicate-check="${check.id}">Duplica</button>${!check.manualReview?.completed ? `<button class="btn btn-sm btn-primary" data-action="review-check" data-id="${check.id}">Rivedi</button>` : ''}${showReportAction ? `<button class="btn btn-sm ${check.manualReview?.completed ? 'btn-primary' : ''}" data-report-check="${check.id}">Report</button>` : ''}</div></td></tr>`;
+  }).join('')}</tbody></table></div>`;
+};
+
+applyResultFilters = function () {
+  const query = Utils.slug(document.getElementById('resultSearch')?.value || '');
+  const project = document.getElementById('resultProjectFilter')?.value || '';
+  const platform = document.getElementById('resultPlatformFilter')?.value || '';
+  const mention = document.getElementById('resultMentionFilter')?.value || '';
+  const byId = new Map(state.checks.map(check => [check.id, check]));
+  let visible = 0, total = 0;
+  document.querySelectorAll('[data-result-row]').forEach(row => {
+    total++;
+    const check = byId.get(row.dataset.id);
+    const ok =
+      (!query || (check ? checkSearchText53(check).includes(query) : false)) &&
+      (!project || row.dataset.project === project) &&
+      (!platform || row.dataset.platform === platform) &&
+      (!mention ||
+        (mention === 'brand' && row.dataset.brand === 'yes') ||
+        (mention === 'domain' && row.dataset.domain === 'yes') ||
+        (mention === 'absent' && row.dataset.brand === 'no') ||
+        (mention === 'sources' && row.dataset.sources === 'yes'));
+    row.style.display = ok ? '' : 'none';
+    if (ok) visible++;
+  });
+  const counter = document.getElementById('resultVisibleCount');
+  if (counter) counter.textContent = `${visible} di ${total}`;
+};
+
+const renderResultsBefore53 = renderResults;
+renderResults = function () {
+  renderResultsBefore53();
+  const toolbar = document.getElementById('bulkToolbar');
+  if (toolbar && !document.getElementById('resultVisibleCount')) {
+    const info = document.createElement('span');
+    info.className = 'help';
+    info.innerHTML = '<strong id="resultVisibleCount">0</strong> verifiche mostrate';
+    toolbar.insertBefore(info, toolbar.firstChild);
+  }
+  applyResultFilters();
+};
+
+/* 5. Opportunita': rendering progressivo ---------------------------------
+   Ogni verifica genera fino a 6 schede complete (impatto, diagnosi, checklist,
+   KPI): con 300 verifiche la sezione impiegava alcuni secondi. */
+const PRIORITY_ORDER_53 = { P1: 1, P2: 2, P3: 3, P4: 4 };
+const OPPORTUNITY_PAGE_53 = 40;
+let opportunityLimit53 = OPPORTUNITY_PAGE_53;
+
+renderOpportunities = function () {
+  const all = generateOpportunities().slice().sort((a, b) =>
+    (PRIORITY_ORDER_53[a.priority] || 5) - (PRIORITY_ORDER_53[b.priority] || 5) ||
+    new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+  selectedOpportunityIds = new Set([...selectedOpportunityIds].filter(id => all.some(o => o.id === id)));
+  if (opportunityLimit53 > Math.max(OPPORTUNITY_PAGE_53, all.length)) opportunityLimit53 = OPPORTUNITY_PAGE_53;
+  const items = all.slice(0, opportunityLimit53);
+  const remaining = all.length - items.length;
+
+  document.getElementById('opportunities').innerHTML = `
+    <div class="toolbar"><select id="oppProject" aria-label="Filtra per progetto"><option value="">Tutti i progetti</option>${options(state.projects, '')}</select><select id="oppPriority" aria-label="Filtra per priorità"><option value="">Tutte le priorità</option><option>P1</option><option>P2</option><option>P3</option><option>P4</option></select><select id="oppStatus" aria-label="Filtra per stato"><option value="">Tutti gli stati</option><option>Da fare</option><option>In corso</option><option>Completata</option></select><div class="spacer"></div><button class="btn" data-action="select-visible-opportunities">Seleziona visibili</button><button class="btn" data-action="clear-opportunity-selection">Deseleziona</button><button class="btn" data-action="regenerate-opportunities">Rigenera</button></div>
+    <div class="toolbar"><strong><span id="selectedOpportunityCount">${selectedOpportunityIds.size}</span> opportunità selezionate</strong><button class="btn btn-sm" data-action="opp-mark-progress">Segna in corso</button><button class="btn btn-sm" data-action="opp-mark-done">Segna completate</button><button class="btn btn-sm" data-action="opp-add-report">Usa nel report</button></div>
+    <div class="notice">Seleziona soltanto le opportunità che vuoi eseguire o inserire nel report. Ogni scheda contiene priorità, spiegazione semplice, piano operativo e metodo di verifica. Le cause restano ipotesi da controllare.${all.length ? ` <strong>${items.length} di ${all.length}</strong> schede mostrate, dalla priorità più alta.` : ''}</div>
+    <div id="opportunityList">${items.length ? items.map(o => renderOpportunityCard(o, true)).join('') : empty('Nessuna opportunità', 'Salva una verifica per generare suggerimenti.')}</div>
+    ${remaining > 0 ? `<div style="margin-top:14px;display:flex;justify-content:center"><button class="btn" data-action="show-more-opportunities">Mostra altre ${Math.min(OPPORTUNITY_PAGE_53, remaining)} opportunità</button></div>` : ''}
+  `;
+  document.querySelectorAll('[data-action="opp-mark-progress"],[data-action="opp-mark-done"],[data-action="opp-add-report"]')
+    .forEach(button => button.dataset.requiresOpportunitySelection = 'true');
+  updateOpportunitySelection();
+};
+
+actionHandlers['show-more-opportunities'] = () => {
+  opportunityLimit53 += OPPORTUNITY_PAGE_53;
+  renderOpportunities();
+  enhanceRenderedAccessibility(document.getElementById('opportunities'));
+};
+
+/* 6. Bozza del wizard: scrittura su storage limitata ----------------------
+   saveDraft serializzava l'intero stato a ogni battitura (misurati ~108 ms
+   con 300 verifiche). Ora lo stato in memoria e' sempre aggiornato e la
+   persistenza avviene al massimo ogni 1,2 s, con scrittura finale garantita. */
+let draftFlushTimer53 = null, lastDraftSave53 = 0;
+saveDraft = function (force = false) {
+  const form = document.getElementById('checkForm');
+  if (!form) return;
+  const values = Utils.form(form);
+  ['reviewBrand', 'reviewDomain', 'reviewCompetitors', 'reviewSources']
+    .forEach(name => values[name] = Boolean(form.elements[name]?.checked));
+  state.checkDraft = { ...state.checkDraft, ...values, wizardStep: currentWizardStep, updatedAt: Utils.now() };
+
+  const flush = () => {
+    clearTimeout(draftFlushTimer53);
+    draftFlushTimer53 = null;
+    lastDraftSave53 = Date.now();
+    saveState(true);
+    const status = document.getElementById('draftStatus');
+    if (status) status.textContent = `Bozza salvata alle ${new Intl.DateTimeFormat('it-IT', { hour: '2-digit', minute: '2-digit' }).format(new Date())}`;
+  };
+
+  if (force === true || Date.now() - lastDraftSave53 > 1200) { flush(); return; }
+  const status = document.getElementById('draftStatus');
+  if (status) status.textContent = 'Bozza in salvataggio…';
+  clearTimeout(draftFlushTimer53);
+  draftFlushTimer53 = setTimeout(flush, 1200);
+};
+window.addEventListener('beforeunload', () => {
+  if (draftFlushTimer53) { clearTimeout(draftFlushTimer53); draftFlushTimer53 = null; saveState(true); }
+});
+
+/* 7. Passata di integrita' senza riallocazioni ---------------------------
+   normalizeAdvancedState ricostruiva tutti gli array a ogni salvataggio. */
+normalizeAdvancedState = function (target = state) {
+  target.pageSnapshots ||= [];
+  target.campaigns ||= [];
+  target.knowledge ||= [];
+  target.tasks ||= [];
+  target.gscImports ||= [];
+  target.contentAudits ||= [];
+  target.implementationAudits ||= [];
+  target.sourceValidations ||= {};
+  target.wpPackages ||= [];
+  target.dismissedOpportunityIds ||= [];
+  target.activityLog ||= [];
+  target.backups ||= [];
+  target.schemaVersion = CONFIG.DATA_SCHEMA_VERSION;
+
+  const fill = (obj, key, value) => { if (obj[key] === undefined || obj[key] === null) obj[key] = value; };
+  for (const fact of target.knowledge) {
+    fill(fact, 'verifiedAt', ''); fill(fact, 'verifiedBy', ''); fill(fact, 'internalEvidence', '');
+    fill(fact, 'expiresAt', ''); fill(fact, 'notes', ''); fill(fact, 'updatedAt', fact.createdAt || Utils.now());
+  }
+  for (const campaign of target.campaigns) {
+    fill(campaign, 'environment', '');
+    if (!campaign.promptTextSnapshot) campaign.promptTextSnapshot = promptBy(campaign.promptId)?.text || '';
+    if (!campaign.promptHash) campaign.promptHash = hashText(campaign.promptTextSnapshot || '');
+  }
+  for (const check of target.checks) {
+    if (!check.promptTextSnapshot) check.promptTextSnapshot = promptBy(check.promptId)?.text || '';
+    if (!check.promptHash) check.promptHash = hashText(check.promptTextSnapshot || '');
+  }
+  return target;
+};
+
+cleanupOrphans = function () {
+  const projectIds = new Set(state.projects.map(x => x.id));
+  const promptIds = new Set(state.prompts.map(x => x.id));
+  const checkIds = new Set(state.checks.map(x => x.id));
+  const opportunityIds = new Set(state.opportunities.map(x => x.id));
+  const prune = (key, keep) => {
+    const list = state[key] || [];
+    for (let i = 0; i < list.length; i++) {
+      if (!keep(list[i])) { state[key] = list.filter(keep); return; }
+    }
+  };
+  prune('pageSnapshots', x => projectIds.has(x.projectId));
+  prune('campaigns', x => projectIds.has(x.projectId) && promptIds.has(x.promptId));
+  prune('knowledge', x => projectIds.has(x.projectId));
+  prune('tasks', x => projectIds.has(x.projectId) && (!x.checkId || checkIds.has(x.checkId)) && (!x.beforeCheckId || checkIds.has(x.beforeCheckId)) && (!x.afterCheckId || checkIds.has(x.afterCheckId)));
+  prune('gscImports', x => projectIds.has(x.projectId));
+  prune('contentAudits', x => projectIds.has(x.projectId));
+  prune('implementationAudits', x => projectIds.has(x.projectId));
+  prune('wpPackages', x => projectIds.has(x.projectId));
+  prune('dismissedOpportunityIds', id => opportunityIds.has(id));
+  for (const id of Object.keys(state.sourceValidations)) if (!checkIds.has(id)) delete state.sourceValidations[id];
+};
+
+/* 8. Guardie sugli elementi non piu' disponibili -------------------------- */
+function guardAction53(name, isAvailable, message = 'Elemento non più disponibile: aggiorna la sezione.') {
+  const original = actionHandlers[name];
+  if (typeof original !== 'function') return;
+  actionHandlers[name] = event => {
+    let ok = false;
+    try { ok = Boolean(isAvailable(event)); } catch { ok = false; }
+    if (!ok) { Utils.toast(message, 'error'); return; }
+    return original(event);
+  };
+}
+const checkExists53 = id => state.checks.some(check => check.id === id);
+guardAction53('edit-project', e => projectBy(e.target.dataset.editProject));
+guardAction53('duplicate-project', e => projectBy(e.target.dataset.duplicateProject));
+guardAction53('archive-project', e => projectBy(e.target.dataset.archiveProject));
+guardAction53('start-project', e => projectBy(e.target.dataset.startProject));
+guardAction53('edit-prompt', e => promptBy(e.target.dataset.editPrompt));
+guardAction53('start-prompt', e => promptBy(e.target.dataset.startPrompt));
+guardAction53('view-check', e => checkExists53(e.target.dataset.viewCheck));
+guardAction53('edit-check', e => checkExists53(e.target.dataset.editCheck));
+guardAction53('reanalyze-check', e => checkExists53(e.target.dataset.reanalyzeCheck));
+guardAction53('duplicate-check', e => checkExists53(e.target.dataset.duplicateCheck));
+guardAction53('review-check', e => checkExists53(e.target.dataset.id));
+guardAction53('matrix-start', e => promptBy(e.target.dataset.prompt));
+guardAction53('save-analysis-settings', () => document.getElementById('analysisSettings'), 'Apri la scheda Analisi prima di salvare.');
+guardAction53('save-score-settings', () => document.getElementById('scoreSettings'), 'Apri la scheda GEO Score prima di salvare.');
+guardAction53('save-branding', () => document.getElementById('brandingSettings'), 'Apri la scheda White label prima di salvare.');
+guardAction53('load-latest-page-snapshot', () => document.getElementById('implementationPage'), 'Apri “Verifica implementazione” prima di caricare lo snapshot.');
+guardAction53('create-implementation-tasks', e => state.implementationAudits.some(a => a.id === e.target.dataset.id));
+guardAction53('download-implementation-report', e => state.implementationAudits.some(a => a.id === e.target.dataset.id));
+guardAction53('campaign-start-test', e => state.campaigns.some(c => c.id === e.target.dataset.id));
+guardAction53('campaign-baseline', e => state.campaigns.some(c => c.id === e.target.dataset.id));
+guardAction53('campaign-complete', e => state.campaigns.some(c => c.id === e.target.dataset.id));
+
+/* 9. Toggle piattaforma su una voce inesistente ---------------------------
+   platformBy() restituisce un oggetto segnaposto: la modifica si perdeva
+   in silenzio invece di segnalare l'errore. */
+changeHandlers['[data-toggle-platform]'] = event => {
+  const platform = state.platforms.find(item => item.id === event.target.dataset.togglePlatform);
+  if (!platform) {
+    event.target.checked = !event.target.checked;
+    Utils.toast('Piattaforma non trovata: ricarica la scheda Piattaforme.', 'error');
+    return;
+  }
+  platform.active = event.target.checked;
+  saveState(true);
+};
+
+/* 10. Diagnostica: due controlli aggiuntivi ------------------------------- */
+const diagnosticsRunBefore53 = diagnosticsRun;
+diagnosticsRun = function () {
+  const tests = diagnosticsRunBefore53();
+  const rowsWithLegacyAttribute = document.querySelectorAll('[data-result-row][data-search]').length;
+  tests.push({
+    name: 'Indice di ricerca fuori dal DOM',
+    pass: rowsWithLegacyAttribute === 0,
+    detail: rowsWithLegacyAttribute ? `${rowsWithLegacyAttribute} righe con attributo legacy` : 'Nessun attributo di ricerca duplicato nel DOM',
+    priority: 'P3'
+  });
+  const orphanTotals = Object.values(orphanReport()).reduce((sum, list) => sum + list.length, 0);
+  tests.push({
+    name: 'Nessun record orfano',
+    pass: orphanTotals === 0,
+    detail: orphanTotals ? `${orphanTotals} record da ripulire in Backup` : 'Collegamenti coerenti',
+    priority: 'P2'
+  });
+  return tests;
+};
+
+/* 11. Orfani profondi: rilevamento e pulizia esplicita ---------------------
+   cleanupOrphans (che gira a ogni salvataggio) non tocca prompt e verifiche,
+   per non cancellare dati dell'utente in modo implicito. Di conseguenza gli
+   orfani generati da un import potevano essere segnalati come P1 dalla
+   diagnostica senza che nessuna funzione fosse in grado di risolverli. */
+const orphanReportBefore53 = orphanReport;
+orphanReport = function () {
+  const report = orphanReportBefore53();
+  const projectIds = new Set(state.projects.map(project => project.id));
+  const promptIds = new Set(state.prompts.map(prompt => prompt.id));
+  report.prompts = state.prompts.filter(prompt => !projectIds.has(prompt.projectId));
+  report.checks = state.checks.filter(check => !projectIds.has(check.projectId) || !promptIds.has(check.promptId));
+  return report;
+};
+
+function cleanupOrphansDeep53() {
+  const projectIds = new Set(state.projects.map(project => project.id));
+  state.prompts = state.prompts.filter(prompt => projectIds.has(prompt.projectId));
+  const promptIds = new Set(state.prompts.map(prompt => prompt.id));
+  state.checks = state.checks.filter(check => projectIds.has(check.projectId) && promptIds.has(check.promptId));
+  state.opportunities = (state.opportunities || []).filter(item => projectIds.has(item.projectId));
+  cleanupOrphans();
+}
+
+actionHandlers['inspect-orphans'] = () => {
+  const report = orphanReport();
+  const counts = Object.fromEntries(Object.entries(report).map(([key, list]) => [key, list.length]));
+  const total = Object.values(counts).reduce((sum, value) => sum + value, 0);
+  modal('Pulizia dati orfani',
+    `<div class="notice ${total ? 'warning' : 'success'}">${total ? `Sono stati trovati ${total} record orfani, cioè collegati a progetti, prompt o verifiche non più esistenti.` : 'Nessun dato orfano rilevato.'}</div>
+     <div class="card">${Object.entries(counts).map(([key, value]) => `<div class="kpi-row"><strong>${Utils.esc(key)}</strong><span>${value}</span></div>`).join('')}</div>
+     ${total ? '<div class="notice">Prima della pulizia viene creato uno snapshot locale ripristinabile da “Ripristina ultima operazione”.</div>' : ''}`,
+    total
+      ? '<button class="btn" data-close-modal>Annulla</button><button class="btn btn-danger" id="confirmOrphanCleanup">Crea snapshot e pulisci</button>'
+      : '<button class="btn" data-close-modal>Chiudi</button>');
+  if (!total) return;
+  document.getElementById('confirmOrphanCleanup').onclick = () => {
+    if (!createSafetySnapshot('orphan-cleanup')) return;
+    cleanupOrphansDeep53();
+    state.activityLog.push({ id: Utils.uid(), at: Utils.now(), action: 'cleanup-orphans', detail: `${total} record` });
+    saveState();
+    closeModal();
+    renderBackup();
+    Utils.toast(`${total} record orfani rimossi.`, 'success');
+  };
+};
+
+actionHandlers['repair-data'] = () => {
+  cleanupOrphans();
+  normalizeAdvancedState();
+  saveState();
+  const deep = orphanReport();
+  const remaining = (deep.prompts?.length || 0) + (deep.checks?.length || 0);
+  renderDiagnostics();
+  if (remaining) Utils.toast(`Riparazione completata. Restano ${remaining} record orfani: usa Backup → “Analizza e pulisci dati orfani”, che crea uno snapshot prima di rimuoverli.`, 'warning');
+  else Utils.toast('Dati riparati e normalizzati.', 'success');
+};
+
+
+// ============================================================
+// SIMPLE UX 5.4 — interfaccia guidata, funzioni avanzate preservate
+// ============================================================
+function simpleNextStep() {
+  if (!state.projects.filter(p=>!p.archived).length) return {n:1,title:'Aggiungi il sito che vuoi monitorare',text:'Servono solo nome del progetto, nome del brand e dominio. Gli altri campi possono essere completati dopo.',go:'projects',cta:'Aggiungi il primo sito'};
+  if (!state.prompts.length) return {n:2,title:'Scrivi una domanda reale che farebbe un cliente',text:'Per esempio: “Qual è un buon consulente SEO a Bergamo?”. Questa sarà la domanda da provare nelle AI.',go:'prompts',cta:'Aggiungi una domanda'};
+  if (!state.checks.length) return {n:3,title:'Fai la prima verifica',text:'Copia la domanda, chiedila a un’AI, poi incolla qui la risposta. L’app ti dirà in parole semplici cosa è successo.',go:'new-check',cta:'Fai la prima verifica'};
+  const open=(state.opportunities||[]).filter(o=>o.status!=='Completata');
+  if (open.length) return {n:4,title:'Correggi prima il problema più importante',text:'Abbiamo trovato miglioramenti concreti. Apri “Cosa migliorare” e parti dalla prima scheda urgente.',go:'opportunities',cta:'Dimmi cosa migliorare'};
+  return {n:4,title:'Ripeti una verifica per vedere se stai migliorando',text:'Usa la stessa domanda e, quando possibile, lo stesso tipo di sessione. Così il confronto ha più valore.',go:'new-check',cta:'Ripeti una verifica'};
+}
+
+function simpleMetric(label,value,help){
+  return `<div class="simple-kpi"><div class="simple-kpi-label">${Utils.esc(label)}</div><div class="simple-kpi-value">${Utils.esc(String(value))}</div><div class="simple-kpi-help">${Utils.esc(help)}</div></div>`;
+}
+
+renderDashboard = function() {
+  const projectId=dashboardProjectId;
+  const checks=state.checks.filter(c=>!c.archived&&(!projectId||c.projectId===projectId));
+  const brandRate=checks.length?Math.round(checks.filter(c=>c.brandMentioned).length/checks.length*100):0;
+  const domainRate=checks.length?Math.round(checks.filter(c=>c.domainCited).length/checks.length*100):0;
+  const openTasks=(state.tasks||[]).filter(t=>(!projectId||t.projectId===projectId)&&!['Completata','Non applicabile'].includes(t.status)).length;
+  const step=simpleNextStep();
+  const current=projectBy(projectId);
+  document.getElementById('dashboard').innerHTML=`
+    <div class="simple-hero">
+      <h1>${current?`Come sta andando ${Utils.esc(current.name)}?`:'Controlla se le AI trovano e citano il tuo sito'}</h1>
+      <p>Il funzionamento è semplice: fai alle AI le stesse domande che farebbe un cliente, incolla le risposte e segui le correzioni suggerite.</p>
+    </div>
+    <div class="next-step"><div class="next-step-number">${step.n}</div><div><h2>Cosa fare adesso: ${Utils.esc(step.title)}</h2><p>${Utils.esc(step.text)}</p></div><button class="btn btn-primary" data-go="${step.go}">${Utils.esc(step.cta)}</button></div>
+    <div class="simple-flow">
+      <div class="simple-flow-step"><b>1. Aggiungi il sito</b><span>Indica brand, dominio e servizi principali.</span></div>
+      <div class="simple-flow-step"><b>2. Scegli una domanda</b><span>Usa una domanda che potrebbe fare un vero cliente.</span></div>
+      <div class="simple-flow-step"><b>3. Incolla la risposta AI</b><span>L’app controlla se compari, se il sito è citato e chi compare al posto tuo.</span></div>
+      <div class="simple-flow-step"><b>4. Segui le correzioni</b><span>Ricevi una lista ordinata di cose concrete da sistemare e poi ripeti il test.</span></div>
+    </div>
+    <div class="simple-kpis">
+      ${simpleMetric('Quanto spesso compare il brand',checks.length?brandRate+'%':'—',checks.length?`${checks.filter(c=>c.brandMentioned).length} risposte su ${checks.length}`:'Fai una verifica per iniziare')}
+      ${simpleMetric('Quanto spesso è citato il sito',checks.length?domainRate+'%':'—',checks.length?`${checks.filter(c=>c.domainCited).length} risposte con il dominio`:'Fai una verifica per iniziare')}
+      ${simpleMetric('Verifiche fatte',checks.length,'Più test comparabili = quadro più affidabile')}
+      ${simpleMetric('Cose da fare',openTasks,openTasks?'Attività ancora aperte':'Nessuna attività aperta')}
+    </div>
+    <div class="dashboard-main" style="margin-top:16px">
+      <section class="panel"><div class="panel-head"><div><h2>Andamento nel tempo</h2><p>Se il punteggio sale, la tua presenza nelle risposte AI sta migliorando.</p></div><div class="spacer"></div><button class="btn btn-sm" data-go="compare">Vedi confronto</button></div><div class="panel-body">${dashboardTrend(checks)}</div></section>
+      <section class="panel"><div class="panel-head"><div><h2>Le prossime cose da fare</h2><p>Parti sempre dalla prima.</p></div><div class="spacer"></div><button class="btn btn-sm" data-go="actions">Apri piano</button></div>${dashboardActions(projectId)}</section>
+    </div>`;
+  syncGlobalProjectSelect();
+};
+
+renderOnboarding = function(){
+  const steps=[
+    {done:state.projects.length>0,title:'Aggiungi il tuo sito',text:'Inserisci nome del progetto, brand e dominio. Puoi ignorare per ora i campi avanzati.',go:'projects',cta:'Aggiungi sito'},
+    {done:state.prompts.length>0,title:'Scrivi una domanda da testare',text:'Esempio: “miglior consulente SEO a Bergamo”. Usa una domanda che farebbe un cliente.',go:'prompts',cta:'Aggiungi domanda'},
+    {done:state.checks.length>0,title:'Chiedila a un’AI',text:'Copia la domanda, apri ChatGPT o un’altra AI, incollala e copia la risposta completa.',go:'new-check',cta:'Fai verifica'},
+    {done:state.checks.length>0,title:'Segui le correzioni',text:'Apri “Cosa migliorare”: troverai cosa fare, perché farlo e come controllare il risultato.',go:'opportunities',cta:'Vedi cosa migliorare'}
+  ];
+  const done=steps.filter(s=>s.done).length;
+  document.getElementById('onboarding').innerHTML=`<div class="simple-hero"><h1>Primi passi</h1><p>Non serve conoscere la GEO. Completa questi quattro passaggi nell’ordine indicato.</p></div><div class="onboarding-steps">${steps.map((s,i)=>`<div class="onboarding-step ${s.done?'done':''}">${badge(s.done?'Fatto':'Da fare',s.done?'success':'warning')}<h3>${i+1}. ${Utils.esc(s.title)}</h3><p>${Utils.esc(s.text)}</p><button class="btn ${s.done?'':'btn-primary'}" data-go="${s.go}">${s.done?'Rivedi':s.cta}</button></div>`).join('')}</div><div class="simple-help"><strong>In breve:</strong> l’app non interroga automaticamente le AI. Sei tu a copiare una domanda e a incollare la risposta: in questo modo sai esattamente che cosa è stato testato.</div>`;
+};
+
+wizardPanel1 = function(d, projectId, promptId, project){
+  const env=d.testEnvironment||'not-verified', em=environmentMeta(env);
+  return `<section class="wizard-panel" data-step="1">
+    <div class="card">
+      <div class="card-header"><div><div class="card-title">1. Scegli cosa vuoi controllare</div><div class="card-sub">Seleziona il sito, la domanda e l’AI. Per iniziare non serve altro.</div></div></div>
+      <div class="simple-help"><strong>Esempio semplice</strong><br>Sito: robertozanoni.it · Domanda: “Chi realizza siti WordPress a Bergamo?” · AI: ChatGPT.</div>
+      <div class="form-grid">
+        <div class="field"><label>Quale sito vuoi controllare? *</label><select id="checkProject" name="projectId" required><option value="">Seleziona il sito</option>${options(state.projects,projectId)}</select><div class="help">È il progetto/brand che vuoi trovare nella risposta.</div></div>
+        <div class="field"><label>Quale domanda vuoi fare? *</label><select id="checkPrompt" name="promptId" required><option value="">Seleziona la domanda</option>${options(state.prompts.filter(p=>p.projectId===projectId),promptId,x=>x.text)}</select><div class="help">Usa una domanda reale che potrebbe fare un cliente.</div></div>
+        <div class="field"><label>A quale AI la farai? *</label><select name="platformId" required><option value="">Seleziona l’AI</option>${options(state.platforms.filter(p=>p.active),d.platformId||'chatgpt')}</select></div>
+        <div class="field"><label>Come farai il test? *</label><select id="testEnvironment" name="testEnvironment" required><option value="anonymous" ${env==='anonymous'?'selected':''}>Senza login / finestra privata — consigliato</option><option value="temporary" ${env==='temporary'?'selected':''}>Chat temporanea</option><option value="memory-off" ${env==='memory-off'?'selected':''}>Account con memoria disattivata</option><option value="normal-account" ${env==='normal-account'?'selected':''}>Account normale</option><option value="not-verified" ${env==='not-verified'?'selected':''}>Non lo so</option></select><div class="help">${Utils.esc(em.message)}</div></div>
+      </div>
+      <div class="simple-action-box"><h4>Adesso fai così</h4><ol><li>Premi “Copia domanda”.</li><li>Apri l’AI scelta, preferibilmente in una sessione neutrale.</li><li>Incolla la domanda e attendi la risposta completa.</li><li>Torna qui e premi “Continua”.</li></ol></div>
+      <div class="compact-actions"><button type="button" class="btn btn-primary" data-action="copy-current-prompt">Copia domanda</button><button type="button" class="btn" data-action="neutral-test-instructions">Come fare un test neutrale?</button></div><div id="selectedPromptBox" class="notice" style="margin-top:14px">${promptId ? `<strong>Domanda selezionata:</strong> ${Utils.esc(promptBy(promptId)?.text || '')}` : 'Seleziona una domanda.'}</div><div id="environmentNotice" class="notice ${em.type} environment-warning"><strong>${Utils.esc(em.label)}</strong><br>${Utils.esc(em.message)}</div>
+      <details class="advanced-settings"><summary>Impostazioni avanzate — facoltative</summary><div class="advanced-settings-body"><div class="form-grid">${field('model','Modello / modalità',d.model||'ChatGPT con ricerca web attiva','','Es. ChatGPT Search')}${field('date','Data e ora',d.date||Utils.localDateTime(),'','','datetime-local')}${field('location','Località del test',d.location||project?.location||'','','Es. Bergamo')}${field('sessionType','Tipo sessione',d.sessionType||'Test neutrale','','Es. finestra privata')}</div></div></details>
+      <input type="hidden" name="quickKeyword" value="${Utils.esc(d.quickKeyword||'')}"><input type="hidden" name="quickPromptStyle" value="${Utils.esc(d.quickPromptStyle||'sources')}">
+    </div>
+  </section>`;
+};
+
+wizardPanel2 = function(d){
+  return `<section class="wizard-panel" data-step="2"><div class="card">
+    <div class="card-header"><div><div class="card-title">2. Incolla quello che ha risposto l’AI</div><div class="card-sub">Non devi interpretare nulla: copia la risposta intera così com’è.</div></div><div class="spacer"></div><button type="button" class="btn btn-sm" data-action="copy-current-prompt">Copia di nuovo la domanda</button></div>
+    ${textareaField('response','Incolla qui la risposta completa',d.response||'','Copia anche l’elenco dei risultati e le spiegazioni. Più il testo è completo, migliore sarà l’analisi.',14).replace('<textarea','<textarea class="response-text"')}
+    ${textareaField('sources','Link / fonti mostrate dall’AI — se presenti',d.sources||'','Se l’AI mostra fonti o link, incollali qui, uno per riga. Se non ci sono, lascia vuoto.',5)}
+    <div class="simple-help"><strong>Esempio:</strong> se ChatGPT mostra 5 professionisti, copia tutti e 5, non soltanto il tuo nome.</div>
+    <input type="hidden" name="relevance" value="${Utils.esc(d.relevance||3)}"><input type="hidden" name="reliability" value="${Utils.esc(d.reliability||3)}">
+    <details class="advanced-settings"><summary>Note facoltative</summary><div class="advanced-settings-body">${textareaField('notes','Note sul test',d.notes||'','Esempio: ricerca web attiva, sessione privata, località.',3)}</div></details>
+    <div class="toolbar" style="margin-top:15px"><button type="button" class="btn btn-primary" data-action="analyze-and-open">Analizza e spiegami il risultato</button><button type="button" class="btn" data-action="preview-clean">Controlla il testo incollato</button></div><div id="cleanPreview"></div>
+  </div></section>`;
+};
+
+wizardPanel3 = function(){
+  return `<section class="wizard-panel" data-step="3"><div class="card"><div class="card-header"><div><div class="card-title">3. Capisci subito cosa è successo</div><div class="card-sub">Prima la conclusione in parole semplici. I dati tecnici restano disponibili sotto.</div></div><div class="spacer"></div><button type="button" class="btn btn-primary" data-action="analyze-check">Analizza di nuovo</button></div><div id="analysisOutput">${empty('Non ho ancora analizzato la risposta','Premi “Analizza di nuovo” oppure torna al passaggio precedente.')}</div></div></section>`;
+};
+
+renderAnalysisOutput = function(project,a){
+  const el=document.getElementById('analysisOutput'); if(!el)return;
+  const brandText=a.brandMentioned?'Sì, il tuo brand compare':'No, il tuo brand non compare';
+  const domainText=a.domainCited?'Sì, il tuo sito è citato':'No, il tuo sito non è citato';
+  let meaning='';
+  if(!a.brandMentioned) meaning=`L’AI non ha associato chiaramente ${project?.brand||'il brand'} a questa domanda. La priorità è capire quali concorrenti e quali fonti vengono preferiti.`;
+  else if(!a.domainCited) meaning=`L’AI conosce il nome, ma non collega chiaramente il sito ufficiale. Devi rafforzare il legame tra brand, dominio e profili/fonti esterne.`;
+  else meaning='Brand e sito sono presenti. Il passo successivo è verificare se il risultato rimane stabile ripetendo la stessa domanda in altre sessioni.';
+  el.innerHTML=`
+    <div class="simple-status">
+      <div class="simple-status-card ${a.brandMentioned?'simple-good':'simple-bad'}"><div class="help">Ti trova?</div><div class="big">${a.brandMentioned?'SÌ':'NO'}</div><div>${Utils.esc(brandText)}</div></div>
+      <div class="simple-status-card ${a.domainCited?'simple-good':'simple-warn'}"><div class="help">Cita il tuo sito?</div><div class="big">${a.domainCited?'SÌ':'NO'}</div><div>${Utils.esc(domainText)}</div></div>
+      <div class="simple-status-card"><div class="help">Punteggio complessivo</div><div class="big">${a.score}/100</div><div>Serve per confrontare test simili nel tempo.</div></div>
+    </div>
+    <div class="simple-help plain-language"><h3>Cosa significa</h3>${Utils.esc(meaning)}</div>
+    ${a.competitors?.length?`<div class="example-box"><strong>Chi compare al posto tuo o insieme a te</strong>${Utils.esc(a.competitors.join(', '))}</div>`:''}
+    ${!a.urls?.length?'<div class="notice warning"><strong>Non risultano fonti.</strong> Se l’AI mostrava dei link, torna indietro e incollali. Altrimenti il dato è corretto così.</div>':''}
+    <div class="compact-actions"><button type="button" class="btn btn-primary" data-action="wizard-next">Continua e conferma</button></div>
+    <details class="simple-details"><summary>Mostra i dettagli tecnici</summary>
+      <div class="analysis-grid" style="margin-top:12px"><div class="analysis-item"><small>GEO Score</small><strong>${a.score}/100</strong></div><div class="analysis-item"><small>Affidabilità del test</small><strong>${a.confidence}/100</strong></div><div class="analysis-item"><small>Tipo risposta</small><strong>${Utils.esc(a.responseType)}</strong></div><div class="analysis-item"><small>Posizione nell’elenco</small><strong>${a.position||'—'}</strong></div><div class="analysis-item"><small>Numero menzioni</small><strong>${a.mentions}</strong></div><div class="analysis-item"><small>Qualità fonti</small><strong>${a.sourceQualityScore}/100</strong></div></div>
+      <div class="grid grid-2" style="margin-top:14px"><div><h3>Prove trovate nel testo</h3>${renderEvidence(a)}</div><div><h3>Fonti trovate</h3>${renderSources(a.sourceDetails)}</div></div>
+    </details>`;
+};
+
+wizardPanel4 = function(){
+  return `<section class="wizard-panel" data-step="4"><div class="card"><div class="card-header"><div><div class="card-title">4. Conferma che l’analisi sia corretta</div><div class="card-sub">Bastano quattro controlli visivi. Non servono competenze tecniche.</div></div></div><div id="manualReview">${empty('Prima analizza la risposta','Le conferme appariranno qui.')}</div></div></section>`;
+};
+
+renderManualReview = function(a){
+  const el=document.getElementById('manualReview');if(!el)return;
+  el.innerHTML=`
+    <div class="simple-help"><strong>Come controllare:</strong> guarda la risposta originale e conferma solo ciò che vedi davvero. Se qualcosa è sbagliato, correggilo nei campi sotto.</div>
+    <div class="form-grid">
+      <div class="field"><label>Il tuo brand compare nella risposta?</label><select name="manualBrand"><option value="true" ${a.brandMentioned?'selected':''}>Sì</option><option value="false" ${!a.brandMentioned?'selected':''}>No</option></select></div>
+      <div class="field"><label>Il tuo sito/dominio è indicato come fonte o link?</label><select name="manualDomain"><option value="true" ${a.domainCited?'selected':''}>Sì</option><option value="false" ${!a.domainCited?'selected':''}>No</option></select></div>
+      ${field('manualPosition','Se sei in un elenco, in che posizione?',a.position||'','','Lascia 0 se non sei in elenco','number')}
+      ${field('manualMentions','Quante volte compare il brand?',a.mentions||0,'','','number')}
+      ${textareaField('manualCompetitors','Altri brand/concorrenti che compaiono',(a.competitors||[]).join('\n'),'Uno per riga. Togli quelli che non sono realmente concorrenti.',4)}
+      ${textareaField('manualUrls','Link/fonti realmente mostrati',(a.urls||[]).join('\n'),'Mantieni solo i link che hai visto nella risposta.',4)}
+      <input type="hidden" name="manualResponseType" value="${Utils.esc(a.responseType||'Risposta narrativa')}"><input type="hidden" name="manualSentiment" value="${Utils.esc(a.sentiment||'Neutro')}">
+    </div>
+    <h3>Spunta quando hai controllato</h3>
+    <div class="checklist">
+      <label class="check-row"><input type="checkbox" name="reviewBrand"><span><strong>Ho controllato il nome del brand</strong><small>È davvero il mio brand, non un omonimo.</small></span></label>
+      <label class="check-row"><input type="checkbox" name="reviewDomain"><span><strong>Ho controllato il sito</strong><small>Il dominio è davvero mostrato o citato.</small></span></label>
+      <label class="check-row"><input type="checkbox" name="reviewCompetitors"><span><strong>Ho controllato gli altri nomi</strong><small>Ho tolto risultati non pertinenti.</small></span></label>
+      <label class="check-row"><input type="checkbox" name="reviewSources"><span><strong>Ho controllato i link</strong><small>I link corrispondono alle fonti realmente mostrate.</small></span></label>
+    </div>`;
+};
+
+wizardPanel5 = function(){
+  return `<section class="wizard-panel" data-step="5"><div class="card"><div class="card-header"><div><div class="card-title">5. Salva il risultato</div><div class="card-sub">Dopo il salvataggio l’app preparerà automaticamente le cose da migliorare.</div></div></div><div id="saveSummary">${empty('Manca il riepilogo','Completa l’analisi e le quattro conferme.')}</div></div></section>`;
+};
+
+renderSaveSummary = function(d,a){
+  const el=document.getElementById('saveSummary');if(!el)return;
+  const final=document.querySelector('[name=manualBrand]')?finalAnalysisFromForm():a;
+  let result=final.brandMentioned?(final.domainCited?'Il brand e il sito sono stati trovati.':'Il brand compare, ma il sito non è citato.'):'Il brand non compare nella risposta.';
+  el.innerHTML=`<div class="simple-help"><h3>Risultato in una frase</h3><strong>${Utils.esc(result)}</strong></div><div class="simple-status"><div class="simple-status-card"><div class="help">Brand</div><div class="big">${final.brandMentioned?'Presente':'Assente'}</div></div><div class="simple-status-card"><div class="help">Sito</div><div class="big">${final.domainCited?'Citato':'Non citato'}</div></div><div class="simple-status-card"><div class="help">Punteggio</div><div class="big">${final.score}/100</div></div></div><div class="notice ${manualReviewValid()?'success':'warning'}">${manualReviewValid()?'Tutto controllato. Premi “Salva verifica”: poi apri “Cosa migliorare” per vedere le azioni consigliate.':'Torna al passaggio 4 e spunta i quattro controlli.'}</div>`;
+};
+
+function simpleOpportunityExample(o){
+  const type=o.type||'';
+  if(type==='brand_absent') return 'Esempio: se la domanda è “Chi realizza siti WordPress a Bergamo?”, la pagina principale del servizio dovrebbe dire subito chi sei, cosa fai, dove operi e mostrare una prova reale.';
+  if(type==='domain_absent') return 'Esempio: controlla che il nome del brand e il dominio ufficiale compaiano insieme nella pagina Chi siamo, nei profili ufficiali e nei dati strutturati coerenti.';
+  if(type==='competitor_gap') return 'Esempio: scegli 3 concorrenti citati dall’AI e annota per ciascuno quali pagine, recensioni o fonti esterne sembrano sostenerlo. Poi colma solo i gap che puoi documentare davvero.';
+  if(type==='sources_missing') return 'Esempio: ripeti la stessa domanda aggiungendo “Indica le fonti e i link che hai usato”, poi salva gli URL realmente mostrati.';
+  if(type==='services_weak') return 'Esempio: una pagina servizio chiara dovrebbe spiegare a chi è rivolta, quale problema risolve, come funziona e quali prove reali dimostrano l’esperienza.';
+  if(type==='location_weak') return 'Esempio: se lavori a Bergamo, indica in modo naturale l’area servita e riferimenti reali; non creare pagine duplicate cambiando soltanto il nome della città.';
+  if(type==='source_dependency') return 'Esempio: cerca fonti indipendenti pertinenti — associazioni, media di settore, partner o portali verticali — che possano citare informazioni reali sul brand.';
+  return 'Esempio: applica una sola correzione verificabile alla volta, poi ripeti la stessa domanda e confronta il risultato.';
+}
+
+renderOpportunityCard = function(o,selectable=true){
+  const pd=priorityDetails(o.priority);
+  const steps=(o.steps||[o.action]).slice(0,4);
+  return `<article class="opportunity simple-result priority-${o.priority} ${selectedOpportunityIds.has(o.id)?'selected':''}" data-project="${o.projectId}" data-priority="${o.priority}" data-status="${o.status}">
+    <div class="simple-result-head">${selectable?`<input type="checkbox" class="opp-select" value="${o.id}" ${selectedOpportunityIds.has(o.id)?'checked':''} aria-label="Seleziona questa correzione">`:''}${badge(pd.label,o.priority==='P1'?'danger':o.priority==='P2'?'warning':'info')}<div><h3>${Utils.esc(o.title)}</h3><div class="help">${Utils.esc(pd.when)}</div></div><div class="spacer"></div><select data-opp-status="${o.id}" style="width:auto" aria-label="Stato"><option ${o.status==='Da fare'?'selected':''}>Da fare</option><option ${o.status==='In corso'?'selected':''}>In corso</option><option ${o.status==='Completata'?'selected':''}>Completata</option></select></div>
+    <p class="why"><strong>Che cosa non va:</strong> ${Utils.esc(o.why)}</p>
+    <p><strong>Perché conta:</strong> ${Utils.esc(pd.meaning)}</p>
+    <div class="simple-action-box"><h4>Fai questo, nell’ordine</h4><ol>${steps.map(s=>`<li>${Utils.esc(s)}</li>`).join('')}</ol></div>
+    <div class="example-box"><strong>Esempio pratico</strong>${Utils.esc(simpleOpportunityExample(o))}</div>
+    <div class="simple-help"><strong>Come capisci se ha funzionato?</strong><br>${Utils.esc(o.verify||'Ripeti lo stesso test e confronta il nuovo risultato con quello precedente.')}</div>
+    <div class="compact-actions"><button class="btn btn-primary btn-sm" data-content-opportunity="${o.id}">Aiutami a preparare la correzione</button><button class="btn btn-sm" data-view-check="${o.checkId}">Vedi il test che ha generato questo consiglio</button></div>
+    <details class="simple-details"><summary>Mostra dettagli avanzati</summary>${renderImpact(o)}${renderDiagnosis(o)}${auditAssessment(projectBy(o.projectId),o)}${renderChecklist(o)}</details>
+  </article>`;
+};
+
+renderOpportunities = function(){
+  const items=generateOpportunities().filter(o=>!state.dismissedOpportunityIds?.includes(o.id));
+  selectedOpportunityIds=new Set([...selectedOpportunityIds].filter(id=>items.some(o=>o.id===id)));
+  const order={P1:1,P2:2,P3:3,P4:4};
+  items.sort((a,b)=>(order[a.priority]||9)-(order[b.priority]||9));
+  document.getElementById('opportunities').innerHTML=`
+    <div class="simple-hero"><h1>Cosa migliorare</h1><p>Qui non devi interpretare punteggi o sigle. Parti dalla prima scheda, esegui i passaggi nell’ordine e poi ripeti la verifica.</p></div>
+    <div class="simple-help"><strong>Regola semplice:</strong> Urgente = fallo prima. Alta = fallo dopo le urgenze. Media = miglioramento utile ma non prioritario. Non modificare dati o contenuti che non puoi verificare.</div>
+    <div class="toolbar"><select id="oppProject"><option value="">Tutti i siti</option>${options(state.projects,'')}</select><select id="oppPriority"><option value="">Tutte le priorità</option><option>P1</option><option>P2</option><option>P3</option><option>P4</option></select><select id="oppStatus"><option value="">Tutti gli stati</option><option>Da fare</option><option>In corso</option><option>Completata</option></select><div class="spacer"></div></div>
+    <div id="opportunityList">${items.length?items.slice(0,20).map(o=>renderOpportunityCard(o,true)).join(''):empty('Nessuna correzione da mostrare','Prima fai e salva una verifica. L’app preparerà qui le azioni consigliate.','<button class="btn btn-primary" data-go="new-check">Fai una verifica</button>')}</div>`;
+};
+
+renderActions = function(){
+  const pid=document.getElementById('taskProject')?.value||'', status=document.getElementById('taskStatus')?.value||'';
+  const tasks=state.tasks.filter(t=>(!pid||t.projectId===pid)&&(!status||t.status===status)).sort((a,b)=>({P1:1,P2:2,P3:3,P4:4}[a.priority]||9)-({P1:1,P2:2,P3:3,P4:4}[b.priority]||9));
+  document.getElementById('actions').innerHTML=`
+    <div class="simple-hero"><h1>Piano di lavoro</h1><p>Questa è la tua lista operativa. Una voce alla volta: esegui la correzione, salva una prova e poi ripeti il test.</p></div>
+    <div class="toolbar"><button class="btn btn-primary" data-action="sync-tasks">Importa le correzioni consigliate</button><button class="btn" data-action="new-task">Aggiungi attività manuale</button><select id="taskProject"><option value="">Tutti i siti</option>${options(state.projects,pid)}</select><select id="taskStatus"><option value="">Tutti gli stati</option>${['Da verificare','Confermata','Da fare','In corso','Completata','Non applicabile','Da ritestare'].map(x=>`<option ${x===status?'selected':''}>${x}</option>`).join('')}</select></div>
+    ${tasks.length?tasks.map(task=>`<article class="action-card-simple" data-task-id="${task.id}">
+      <div class="simple-result-head">${badge(task.priority,task.priority==='P1'?'danger':task.priority==='P2'?'warning':'info')}<div><h3>${Utils.esc(task.title)}</h3><div class="help">${Utils.esc(projectBy(task.projectId)?.name||'')}</div></div><div class="spacer"></div><select class="task-status" aria-label="Stato attività" style="width:auto">${['Da verificare','Confermata','Da fare','In corso','Completata','Non applicabile','Da ritestare'].map(x=>`<option ${x===task.status?'selected':''}>${x}</option>`).join('')}</select></div>
+      <div class="task-fields"><div class="field"><label>Chi se ne occupa?</label><input class="task-owner" value="${Utils.esc(task.owner||'')}" placeholder="Nome o ruolo"></div><div class="field"><label>Entro quando?</label><input class="task-due" type="date" value="${Utils.esc(task.due||'')}"></div><div class="field"><label>Pagina interessata</label><input class="task-url" value="${Utils.esc(task.url||'')}" placeholder="https://…"></div></div>
+      <details class="advanced-settings"><summary>Note, prova del lavoro e verifica successiva</summary><div class="advanced-settings-body"><div class="field"><label>Note operative</label><textarea class="task-notes">${Utils.esc(task.notes||'')}</textarea></div><div class="field"><label>Prova che la modifica è stata fatta</label><textarea class="task-evidence" placeholder="URL, screenshot o descrizione della prova">${Utils.esc(task.evidence||'')}</textarea></div><div class="form-grid"><div class="field"><label>Data implementazione</label><input class="task-implementation" type="date" value="${Utils.esc(task.implementationDate||'')}"></div><div class="field"><label>Test fatto dopo la modifica</label><select class="task-after"><option value="">Seleziona quando disponibile</option>${state.checks.filter(c=>c.projectId===task.projectId).map(c=>`<option value="${c.id}" ${c.id===task.afterCheckId?'selected':''}>${Utils.date(c.date)} · ${c.score}/100</option>`).join('')}</select></div></div>${taskDelta(task)}</div></details>
+      <div class="compact-actions" style="margin-top:12px"><button class="btn btn-primary btn-sm" data-action="save-task" data-id="${task.id}">Salva aggiornamento</button><button class="btn btn-sm btn-danger" data-action="delete-task" data-id="${task.id}">Elimina</button></div>
+    </article>`).join(''):empty('Il piano è vuoto','Apri “Cosa migliorare” oppure importa le correzioni consigliate.','<button class="btn btn-primary" data-go="opportunities">Vedi cosa migliorare</button>')}`;
+};
+
+advancedRenderers.actions = renderActions;
+
+Object.assign(PAGES,{
+ dashboard:['Inizia','Il percorso più semplice per controllare la presenza nelle AI'],
+ onboarding:['Primi passi','Quattro passaggi, senza termini tecnici'],
+ projects:['I tuoi siti','Aggiungi e gestisci i siti che vuoi controllare'],
+ prompts:['Domande da testare','Le domande reali che potrebbero fare i tuoi clienti'],
+ 'new-check':['Fai una verifica','Copia una domanda, incolla la risposta e leggi il risultato'],
+ results:['Risultati','Tutte le verifiche già fatte'],
+ opportunities:['Cosa migliorare','Problemi spiegati e correzioni passo per passo'],
+ actions:['Piano di lavoro','Le correzioni da eseguire, in ordine di priorità'],
+ gsc:['Dati Google','Dati importati da Google Search Console'],
+ guide:['Come si usa','Spiegazioni semplici del metodo']
+});
+
+const simpleOriginalRenderNewCheck=renderNewCheck;
+renderNewCheck=function(pref={}){
+  simpleOriginalRenderNewCheck(pref);
+  const labels=['Scegli cosa testare','Incolla la risposta','Capisci il risultato','Conferma','Salva'];
+  const helps=['Sito, domanda e AI','Copia tutto ciò che vedi','Conclusione in parole semplici','Controlla quattro cose','Salva e passa alle correzioni'];
+  document.querySelectorAll('.wizard-step-nav').forEach((el,i)=>{
+    const strong=el.querySelector('strong'), small=el.querySelector('small');
+    if(strong) strong.textContent=labels[i]||strong.textContent;
+    if(small) small.textContent=helps[i]||small.textContent;
+  });
+  const next=document.querySelector('[data-action="wizard-next"]');
+  if(next && currentWizardStep<5) next.textContent='Continua';
+  if(next && currentWizardStep===5) next.textContent='Salva verifica e mostrami cosa migliorare';
+};
+
+
+
+// ============================================================
+// GUIDED WIZARD 5.5 — decision engine for non-technical users
+// ============================================================
+function guidedEnsureState(){
+  state.guidedWizard ||= {active:false,stage:'intro',issueIndex:0,startedAt:'',updatedAt:'',analysisAt:'',completedIds:[],resolvedIds:[],verification:{},lastSummary:null};
+  state.settings ||= {};
+  state.settings.uiMode ||= 'guided';
+  return state.guidedWizard;
+}
+function guidedSetMode(mode){
+  guidedEnsureState();
+  state.settings.uiMode=mode==='advanced'?'advanced':'guided';
+  document.body.classList.toggle('guided-mode',state.settings.uiMode==='guided');
+  saveState(true);
+  if(window.currentSection==='dashboard') renderDashboard();
+}
+function guidedApplyMode(){guidedEnsureState();document.body.classList.toggle('guided-mode',state.settings.uiMode!=='advanced');}
+function guidedPriorityOrder(p){return ({P1:1,P2:2,P3:3,P4:4}[p]||9)}
+function guidedLatestComparable(check){
+  return state.checks.filter(c=>c.projectId===check.projectId&&c.promptId===check.promptId&&c.platformId===check.platformId&&!c.archived).sort((a,b)=>new Date(b.date)-new Date(a.date))[0]||check;
+}
+function guidedLatestChecks(){
+  const map=new Map();
+  state.checks.filter(c=>!c.archived).forEach(c=>{const k=[c.projectId,c.promptId,c.platformId].join('|'),prev=map.get(k);if(!prev||new Date(c.date)>new Date(prev.date))map.set(k,c)});
+  return [...map.values()];
+}
+function guidedIssueExample(type,project){
+  const brand=project?.brand||'il tuo brand',loc=project?.location||'la tua zona';
+  const examples={
+    project_missing:'Esempio: “Studio Rossi” con dominio studiorossi.it e servizio “consulenza fiscale”.',
+    prompt_missing:'Esempio: “Qual è un consulente SEO affidabile a Bergamo?” oppure “Chi realizza siti WordPress per aziende?”.',
+    check_missing:'Esempio: copia la domanda, apri ChatGPT in una sessione neutrale, incolla la domanda e poi riporta qui risposta e fonti.',
+    brand_absent:`Esempio: se la domanda riguarda il servizio principale, la pagina dovrebbe spiegare subito chi è ${brand}, cosa offre e perché è pertinente.`,
+    domain_absent:`Esempio: fai comparire in modo coerente ${brand} e il dominio ufficiale nelle pagine istituzionali e nei profili verificabili.`,
+    sources_missing:'Esempio: ripeti la stessa domanda aggiungendo “Indica le fonti e i link utilizzati”, poi salva solo gli URL realmente mostrati.',
+    services_weak:'Esempio: una pagina servizio dovrebbe dire a chi è rivolta, quale problema risolve, come funziona e quali prove reali la sostengono.',
+    location_weak:`Esempio: se operi a ${loc}, indica l’area servita in modo naturale e coerente, senza creare pagine duplicate cambiando solo la città.`,
+    competitor_gap:'Esempio: confronta 3 concorrenti citati e annota quali fonti, prove e pagine li rendono più facili da riconoscere.',
+    source_dependency:'Esempio: cerca citazioni reali su associazioni, partner, media locali o portali verticali pertinenti, invece di dipendere solo da directory e social.',
+    plan_sync:'Esempio: il wizard può creare nel Piano di lavoro una voce per ogni correzione rilevata. Non modifica il sito e puoi eliminare le attività in seguito.',
+    duplicate:'Esempio: confronta le due verifiche prima di eliminarne una, così non perdi un test realmente diverso.',
+    review:'Esempio: apri il risultato e conferma che brand, dominio, concorrenti e fonti corrispondano davvero alla risposta.',
+    environment:'Esempio: ripeti il test in finestra privata senza login o in chat temporanea, usando la stessa domanda.',
+    short:'Esempio: copia l’intera risposta dell’AI, non soltanto il primo paragrafo.',
+    untested:'Esempio: apri la domanda mai testata e usala in almeno una piattaforma AI.',
+    domain:'Esempio: se hai segnato il sito come citato, assicurati che tra le fonti ci sia davvero l’URL del dominio ufficiale.'
+  };
+  return examples[type]||'Esempio: esegui una sola modifica verificabile, poi ripeti lo stesso test e confronta il risultato.';
+}
+function guidedBuildIssues(){
+  const issues=[];
+  if(!state.projects.filter(p=>!p.archived).length){issues.push({id:'setup-project',type:'project_missing',priority:'P1',title:'Manca il sito da controllare',summary:'Il wizard non può fare un controllo utile finché non sa quale sito e brand deve monitorare.',recommendation:'Aggiungi il sito con nome del brand e dominio. Gli altri dettagli possono essere completati dopo.',manualSteps:['Apri “I tuoi siti”.','Premi “Nuovo progetto”.','Inserisci almeno nome, brand e dominio, poi salva.'],route:'projects',verify:()=>state.projects.filter(p=>!p.archived).length>0});return issues;}
+  if(!state.prompts.length){issues.push({id:'setup-prompt',type:'prompt_missing',priority:'P1',title:'Manca una domanda da testare',summary:'Per capire se le AI trovano il tuo brand serve almeno una domanda reale che potrebbe fare un cliente.',recommendation:'Aggiungi una domanda semplice e concreta, legata al servizio che vuoi monitorare.',manualSteps:['Apri “Domande da testare”.','Premi “Nuovo prompt”.','Scegli il sito e inserisci la domanda, poi salva.'],route:'prompts',verify:()=>state.prompts.length>0});return issues;}
+  if(!state.checks.length){issues.push({id:'setup-check',type:'check_missing',priority:'P1',title:'Non hai ancora fatto una verifica',summary:'Senza una risposta reale di un’AI non possiamo capire cosa funziona e cosa migliorare.',recommendation:'Esegui la prima verifica guidata usando una delle domande salvate.',manualSteps:['Apri “Fai una verifica”.','Copia la domanda e usala nell’AI scelta.','Incolla qui risposta completa e fonti, controlla il risultato e salva.'],route:'new-check',verify:()=>state.checks.length>0});return issues;}
+  const quality=Derived.dataQualityIssues();
+  const qualityKinds=new Map();quality.forEach(q=>{if(!qualityKinds.has(q.kind))qualityKinds.set(q.kind,[]);qualityKinds.get(q.kind).push(q)});
+  const qualityMeta={
+    duplicate:['P2','Possibili verifiche duplicate','Ci sono verifiche molto simili che potrebbero falsare medie e confronti.','Controlla le copie e conserva solo i test realmente distinti.','quality'],
+    short:['P1','Risposte troppo brevi o incomplete','Una risposta parziale può produrre un’analisi poco affidabile.','Ripeti o completa le verifiche interessate con la risposta integrale.','results'],
+    sources:['P2','Alcune verifiche non hanno fonti','Senza URL non puoi capire quali fonti abbiano sostenuto la risposta.','Controlla se l’AI mostrava citazioni; se necessario ripeti il test chiedendo fonti verificabili.','results'],
+    inconsistent:['P1','Alcuni dati non sono coerenti','Un risultato contiene valori che si contraddicono.','Apri la verifica e correggi i dati dopo un controllo manuale.','quality'],
+    domain:['P2','Una citazione del sito non è confermata da un URL','Il risultato potrebbe indicare il dominio come citato senza una fonte corrispondente.','Apri la verifica e conferma il dominio solo se compare davvero tra testo o fonti.','results'],
+    review:['P2','Alcune verifiche non sono state controllate manualmente','Il controllo manuale evita falsi positivi su brand, sito, concorrenti e fonti.','Apri le verifiche indicate e completa le conferme richieste.','results'],
+    environment:['P1','Alcuni test non sono abbastanza neutrali','Memoria, cronologia o account possono influenzare le risposte e rendere i confronti meno affidabili.','Ripeti i test importanti in sessione anonima o temporanea e registra l’ambiente usato.','new-check'],
+    untested:['P2','Ci sono domande mai testate','Una domanda salvata ma mai verificata lascia incompleta la copertura.','Esegui almeno un test per le domande importanti ancora senza risultato.','prompts']
+  };
+  for(const [kind,list] of qualityKinds){const m=qualityMeta[kind];if(!m)continue;issues.push({id:'quality-'+kind,type:kind,priority:m[0],title:m[1],summary:`${m[2]} Sono coinvolti ${list.length} elementi.`,recommendation:m[3],manualSteps:[`Apri “${m[4]==='new-check'?'Fai una verifica':m[4]==='prompts'?'Domande da testare':m[4]==='results'?'Risultati':'Qualità dati'}”.`,'Segui le indicazioni sugli elementi segnalati.','Torna nel wizard e premi “Ho fatto — Verifica”.'],route:m[4],verify:()=>!Derived.dataQualityIssues().some(x=>x.kind===kind),technical:list.map(x=>`${x.priority} · ${x.title}: ${x.detail}`).join('\n')});}
+  for(const c of guidedLatestChecks()){
+    const p=projectBy(c.projectId);if(!p)continue;const base={baselineCheckId:c.id,projectId:c.projectId,promptId:c.promptId,platformId:c.platformId,route:'new-check'};
+    const latest=()=>guidedLatestComparable(c),newer=()=>{const x=latest();return x&&x.id!==c.id&&new Date(x.date)>new Date(c.date)};
+    if(!c.brandMentioned)issues.push({...base,id:`opt-brand-${c.id}`,type:'brand_absent',priority:'P1',title:'Il brand non compare nella risposta',summary:`Per la domanda “${promptBy(c.promptId)?.text||'test selezionato'}” l’AI non ha riconosciuto chiaramente ${p.brand}.`,recommendation:'Migliora la pagina più pertinente alla domanda: risposta iniziale chiara, servizio, località e prove reali. Poi ripeti lo stesso test.',manualSteps:['Apri la pagina del sito più pertinente alla domanda.','Rendi chiari brand, servizio, destinatario, località e prove verificabili.','Pubblica la modifica e, quando è indicizzata, ripeti la stessa domanda in una sessione neutrale.'],verify:()=>newer()&&latest().brandMentioned});
+    if(c.brandMentioned&&!c.domainCited)issues.push({...base,id:`opt-domain-${c.id}`,type:'domain_absent',priority:'P1',title:'Il brand compare, ma il sito non viene citato',summary:'L’AI riconosce il nome ma non collega chiaramente il dominio ufficiale.',recommendation:'Rafforza l’associazione tra brand, dominio e profili ufficiali, senza inventare dati o link.',manualSteps:['Controlla che brand e dominio ufficiale siano chiari nelle pagine istituzionali.','Verifica coerenza dei profili ufficiali e dei dati strutturati realmente presenti.','Ripeti lo stesso test e verifica se compare il dominio ufficiale.'],verify:()=>newer()&&latest().domainCited});
+    if(!(c.urls||[]).length)issues.push({...base,id:`opt-sources-${c.id}`,type:'sources_missing',priority:'P2',title:'Non abbiamo fonti da controllare',summary:'La verifica non contiene URL registrati, quindi non possiamo capire quali fonti abbiano sostenuto la risposta.',recommendation:'Ripeti la domanda chiedendo fonti verificabili e salva soltanto i link realmente mostrati.',manualSteps:['Ripeti la stessa domanda nella stessa modalità di test.','Chiedi esplicitamente fonti o link, se la piattaforma lo consente.','Salva gli URL mostrati e torna qui.'],verify:()=>newer()&&(latest().urls||[]).length>0});
+    if(p.services?.length&&!(c.servicesPresent||[]).length)issues.push({...base,id:`opt-services-${c.id}`,type:'services_weak',priority:'P2',title:'I servizi del brand non vengono riconosciuti',summary:`La risposta non associa chiaramente ${p.brand} ai servizi configurati.`,recommendation:'Rendi più esplicita e verificabile la relazione tra brand e servizi nelle pagine principali.',manualSteps:['Scegli il servizio più importante collegato alla domanda.','Controlla che la pagina spieghi chiaramente a chi serve, cosa risolve e come funziona.','Ripeti il test e verifica se il servizio viene associato al brand.'],verify:()=>newer()&&(latest().servicesPresent||[]).length>0});
+    if(p.location&&!(c.locationsPresent||[]).length)issues.push({...base,id:`opt-location-${c.id}`,type:'location_weak',priority:'P2',title:'La località non è associata chiaramente al brand',summary:`La risposta non collega in modo evidente il risultato a ${p.location}.`,recommendation:'Rafforza solo segnali geografici reali: area servita, contatti, pagine locali utili e profili coerenti.',manualSteps:['Controlla che sito e profili ufficiali indichino correttamente l’area servita.','Aggiorna la pagina pertinente con riferimenti locali reali, senza duplicazioni artificiali.','Ripeti la stessa domanda con la località e confronta il risultato.'],verify:()=>newer()&&(latest().locationsPresent||[]).length>0});
+    if((c.competitors||[]).length)issues.push({...base,id:`opt-comp-${c.id}`,type:'competitor_gap',priority:'P3',optional:true,title:'Confronta i concorrenti citati',summary:`Nella risposta compaiono ${c.competitors.length} concorrenti. Non significa che devi copiarli: serve capire quali segnali li sostengono.`,recommendation:'Confronta fonti, prove, copertura dell’intento e chiarezza delle loro pagine; colma soltanto gap reali e documentabili.',manualSteps:['Scegli al massimo 3 concorrenti citati.','Annota fonti, prove e contenuti che possono spiegare la loro presenza.','Migliora soltanto gli aspetti che puoi dimostrare e ripeti il test.'],verify:()=>newer()&&(latest().competitors||[]).length<(c.competitors||[]).length});
+    if((c.sourceDetails||[]).some(s=>s.quality<=2))issues.push({...base,id:`opt-sourcequality-${c.id}`,type:'source_dependency',priority:'P3',optional:true,title:'Le fonti sono soprattutto directory o social',summary:'Il risultato dipende da fonti che possono essere utili ma poco forti come prova indipendente.',recommendation:'Nel medio periodo prova ad aumentare citazioni pertinenti da fonti editoriali, professionali o istituzionali reali.',manualSteps:['Individua fonti indipendenti pertinenti al settore o alla località.','Prepara dati o contenuti originali realmente citabili.','Dopo nuove citazioni, ripeti il test e confronta le fonti.'],verify:()=>newer()&&(latest().sourceDetails||[]).some(s=>s.quality>=4)});
+  }
+  const required=issues.filter(x=>!x.optional&&guidedPriorityOrder(x.priority)<=2);
+  const missingTasks=required.filter(x=>x.baselineCheckId).filter(x=>!state.tasks.some(t=>t.checkId===x.baselineCheckId&&t.title===x.title));
+  if(missingTasks.length)issues.unshift({id:'safe-plan-sync',type:'plan_sync',priority:'P3',optional:true,title:'Preparare il piano di lavoro',summary:`Abbiamo ${missingTasks.length} correzioni importanti che non sono ancora raccolte nel Piano di lavoro.`,recommendation:'Possiamo creare automaticamente le attività interne. Questa operazione non modifica il sito, i contenuti o servizi esterni.',canAutoFix:true,reversible:true,whatChanges:'Aggiungiamo al Piano di lavoro una voce per ogni correzione importante rilevata.',whatUntouched:'Non modifichiamo il sito, le verifiche, i prompt, le fonti o configurazioni esterne.',autoFix:()=>{for(const i of missingTasks){if(!state.tasks.some(t=>t.checkId===i.baselineCheckId&&t.title===i.title))state.tasks.push({id:Utils.uid(),opportunityId:'',projectId:i.projectId,checkId:i.baselineCheckId,title:i.title,priority:i.priority,status:'Da fare',owner:'',due:'',url:projectBy(i.projectId)?.targetUrl||'',notes:'Creato dal Wizard Guidato.',evidence:'',beforeCheckId:i.baselineCheckId,afterCheckId:'',createdAt:Utils.now()});}saveState(true);},verify:()=>missingTasks.every(i=>state.tasks.some(t=>t.checkId===i.baselineCheckId&&t.title===i.title)),technical:`Attività da creare: ${missingTasks.length}`});
+  return issues.sort((a,b)=>guidedPriorityOrder(a.priority)-guidedPriorityOrder(b.priority));
+}
+function guidedIssueResolved(issue){try{return Boolean(issue.verify?.())}catch{return false}}
+function guidedCurrentIssues(){return guidedBuildIssues()}
+function guidedRequiredIssues(issues=guidedCurrentIssues()){return issues.filter(i=>!i.optional&&guidedPriorityOrder(i.priority)<=2)}
+function guidedOptionalIssues(issues=guidedCurrentIssues()){return issues.filter(i=>i.optional||guidedPriorityOrder(i.priority)>2)}
+function guidedOpen(){guidedEnsureState();document.body.classList.add('guided-lock');let shell=document.getElementById('guidedShell');if(!shell){shell=document.createElement('div');shell.id='guidedShell';shell.className='guided-shell';shell.setAttribute('role','dialog');shell.setAttribute('aria-modal','true');shell.setAttribute('aria-label','Controllo guidato');document.body.appendChild(shell)}shell.classList.add('show');guidedRender();setTimeout(()=>shell.querySelector('h1,button')?.focus?.(),0)}
+function guidedClose(){document.getElementById('guidedShell')?.classList.remove('show');document.body.classList.remove('guided-lock');guidedEnsureState().updatedAt=Utils.now();saveState(true);if(window.currentSection==='dashboard')renderDashboard()}
+function guidedStageIndex(stage){return ({intro:0,analysis:0,result:1,correction:2,verify:3,complete:4}[stage]??0)}
+function guidedProgress(stage){const labels=['Analisi','Problemi','Correzioni','Verifica','Completato'],idx=guidedStageIndex(stage);return `<div class="guided-progress"><div class="guided-progress-top"><strong>Passaggio ${idx+1} di 5</strong><span>${Utils.esc(labels[idx])}</span></div><div class="guided-steps">${labels.map((x,i)=>`<div class="guided-step ${i<idx?'done':i===idx?'current':''}">${i<idx?'✓ ':''}${x}</div>`).join('')}</div></div>`}
+function guidedFrame(body){const g=guidedEnsureState();return `<div class="guided-shell-inner"><div class="guided-header"><div class="guided-header-brand">GEO Monitor · Controllo guidato</div><div class="spacer"></div><button class="btn btn-sm" data-guided="mode-advanced">Modalità avanzata</button><button class="btn btn-sm guided-close" data-guided="close">Interrompi e salva</button></div>${guidedProgress(g.stage)}${body}</div>`}
+function guidedRender(){const shell=document.getElementById('guidedShell');if(!shell)return;const g=guidedEnsureState();guidedApplyMode();if(g.stage==='intro')shell.innerHTML=guidedFrame(guidedIntro());else if(g.stage==='analysis')shell.innerHTML=guidedFrame(guidedAnalysisView());else if(g.stage==='result')shell.innerHTML=guidedFrame(guidedResultView());else if(g.stage==='correction')shell.innerHTML=guidedFrame(guidedCorrectionView());else if(g.stage==='verify')shell.innerHTML=guidedFrame(guidedVerifyView());else shell.innerHTML=guidedFrame(guidedCompleteView())}
+function guidedIntro(){const g=guidedEnsureState();const hasResume=g.active&&g.startedAt&&g.stage!=='complete'&&g.stage!=='intro';return `<section class="guided-stage"><h1>${hasResume?'Continua da dove eri rimasto':'Controlliamo insieme la situazione'}</h1><p>${hasResume?'Il tuo lavoro è stato salvato. Riprendiamo dal punto esatto in cui ti eri fermato.':'Ti guideremo passo dopo passo. Non sono necessarie conoscenze tecniche e durante il primo controllo non modificheremo nulla.'}</p><div class="guided-safety"><div><strong>Cosa faremo</strong>Analizzeremo configurazione, verifiche e problemi già registrati nell’app.</div><div><strong>Cosa non faremo</strong>Non modificheremo automaticamente il tuo sito, contenuti, URL o servizi esterni.</div></div><div class="guided-footer-actions"><button class="btn btn-primary guided-primary" data-guided="${hasResume?'resume':'run-analysis'}">${hasResume?'Continua':'Avvia controllo'}</button>${hasResume?'<button class="btn" data-guided="restart">Ricomincia</button>':''}<button class="btn btn-ghost secondary-link" data-guided="close">Esci dal controllo guidato</button></div></section>`}
+let guidedAnalysisTimer=null;
+function guidedRunAnalysis(){const g=guidedEnsureState();g.active=true;g.stage='analysis';g.startedAt ||= Utils.now();g.analysisAt=Utils.now();g.updatedAt=Utils.now();g.analysisProgress=0;saveState(true);guidedRender();clearInterval(guidedAnalysisTimer);guidedAnalysisTimer=setInterval(()=>{const gg=guidedEnsureState();gg.analysisProgress=Math.min(3,(gg.analysisProgress||0)+1);guidedRender();if(gg.analysisProgress>=3){clearInterval(guidedAnalysisTimer);setTimeout(()=>{gg.stage='result';gg.issueIndex=0;const issues=guidedCurrentIssues();gg.lastSummary={at:Utils.now(),issues:issues.length,required:guidedRequiredIssues(issues).length,optional:guidedOptionalIssues(issues).length};saveState(true);guidedRender()},250)}},300)}
+function guidedAnalysisView(){const p=guidedEnsureState().analysisProgress||0,checks=['Configurazione di base','Qualità delle verifiche','Problemi e prossime azioni'];return `<section class="guided-stage"><h1>Controllo in corso…</h1><p>Stiamo verificando la situazione. Non viene modificato nulla durante questa analisi.</p><div class="guided-checks">${checks.map((x,i)=>`<div class="guided-check ${i<p?'done':i===p?'current':''}"><span class="guided-check-icon">${i<p?'✓':i===p?'○':'·'}</span><div><strong>${Utils.esc(x)}</strong><div class="help">${i<p?'Controllo completato':i===p?'Verifica in corso':'In attesa'}</div></div></div>`).join('')}</div><details class="guided-technical"><summary>Mostra dettagli tecnici</summary><div class="guided-technical-body">Versione applicazione: ${CONFIG.VERSION}\nProgetti: ${state.projects.length}\nDomande: ${state.prompts.length}\nVerifiche: ${state.checks.length}\nAttività: ${state.tasks.length}</div></details></section>`}
+function guidedResultView(){const issues=guidedCurrentIssues(),required=guidedRequiredIssues(issues),optional=guidedOptionalIssues(issues),passed=Math.max(0,6-required.length),good=!required.length;return `<section class="guided-stage"><h1>Abbiamo completato il controllo</h1><p>Prima ti mostriamo il quadro generale. Non serve leggere una lunga lista tecnica.</p><div class="guided-overall ${good?'good':'attention'}"><strong>Situazione generale: ${good?'buona ✓':'richiede attenzione'}</strong><div class="help">${good?'Non risultano problemi importanti da correggere.':'Ti consigliamo di partire dal problema più importante, uno alla volta.'}</div></div><div class="guided-summary"><div class="guided-summary-card"><div class="value">${passed}</div><div class="label">controlli senza problemi importanti</div></div><div class="guided-summary-card"><div class="value">${required.length}</div><div class="label">problemi da correggere</div></div><div class="guided-summary-card"><div class="value">${optional.length}</div><div class="label">suggerimenti facoltativi</div></div></div>${required.length?`<div class="guided-recommendation"><h3>Da dove iniziamo?</h3><strong>${Utils.esc(required[0].title)}</strong><div class="help" style="margin-top:4px">È il problema con priorità più alta tra quelli ancora presenti.</div></div>`:'<div class="notice success">Non ci sono problemi importanti. Puoi concludere il controllo oppure esaminare i suggerimenti facoltativi.</div>'}<div class="guided-footer-actions">${required.length?'<button class="btn btn-primary guided-primary" data-guided="start-corrections">Inizia le correzioni</button>':'<button class="btn btn-primary guided-primary" data-guided="complete">Completa controllo</button>'}${optional.length?'<button class="btn" data-guided="show-optional">Esamina suggerimenti</button>':''}</div></section>`}
+function guidedActiveIssue(){const g=guidedEnsureState(),required=guidedRequiredIssues().filter(i=>!g.resolvedIds.includes(i.id));if(!required.length)return null;g.issueIndex=Math.max(0,Math.min(g.issueIndex||0,required.length-1));return required[g.issueIndex]}
+function guidedCorrectionView(){const g=guidedEnsureState(),issues=guidedRequiredIssues().filter(i=>!g.resolvedIds.includes(i.id)),issue=issues[Math.max(0,Math.min(g.issueIndex||0,issues.length-1))];if(!issue){g.stage='complete';saveState(true);return guidedCompleteView()}const pd=priorityDetails(issue.priority);return `<section class="guided-stage"><div class="guided-issue-head"><div><div class="guided-issue-count">Problema ${Math.min((g.issueIndex||0)+1,issues.length)} di ${issues.length}</div><h1>${Utils.esc(issue.title)}</h1></div><div class="spacer"></div>${badge(pd.label,issue.priority==='P1'?'danger':'warning')}</div><div class="guided-explain"><strong>Cosa abbiamo trovato</strong><br>${Utils.esc(issue.summary)}</div><div class="guided-recommendation"><h3>Cosa ti consigliamo</h3>${Utils.esc(issue.recommendation)}<div class="guided-example"><strong>Esempio semplice</strong><br>${Utils.esc(guidedIssueExample(issue.type,projectBy(issue.projectId)))}</div></div>${issue.canAutoFix?guidedAutoFixBlock(issue):guidedManualBlock(issue)}<details class="guided-technical"><summary>Mostra dettagli tecnici</summary><div class="guided-technical-body">ID: ${Utils.esc(issue.id)}\nPriorità: ${Utils.esc(issue.priority)}\n${Utils.esc(issue.technical||'Nessun dettaglio tecnico aggiuntivo.')}</div></details></section>`}
+function guidedAutoFixBlock(issue){return `<div class="guided-manual"><h3>Possiamo farlo automaticamente</h3><div class="guided-safety"><div><strong>Cosa faremo</strong>${Utils.esc(issue.whatChanges||'Applicheremo la correzione interna descritta.')}</div><div><strong>Cosa non toccheremo</strong>${Utils.esc(issue.whatUntouched||'Le altre impostazioni resteranno invariate.')}</div></div><div class="notice success"><strong>Puoi annullare la modifica:</strong> ${issue.reversible?'Sì. Le attività create possono essere eliminate dal Piano di lavoro.':'No.'}</div><div class="guided-footer-actions"><button class="btn btn-primary guided-primary" data-guided="apply-auto">Applica correzione</button></div></div>`}
+function guidedManualBlock(issue){return `<div class="guided-manual"><h3>Questa modifica richiede il tuo intervento</h3><ol>${(issue.manualSteps||['Apri la sezione indicata.','Esegui la modifica richiesta.','Torna qui e verifica.']).map((x,i)=>`<li><strong>${i+1}.</strong> ${Utils.esc(x)}</li>`).join('')}</ol><div class="guided-footer-actions">${issue.route?`<button class="btn btn-primary guided-primary" data-guided="open-route" data-route="${Utils.esc(issue.route)}">Apri la sezione giusta</button>`:''}<button class="btn" data-guided="verify-manual">Ho fatto — Verifica</button></div></div>`}
+function guidedApplyAuto(){const issue=guidedActiveIssue();if(!issue?.canAutoFix)return;issue.autoFix?.();const g=guidedEnsureState();g.verification[issue.id]={at:Utils.now(),status:'checking'};g.stage='verify';saveState(true);guidedRender();setTimeout(()=>guidedVerifyCurrent(issue.id),350)}
+function guidedVerifyCurrent(issueId){const issues=guidedCurrentIssues();let issue=issues.find(i=>i.id===issueId);if(!issue){const g=guidedEnsureState();g.resolvedIds=Utils.unique([...(g.resolvedIds||[]),issueId]);g.verification[issueId]={at:Utils.now(),status:'success'};g.stage='verify';saveState(true);guidedRender();return}const ok=guidedIssueResolved(issue),g=guidedEnsureState();g.verification[issueId]={at:Utils.now(),status:ok?'success':'fail'};if(ok)g.resolvedIds=Utils.unique([...(g.resolvedIds||[]),issueId]);g.stage='verify';saveState(true);guidedRender()}
+function guidedVerifyView(){const g=guidedEnsureState();const entries=Object.entries(g.verification||{}).sort((a,b)=>new Date(b[1].at)-new Date(a[1].at));const [id,last]=entries[0]||[];if(!id)return `<section class="guided-stage"><h1>Verifichiamo il risultato</h1><p>Non ci sono ancora correzioni da verificare.</p><button class="btn btn-primary" data-guided="back-corrections">Torna alle correzioni</button></section>`;const ok=last.status==='success';return `<section class="guided-stage"><h1>${ok?'Problema risolto ✓':'La correzione non è ancora completa'}</h1><p>${ok?'Abbiamo verificato il risultato e il controllo ora viene superato correttamente.':'La modifica è stata eseguita o dichiarata, ma il problema risulta ancora presente. Non lo segniamo come risolto.'}</p><div class="guided-verify-result ${ok?'success':'fail'}"><strong>${ok?'Verifica riuscita':'Verifica non riuscita'}</strong><br>${ok?'Puoi passare al problema successivo.':'Per le modifiche al sito serve spesso un nuovo test reale, eseguito dopo la pubblicazione e l’indicizzazione.'}</div><div class="guided-footer-actions">${ok?'<button class="btn btn-primary guided-primary" data-guided="next-issue">Continua</button>':'<button class="btn btn-primary guided-primary" data-guided="retry-verify">Riprova verifica</button><button class="btn" data-guided="back-corrections">Segui la soluzione manuale</button>'}<details class="guided-technical"><summary>Mostra dettagli tecnici</summary><div class="guided-technical-body">Problema: ${Utils.esc(id)}\nUltima verifica: ${Utils.date(last.at,true)}\nEsito: ${ok?'superato':'ancora presente'}</div></details></div></section>`}
+function guidedCompleteView(){const issues=guidedCurrentIssues(),required=guidedRequiredIssues(issues).filter(i=>!guidedEnsureState().resolvedIds.includes(i.id)),optional=guidedOptionalIssues(issues),fixed=guidedEnsureState().resolvedIds.length,good=!required.length;return `<section class="guided-stage"><div class="guided-complete-icon">✓</div><h1>Controllo completato</h1><p>${good?'La situazione è buona. Le correzioni importanti disponibili nel wizard risultano completate o non sono più presenti.':'Il controllo è terminato, ma rimangono elementi che richiedono attenzione.'}</p><div class="guided-summary"><div class="guided-summary-card"><div class="value">${good?'✓':'!'}</div><div class="label">situazione generale</div></div><div class="guided-summary-card"><div class="value">${fixed}</div><div class="label">problemi verificati come risolti</div></div><div class="guided-summary-card"><div class="value">${optional.length}</div><div class="label">suggerimenti facoltativi</div></div></div>${required.length?`<div class="notice warning">Rimangono ${required.length} problemi importanti. Puoi riprendere il wizard quando vuoi.</div>`:'<div class="notice success">Tutte le correzioni considerate risolte sono state verificate: nessun falso stato di successo.</div>'}<div class="guided-footer-actions"><button class="btn btn-primary guided-primary" data-guided="summary">Visualizza riepilogo</button>${optional.length?'<button class="btn" data-guided="show-optional">Esamina suggerimenti</button>':''}<button class="btn" data-guided="restart">Nuovo controllo</button></div></section>`}
+function guidedRestart(){const g=guidedEnsureState();Object.assign(g,{active:true,stage:'intro',issueIndex:0,startedAt:'',updatedAt:Utils.now(),analysisAt:'',completedIds:[],resolvedIds:[],verification:{},lastSummary:null,analysisProgress:0});saveState(true);guidedRender()}
+function guidedAdvanceIssue(){const g=guidedEnsureState();g.stage='correction';g.issueIndex=0;saveState(true);guidedRender()}
+function guidedGoRoute(route){guidedEnsureState().updatedAt=Utils.now();saveState(true);guidedClose();setSection(route||'dashboard')}
+function guidedShowOptional(){guidedClose();setSection('opportunities')}
+function guidedSummary(){guidedEnsureState().active=false;guidedEnsureState().stage='complete';saveState(true);guidedClose();setSection('dashboard')}
+function guidedDashboardCard(){const g=guidedEnsureState(),issues=guidedCurrentIssues(),required=guidedRequiredIssues(issues).filter(i=>!g.resolvedIds.includes(i.id)),resume=g.active&&g.startedAt&&g.stage!=='complete'&&g.stage!=='intro';const last=g.analysisAt?Utils.date(g.analysisAt,true):'Mai';return `${resume?`<div class="notice warning guided-resume"><strong>Vuoi continuare da dove eri rimasto?</strong><br>Hai completato ${guidedStageIndex(g.stage)} passaggi su 5. Rimangono ${required.length} problemi da controllare.<div class="compact-actions" style="margin-top:10px"><button class="btn btn-primary btn-sm" data-guided="open-resume">Continua</button><button class="btn btn-sm" data-guided="restart-open">Ricomincia</button></div></div>`:''}<section class="guided-launch"><div><h2>${resume?'Continua il controllo guidato':'Avvia controllo guidato'}</h2><p>Ti guideremo passo dopo passo. Non sono necessarie conoscenze tecniche. Il sistema ti dirà cosa fare, perché farlo e come verificare il risultato.</p><div class="guided-mode-choice"><span class="guided-mode-pill ${state.settings.uiMode!=='advanced'?'active':''}">Modalità guidata · consigliata</span><span class="guided-mode-pill ${state.settings.uiMode==='advanced'?'active':''}">Modalità avanzata</span><button class="btn btn-sm" data-guided="${state.settings.uiMode==='advanced'?'mode-guided-dashboard':'mode-advanced-dashboard'}">${state.settings.uiMode==='advanced'?'Usa modalità guidata':'Passa alla modalità avanzata'}</button><span class="help">Ultimo controllo: ${Utils.esc(last)}</span></div></div><div class="guided-launch-actions"><button class="btn btn-primary guided-primary" data-guided="${resume?'open-resume':'start'}">${resume?'Continua':'Avvia controllo guidato'}</button></div></section>`}
+const renderDashboardBeforeGuided55=renderDashboard;
+renderDashboard=function(){renderDashboardBeforeGuided55();const root=document.getElementById('dashboard');if(root&&!root.querySelector('.guided-launch'))root.insertAdjacentHTML('afterbegin',guidedDashboardCard())};
+document.addEventListener('click',event=>{const b=event.target.closest('[data-guided]');if(!b)return;event.preventDefault();event.stopPropagation();const action=b.dataset.guided,g=guidedEnsureState();if(action==='start'){Object.assign(g,{active:true,stage:'intro',startedAt:'',issueIndex:0,resolvedIds:[],verification:{}});saveState(true);guidedOpen()}else if(action==='open-resume'||action==='resume'){guidedOpen()}else if(action==='restart'||action==='restart-open'){guidedRestart();guidedOpen()}else if(action==='run-analysis'){guidedRunAnalysis()}else if(action==='start-corrections'){guidedAdvanceIssue()}else if(action==='apply-auto'){guidedApplyAuto()}else if(action==='verify-manual'){const issue=guidedActiveIssue();if(issue){g.verification[issue.id]={at:Utils.now(),status:'checking'};g.stage='verify';saveState(true);guidedRender();setTimeout(()=>guidedVerifyCurrent(issue.id),250)}}else if(action==='open-route'){guidedGoRoute(b.dataset.route)}else if(action==='retry-verify'){const id=Object.entries(g.verification||{}).sort((a,b)=>new Date(b[1].at)-new Date(a[1].at))[0]?.[0];if(id)guidedVerifyCurrent(id)}else if(action==='back-corrections'){g.stage='correction';saveState(true);guidedRender()}else if(action==='next-issue'){g.stage='correction';g.issueIndex=0;saveState(true);guidedRender()}else if(action==='complete'){g.stage='complete';g.active=false;saveState(true);guidedRender()}else if(action==='show-optional'){guidedShowOptional()}else if(action==='summary'){guidedSummary()}else if(action==='close'){guidedClose()}else if(action==='mode-advanced'||action==='mode-advanced-dashboard'){guidedSetMode('advanced');guidedClose();Utils.toast('Modalità avanzata attivata. Tutte le funzioni sono visibili.','success')}else if(action==='mode-guided-dashboard'){guidedSetMode('guided');Utils.toast('Modalità guidata attivata. Il menu mostra solo le funzioni essenziali.','success')}},true);
+
+
+
+
+// ============================================================
+// GUIDED WIZARD 5.6 — larger type, simpler decisions, font controls
+// ============================================================
+const GUIDED_FONT_LEVELS = [1.5, 2, 2.5];
+function guidedFontScale(){
+  guidedEnsureState();
+  const raw=Number(state.settings.guidedFontScale || 2);
+  return GUIDED_FONT_LEVELS.includes(raw)?raw:2;
+}
+function guidedApplyFontScale(){
+  document.documentElement.style.setProperty('--guided-font-scale', String(guidedFontScale()));
+}
+function guidedSetFontScale(direction){
+  const current=guidedFontScale();
+  let idx=GUIDED_FONT_LEVELS.indexOf(current);
+  if(direction==='reset') idx=1;
+  else idx=Math.max(0,Math.min(GUIDED_FONT_LEVELS.length-1,idx+(direction==='up'?1:-1)));
+  state.settings.guidedFontScale=GUIDED_FONT_LEVELS[idx];
+  saveState(true);
+  guidedApplyFontScale();
+  guidedRender();
+}
+function guidedFontControls(){
+  const scale=guidedFontScale(),pct=Math.round(scale*100);
+  return `<div class="guided-font-tools" role="group" aria-label="Dimensione testo">
+    <span class="guided-font-label">Testo ${pct}%</span>
+    <button class="guided-font-btn ${scale===GUIDED_FONT_LEVELS[0]?'active':''}" data-guided="font-down" aria-label="Riduci testo" title="Riduci testo">A−</button>
+    <button class="guided-font-btn ${scale===2?'active':''}" data-guided="font-reset" aria-label="Dimensione testo consigliata 200%" title="Dimensione consigliata 200%">A</button>
+    <button class="guided-font-btn ${scale===GUIDED_FONT_LEVELS.at(-1)?'active':''}" data-guided="font-up" aria-label="Aumenta testo" title="Aumenta testo">A+</button>
+  </div>`;
+}
+
+const guidedFrameBefore56=guidedFrame;
+guidedFrame=function(body){
+  const g=guidedEnsureState();guidedApplyFontScale();
+  return `<div class="guided-shell-inner"><div class="guided-header"><div class="guided-header-brand">Controllo guidato</div><div class="spacer"></div>${guidedFontControls()}<button class="btn btn-sm btn-ghost" data-guided="mode-advanced">Modalità avanzata</button><button class="btn btn-sm guided-close" data-guided="close">Salva ed esci</button></div>${guidedProgress(g.stage)}${body}</div>`;
+};
+
+guidedProgress=function(stage){
+  const labels=['Controllo','Problemi','Soluzione','Verifica','Fine'],idx=guidedStageIndex(stage);
+  return `<div class="guided-progress" aria-label="Avanzamento controllo"><div class="guided-progress-top"><strong>Passaggio ${idx+1} di 5</strong><span>${Utils.esc(labels[idx])}</span></div><div class="guided-steps">${labels.map((x,i)=>`<div class="guided-step ${i<idx?'done':i===idx?'current':''}">${i<idx?'✓ ':''}${x}</div>`).join('')}</div><div class="guided-next-hint">${['Adesso controlliamo i dati.','Adesso scegliamo da dove iniziare.','Adesso sistemiamo una cosa alla volta.','Adesso controlliamo se ha funzionato.','Hai finito.'][idx]}</div></div>`;
+};
+
+guidedIntro=function(){
+  const g=guidedEnsureState();const hasResume=g.active&&g.startedAt&&g.stage!=='complete'&&g.stage!=='intro';
+  return `<section class="guided-stage guided-stage-simple"><div class="guided-eyebrow">${hasResume?'CONTROLLO DA RIPRENDERE':'INIZIAMO DA QUI'}</div><h1>${hasResume?'Continuiamo da dove eri arrivato':'Controlliamo il tuo progetto insieme'}</h1><p>${hasResume?'Non devi ricominciare. Abbiamo salvato il punto in cui ti eri fermato.':'Premi il pulsante qui sotto. Ti dirò io cosa controllare e cosa fare, un passaggio alla volta.'}</p><div class="guided-one-line"><span aria-hidden="true">✓</span><strong>Il primo controllo non modifica nulla.</strong></div><div class="guided-footer-actions"><button class="btn btn-primary guided-primary" data-guided="${hasResume?'resume':'run-analysis'}">${hasResume?'Continua il controllo':'Inizia il controllo'}</button>${hasResume?'<button class="btn btn-ghost" data-guided="restart">Ricomincia da zero</button>':''}</div></section>`;
+};
+
+guidedAnalysisView=function(){
+  const p=guidedEnsureState().analysisProgress||0,checks=['Il sito e le domande','Le verifiche già fatte','Cosa conviene sistemare'];
+  return `<section class="guided-stage guided-stage-simple"><div class="guided-eyebrow">NON DEVI FARE NULLA</div><h1>Sto controllando tutto</h1><p>Tra poco ti mostrerò solo ciò che richiede la tua attenzione.</p><div class="guided-checks">${checks.map((x,i)=>`<div class="guided-check ${i<p?'done':i===p?'current':''}"><span class="guided-check-icon">${i<p?'✓':i===p?'○':'·'}</span><div><strong>${Utils.esc(x)}</strong><div class="help">${i<p?'Fatto':i===p?'Sto controllando…':'Subito dopo'}</div></div></div>`).join('')}</div><details class="guided-technical"><summary>Dettagli tecnici</summary><div class="guided-technical-body">Versione: ${CONFIG.VERSION}\nSiti: ${state.projects.length}\nDomande: ${state.prompts.length}\nVerifiche: ${state.checks.length}\nAttività: ${state.tasks.length}</div></details></section>`;
+};
+
+guidedResultView=function(){
+  const issues=guidedCurrentIssues(),required=guidedRequiredIssues(issues),optional=guidedOptionalIssues(issues),good=!required.length;
+  return `<section class="guided-stage guided-stage-simple"><div class="guided-eyebrow">CONTROLLO TERMINATO</div><h1>${good?'Va tutto bene ✓':`Abbiamo trovato ${required.length} ${required.length===1?'cosa':'cose'} da sistemare`}</h1><p>${good?'Non risultano problemi importanti.':'Non devi affrontarle tutte insieme. Partiamo dalla più importante e ti guido io.'}</p><div class="guided-overall ${good?'good':'attention'}"><strong>${good?'Situazione buona':'La prima cosa da fare'}</strong><div>${good?'Puoi concludere il controllo.':Utils.esc(required[0]?.title||'Apri la prima correzione')}</div></div>${optional.length?`<div class="guided-muted-note">Ci sono anche ${optional.length} suggerimenti facoltativi. Li vedremo solo se vorrai.</div>`:''}<div class="guided-footer-actions">${required.length?'<button class="btn btn-primary guided-primary" data-guided="start-corrections">Mostrami cosa fare</button>':'<button class="btn btn-primary guided-primary" data-guided="complete">Concludi il controllo</button>'}</div></section>`;
+};
+
+guidedCorrectionView=function(){
+  const g=guidedEnsureState(),issues=guidedRequiredIssues().filter(i=>!g.resolvedIds.includes(i.id)),issue=issues[Math.max(0,Math.min(g.issueIndex||0,issues.length-1))];
+  if(!issue){g.stage='complete';saveState(true);return guidedCompleteView()}
+  const project=projectBy(issue.projectId);
+  return `<section class="guided-stage"><div class="guided-eyebrow">UNA COSA ALLA VOLTA · ${Math.min((g.issueIndex||0)+1,issues.length)} DI ${issues.length}</div><h1>${Utils.esc(issue.title)}</h1><div class="guided-simple-block"><span class="guided-simple-number">1</span><div><strong>Che cosa significa</strong><p>${Utils.esc(issue.summary)}</p></div></div><div class="guided-simple-block recommended"><span class="guided-simple-number">2</span><div><strong>Fai questo adesso</strong><p>${Utils.esc(issue.recommendation)}</p></div></div><div class="guided-example"><strong>Esempio</strong><br>${Utils.esc(guidedIssueExample(issue.type,project))}</div><div class="guided-simple-block next"><span class="guided-simple-number">3</span><div><strong>Cosa succede dopo</strong><p>${issue.canAutoFix?'Applicherò solo questa correzione interna e controllerò subito che sia riuscita.':'Quando hai finito, torni qui e controlleremo se il problema è davvero risolto.'}</p></div></div>${issue.canAutoFix?guidedAutoFixBlock(issue):guidedManualBlock(issue)}<details class="guided-technical"><summary>Dettagli tecnici</summary><div class="guided-technical-body">ID: ${Utils.esc(issue.id)}\nPriorità: ${Utils.esc(issue.priority)}\n${Utils.esc(issue.technical||'Nessun dettaglio tecnico aggiuntivo.')}</div></details></section>`;
+};
+
+guidedAutoFixBlock=function(issue){
+  return `<div class="guided-action-box"><div class="guided-action-title">Posso farlo io in sicurezza</div><p>${Utils.esc(issue.whatChanges||'Applicherò soltanto la correzione indicata.')}</p><div class="guided-untouched"><strong>Non toccherò:</strong> ${Utils.esc(issue.whatUntouched||'tutto il resto.')}</div><div class="guided-footer-actions"><button class="btn btn-primary guided-primary" data-guided="apply-auto">Correggi e verifica</button></div></div>`;
+};
+
+guidedManualBlock=function(issue){
+  const steps=issue.manualSteps||['Apri la sezione indicata.','Esegui la modifica richiesta.','Torna qui e verifica.'];
+  return `<div class="guided-action-box"><div class="guided-action-title">Segui questi ${steps.length} passaggi</div><ol class="guided-big-steps">${steps.map((x,i)=>`<li><span>${i+1}</span><div>${Utils.esc(x)}</div></li>`).join('')}</ol><div class="guided-footer-actions">${issue.route?`<button class="btn btn-primary guided-primary" data-guided="open-route" data-route="${Utils.esc(issue.route)}">Portami dove devo intervenire</button>`:''}<button class="btn btn-ghost" data-guided="verify-manual">Ho già fatto la modifica · Verifica</button></div></div>`;
+};
+
+guidedVerifyView=function(){
+  const g=guidedEnsureState();const entries=Object.entries(g.verification||{}).sort((a,b)=>new Date(b[1].at)-new Date(a[1].at));const [id,last]=entries[0]||[];
+  if(!id)return `<section class="guided-stage guided-stage-simple"><h1>Controlliamo il risultato</h1><p>Non c’è ancora una modifica da verificare.</p><button class="btn btn-primary guided-primary" data-guided="back-corrections">Torna alla soluzione</button></section>`;
+  const ok=last.status==='success';
+  return `<section class="guided-stage guided-stage-simple"><div class="guided-complete-icon ${ok?'':'guided-warn-icon'}">${ok?'✓':'!'}</div><h1>${ok?'Fatto: il problema è risolto':'Serve ancora un passaggio'}</h1><p>${ok?'Ho controllato il risultato: ora questo controllo viene superato.':'Il problema risulta ancora presente. Non lo segno come risolto finché non abbiamo una verifica positiva.'}</p><div class="guided-footer-actions">${ok?'<button class="btn btn-primary guided-primary" data-guided="next-issue">Vai al prossimo</button>':'<button class="btn btn-primary guided-primary" data-guided="back-corrections">Mostrami cosa fare</button><button class="btn btn-ghost" data-guided="retry-verify">Controlla di nuovo</button>'}</div><details class="guided-technical"><summary>Dettagli tecnici</summary><div class="guided-technical-body">Problema: ${Utils.esc(id)}\nUltima verifica: ${Utils.date(last.at,true)}\nEsito: ${ok?'superato':'ancora presente'}</div></details></section>`;
+};
+
+guidedCompleteView=function(){
+  const issues=guidedCurrentIssues(),g=guidedEnsureState(),required=guidedRequiredIssues(issues).filter(i=>!g.resolvedIds.includes(i.id)),optional=guidedOptionalIssues(issues),good=!required.length;
+  return `<section class="guided-stage guided-stage-simple"><div class="guided-complete-icon">✓</div><div class="guided-eyebrow">CONTROLLO FINITO</div><h1>${good?'Hai completato tutto':'Hai completato il controllo'}</h1><p>${good?'Le correzioni importanti risultano verificate.':'Rimangono alcune cose da sistemare. Potrai riprendere esattamente da qui.'}</p><div class="guided-overall ${good?'good':'attention'}"><strong>${good?'Situazione buona':'Rimane da fare'}</strong><div>${good?'Nessun problema importante aperto.':`${required.length} ${required.length===1?'problema importante':'problemi importanti'}`}</div></div><div class="guided-footer-actions"><button class="btn btn-primary guided-primary" data-guided="summary">Torna alla dashboard</button>${required.length?'<button class="btn btn-ghost" data-guided="restart-open">Rivedi il controllo</button>':''}${optional.length?'<button class="btn btn-ghost" data-guided="show-optional">Guarda i suggerimenti facoltativi</button>':''}</div></section>`;
+};
+
+guidedDashboardCard=function(){
+  const g=guidedEnsureState(),issues=guidedCurrentIssues(),required=guidedRequiredIssues(issues).filter(i=>!g.resolvedIds.includes(i.id)),resume=g.active&&g.startedAt&&g.stage!=='complete'&&g.stage!=='intro';
+  return `${resume?`<div class="notice warning guided-resume"><strong>Hai un controllo da continuare</strong><br>Rimangono ${required.length} ${required.length===1?'cosa':'cose'} da controllare.<div class="compact-actions" style="margin-top:10px"><button class="btn btn-primary btn-sm" data-guided="open-resume">Continua da dove eri</button><button class="btn btn-ghost btn-sm" data-guided="restart-open">Ricomincia</button></div></div>`:''}<section class="guided-launch"><div><div class="guided-eyebrow">CONSIGLIATO</div><h2>${resume?'Continua il controllo':'Non sai da dove iniziare?'}</h2><p>${resume?'Riprendi il lavoro già salvato.':'Premi qui: controlleremo insieme il progetto e ti dirò una cosa alla volta cosa fare.'}</p></div><div class="guided-launch-actions"><button class="btn btn-primary guided-primary" data-guided="${resume?'open-resume':'start'}">${resume?'Continua':'Avvia controllo guidato'}</button></div></section>`;
+};
+
+guidedApplyFontScale();
+
+// Font controls are deliberately handled before the older 5.5 delegated actions.
+document.addEventListener('click',event=>{
+  const b=event.target.closest('[data-guided="font-down"],[data-guided="font-reset"],[data-guided="font-up"]');
+  if(!b)return;
+  event.preventDefault();event.stopImmediatePropagation();
+  if(b.dataset.guided==='font-down')guidedSetFontScale('down');
+  else if(b.dataset.guided==='font-up')guidedSetFontScale('up');
+  else guidedSetFontScale('reset');
+},true);
+
+
+
+// ============================================================
+// GUIDED WIZARD 5.7 — QA fixes and stronger guidance
+// ============================================================
+function guidedRemoveReturnBar(){ document.getElementById('guidedReturnBar')?.remove(); }
+function guidedSyncReturnBar(){
+  guidedRemoveReturnBar();
+  const g=guidedEnsureState();
+  const shell=document.getElementById('guidedShell');
+  if(!g.active || shell?.classList.contains('show') || ['intro','complete'].includes(g.stage)) return;
+  const issue=guidedActiveIssue();
+  const bar=document.createElement('div');
+  bar.id='guidedReturnBar';bar.className='guided-return-bar';bar.setAttribute('role','status');
+  bar.innerHTML=`<div><strong>Controllo guidato in corso</strong><br><span>${Utils.esc(issue?.title||'Torna al wizard per continuare')}</span></div><button class="btn btn-sm" data-guided="return-to-wizard">Torna al controllo</button>`;
+  document.body.appendChild(bar);
+}
+const guidedOpenBefore57=guidedOpen;
+guidedOpen=function(){guidedRemoveReturnBar();guidedOpenBefore57();const shell=document.getElementById('guidedShell');const heading=shell?.querySelector('h1');if(heading){heading.setAttribute('tabindex','-1');setTimeout(()=>heading.focus(),0)}};
+const guidedCloseBefore57=guidedClose;
+guidedClose=function(){guidedCloseBefore57();guidedSyncReturnBar()};
+const guidedGoRouteBefore57=guidedGoRoute;
+guidedGoRoute=function(route){guidedGoRouteBefore57(route);guidedSyncReturnBar()};
+const setSectionBefore57=setSection;
+setSection=function(id){setSectionBefore57(id);guidedSyncReturnBar()};
+
+function guidedContextStrip(stage){
+  const map={intro:['Inizio','Premi il pulsante principale','Controlleremo i dati senza modificare nulla'],analysis:['Controllo','Non devi fare nulla','Ti mostreremo solo ciò che richiede attenzione'],result:['Risultato','Scegli la prima correzione','Affronteremo un problema alla volta'],correction:['Correzione','Segui una sola indicazione','Poi verificheremo il risultato'],verify:['Verifica','Guarda l’esito','Se funziona passeremo al prossimo problema'],complete:['Fine','Controlla il riepilogo','Potrai avviare un nuovo controllo']};
+  const x=map[stage]||map.intro;
+  return `<div class="guided-where"><div><small>Dove sei</small><strong>${x[0]}</strong></div><div><small>Cosa fai adesso</small><strong>${x[1]}</strong></div><div><small>Cosa succede dopo</small><strong>${x[2]}</strong></div></div>`;
+}
+const guidedFrameBefore57=guidedFrame;
+guidedFrame=function(body){const g=guidedEnsureState();return guidedFrameBefore57(guidedContextStrip(g.stage)+body)};
+
+// Do not duplicate the generic "fonti mancanti" quality issue when the wizard
+// already has a concrete per-verification source problem.
+const guidedRequiredIssuesBefore57=guidedRequiredIssues;
+guidedRequiredIssues=function(issues=guidedCurrentIssues()){
+  const base=guidedRequiredIssuesBefore57(issues);
+  const hasConcreteSources=base.some(i=>i.type==='sources_missing');
+  return base.filter(i=>!(hasConcreteSources && i.id==='quality-sources') && i.type!=='plan_sync');
+};
+
+// Font controls should update without rebuilding the current wizard screen,
+// preventing accidental loss of transient UI/focus state.
+guidedSetFontScale=function(direction){
+  const current=guidedFontScale();let idx=GUIDED_FONT_LEVELS.indexOf(current);
+  if(direction==='reset')idx=1;else idx=Math.max(0,Math.min(GUIDED_FONT_LEVELS.length-1,idx+(direction==='up'?1:-1)));
+  state.settings.guidedFontScale=GUIDED_FONT_LEVELS[idx];saveState(true);guidedApplyFontScale();
+  const tools=document.querySelector('.guided-font-tools');
+  if(tools){
+    const label=tools.querySelector('.guided-font-label');if(label)label.textContent=`Testo ${Math.round(GUIDED_FONT_LEVELS[idx]*100)}%`;
+    tools.querySelectorAll('.guided-font-btn').forEach(x=>x.classList.remove('active'));
+    const sel=GUIDED_FONT_LEVELS[idx]===2?'font-reset':GUIDED_FONT_LEVELS[idx]===GUIDED_FONT_LEVELS[0]?'font-down':'font-up';
+    tools.querySelector(`[data-guided="${sel}"]`)?.classList.add('active');
+  }
+};
+
+// Return-to-wizard action lives in the page outside the modal.
+document.addEventListener('click',event=>{
+  const b=event.target.closest('[data-guided="return-to-wizard"]');if(!b)return;
+  event.preventDefault();event.stopImmediatePropagation();guidedOpen();
+},true);
+window.addEventListener('resize',Utils.debounce(()=>guidedApplyFontScale(),120));
+
+
+
+
+// ============================================================
+// RELEASE 5.8 — simpler step 4 + stable verification typography
+// ============================================================
+function checkFontScale(){
+  const raw=Number(state.settings?.guidedFontScale || 2);
+  return GUIDED_FONT_LEVELS.includes(raw)?raw:2;
+}
+function applyCheckFontScale(){
+  const root=document.getElementById('new-check');
+  if(!root)return;
+  const scale=checkFontScale();
+  root.style.setProperty('--check-font-scale',String(scale));
+  const label=root.querySelector('[data-check-font-label]');
+  if(label)label.textContent=`Testo ${Math.round(scale*100)}%`;
+  root.querySelectorAll('.check-font-btn').forEach(b=>b.classList.remove('active'));
+  const active=scale===GUIDED_FONT_LEVELS[0]?'down':scale===2?'reset':'up';
+  root.querySelector(`[data-check-font="${active}"]`)?.classList.add('active');
+}
+function checkFontToolbar(){
+  const scale=checkFontScale();
+  return `<div class="check-font-bar" aria-label="Dimensione testo della verifica"><strong data-check-font-label>Testo ${Math.round(scale*100)}%</strong><div class="spacer"></div><button type="button" class="check-font-btn ${scale===GUIDED_FONT_LEVELS[0]?'active':''}" data-check-font="down" aria-label="Riduci dimensione testo">A−</button><button type="button" class="check-font-btn ${scale===2?'active':''}" data-check-font="reset" aria-label="Dimensione testo consigliata">A</button><button type="button" class="check-font-btn ${scale===GUIDED_FONT_LEVELS.at(-1)?'active':''}" data-check-font="up" aria-label="Aumenta dimensione testo">A+</button></div>`;
+}
+const renderNewCheckBefore58=renderNewCheck;
+renderNewCheck=function(pref={}){
+  renderNewCheckBefore58(pref);
+  const root=document.getElementById('new-check');
+  if(root && !root.querySelector('.check-font-bar')) root.insertAdjacentHTML('afterbegin',checkFontToolbar());
+  applyCheckFontScale();
+};
+
+document.addEventListener('click',event=>{
+  const b=event.target.closest('[data-check-font]');
+  if(!b)return;
+  event.preventDefault();
+  let idx=GUIDED_FONT_LEVELS.indexOf(checkFontScale());
+  if(b.dataset.checkFont==='reset') idx=1;
+  else idx=Math.max(0,Math.min(GUIDED_FONT_LEVELS.length-1,idx+(b.dataset.checkFont==='up'?1:-1)));
+  state.settings.guidedFontScale=GUIDED_FONT_LEVELS[idx];
+  saveState(true); guidedApplyFontScale(); applyCheckFontScale();
+},true);
+
+// Step 4 is intentionally simple: one decision first, corrections only on demand.
+wizardPanel4=function(){
+  return `<section class="wizard-panel" data-step="4"><div class="card"><div class="card-header"><div><div class="card-title">4. Controlla che abbiamo capito bene</div><div class="card-sub">Non devi compilare campi tecnici. Guarda il riepilogo e conferma; correggi solo se qualcosa è sbagliato.</div></div></div><div id="manualReview">${empty('Prima analizziamo la risposta','Torna al passaggio 3 e premi “Analizza risposta”.')}</div></div></section>`;
+};
+
+renderManualReview=function(a){
+  const el=document.getElementById('manualReview');
+  if(!el)return;
+  const saved=draft();
+  const brand=saved.manualBrand!==undefined ? saved.manualBrand==='true' || saved.manualBrand===true : Boolean(a.brandMentioned);
+  const domain=saved.manualDomain!==undefined ? saved.manualDomain==='true' || saved.manualDomain===true : Boolean(a.domainCited);
+  const position=saved.manualPosition!==undefined ? saved.manualPosition : (a.position||0);
+  const mentions=saved.manualMentions!==undefined ? saved.manualMentions : (a.mentions||0);
+  const competitors=saved.manualCompetitors!==undefined ? saved.manualCompetitors : (a.competitors||[]).join('\n');
+  const urls=saved.manualUrls!==undefined ? saved.manualUrls : (a.urls||[]).join('\n');
+  const responseType=saved.manualResponseType || a.responseType || 'Risposta narrativa';
+  const sentiment=saved.manualSentiment || a.brandSentiment || a.sentiment || 'Neutro';
+  const confirmed=['reviewBrand','reviewDomain','reviewCompetitors','reviewSources'].every(name=>saved[name]===true||saved[name]==='true'||saved[name]==='on');
+  el.innerHTML=`
+    <div class="review-simple-intro"><strong>Ti basta controllare queste 4 cose</strong>Se il riepilogo corrisponde a ciò che hai visto nella risposta dell’AI, premi un solo pulsante.</div>
+    <div class="review-summary-grid">
+      <div class="review-summary-item"><small>Il tuo brand compare?</small><strong>${brand?'Sì ✓':'No'}</strong></div>
+      <div class="review-summary-item"><small>Il sito ufficiale è citato?</small><strong>${domain?'Sì ✓':'No'}</strong></div>
+      <div class="review-summary-item"><small>Concorrenti trovati</small><strong>${Utils.lines(competitors).length}</strong></div>
+      <div class="review-summary-item"><small>Fonti / link trovati</small><strong>${Utils.lines(urls).length}</strong></div>
+    </div>
+    <div class="review-confirm-box"><p><strong>È tutto corretto?</strong><br>Conferma solo se questi quattro dati corrispondono alla risposta che hai incollato.</p><button type="button" class="btn btn-success" data-action="confirm-review-all">Sì, è tutto corretto</button><div class="review-confirm-status ${confirmed?'text-success':'muted'}" id="reviewConfirmStatus">${confirmed?'✓ Controllo confermato. Puoi continuare.':'Non ancora confermato.'}</div></div>
+    <details class="review-corrections"><summary>Qualcosa non è corretto? Correggi i dati</summary><div class="review-corrections-body"><div class="notice">Modifica soltanto ciò che hai verificato direttamente nella risposta dell’AI. Dopo una modifica dovrai confermare di nuovo il riepilogo.</div><div class="form-grid">
+      <div class="field"><label>Brand presente</label><select name="manualBrand"><option value="true" ${brand?'selected':''}>Sì</option><option value="false" ${!brand?'selected':''}>No</option></select></div>
+      <div class="field"><label>Sito ufficiale citato</label><select name="manualDomain"><option value="true" ${domain?'selected':''}>Sì</option><option value="false" ${!domain?'selected':''}>No</option></select></div>
+      ${field('manualPosition','Posizione nell’elenco',position,'','0 se non c’è una posizione','number')}
+      ${field('manualMentions','Numero di menzioni',mentions,'','','number')}
+      ${textareaField('manualCompetitors','Concorrenti confermati',competitors,'Uno per riga. Lascia vuoto se non ce ne sono.',4)}
+      ${textareaField('manualUrls','Fonti confermate',urls,'Mantieni solo i link realmente mostrati.',4)}
+      <div class="field"><label>Tipo di risposta</label><select name="manualResponseType">${['Local Pack / risultati locali','Elenco editoriale','Risposta con fonti','Confronto','Risposta narrativa','Risposta limitata'].map(x=>`<option ${responseType===x?'selected':''}>${x}</option>`).join('')}</select></div>
+      <div class="field"><label>Tono verso il brand</label><select name="manualSentiment"><option ${sentiment==='Positivo'?'selected':''}>Positivo</option><option ${sentiment==='Neutro'?'selected':''}>Neutro</option><option ${sentiment==='Negativo'?'selected':''}>Negativo</option></select></div>
+    </div></div></details>
+    <div class="review-hidden-checks" aria-hidden="true"><input type="checkbox" name="reviewBrand" ${confirmed?'checked':''}><input type="checkbox" name="reviewDomain" ${confirmed?'checked':''}><input type="checkbox" name="reviewCompetitors" ${confirmed?'checked':''}><input type="checkbox" name="reviewSources" ${confirmed?'checked':''}></div>`;
+};
+
+actionHandlers['confirm-review-all']=()=>{
+  const form=document.getElementById('checkForm'); if(!form)return;
+  ['reviewBrand','reviewDomain','reviewCompetitors','reviewSources'].forEach(name=>{if(form.elements[name])form.elements[name].checked=true});
+  const status=document.getElementById('reviewConfirmStatus');
+  if(status){status.textContent='✓ Controllo confermato. Puoi continuare.';status.className='review-confirm-status text-success'}
+  saveDraft();
+  const d=Utils.form(form); if(analysisDraft) renderSaveSummary(d,analysisDraft);
+  Utils.toast('Controllo confermato. Puoi continuare.','success');
+};
+
+function invalidateSimpleReview(){
+  const form=document.getElementById('checkForm'); if(!form)return;
+  ['reviewBrand','reviewDomain','reviewCompetitors','reviewSources'].forEach(name=>{if(form.elements[name])form.elements[name].checked=false});
+  const status=document.getElementById('reviewConfirmStatus');
+  if(status){status.textContent='Hai modificato i dati: controlla il riepilogo e conferma di nuovo.';status.className='review-confirm-status text-danger'}
+  saveDraft();
+}
+document.addEventListener('input',event=>{if(event.target.closest('#manualReview .review-corrections-body')) invalidateSimpleReview()},true);
+document.addEventListener('change',event=>{if(event.target.closest('#manualReview .review-corrections-body')) invalidateSimpleReview()},true);
+
+// Prevent stale confirmations from surviving a new or changed AI response.
+const runAnalysisBefore58=runAnalysis;
+runAnalysis=function(showToast=true){
+  const form=document.getElementById('checkForm');
+  if(form){
+    const d=Utils.form(form);
+    const fingerprint=hashText([d.projectId||'',d.promptId||'',d.response||'',d.sources||''].join('|'));
+    if(state.checkDraft.analysisFingerprint && state.checkDraft.analysisFingerprint!==fingerprint){
+      ['manualBrand','manualDomain','manualPosition','manualMentions','manualCompetitors','manualUrls','manualResponseType','manualSentiment','reviewBrand','reviewDomain','reviewCompetitors','reviewSources'].forEach(k=>delete state.checkDraft[k]);
+    }
+    state.checkDraft.analysisFingerprint=fingerprint;
+  }
+  runAnalysisBefore58(showToast);
+  applyCheckFontScale();
+};
+
+// Keep the selected text size stable on mobile too; do not force a smaller scale.
+window.addEventListener('resize',Utils.debounce(()=>{guidedApplyFontScale();applyCheckFontScale()},120));
+
+// ============================================================
 // INIT
 // ============================================================
 window.currentSection = 'dashboard';
+document.title = `GEO Citation Monitor ${CONFIG.VERSION}`;
 applyTheme();
+guidedApplyMode();
 bindEvents();
 renderDashboard();
 
