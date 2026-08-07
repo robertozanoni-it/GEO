@@ -6,11 +6,11 @@
 <meta name="description" content="Strumento locale per monitorare citazioni, fonti e visibilità GEO con verifiche manuali, report e controlli di qualità.">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
-<meta name="app-build" content="5.8.1">
+<meta name="app-build" content="5.9.0">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#f7f9fc">
 <meta name="color-scheme" content="light dark">
-<title>GEO Citation Monitor 5.8.1</title>
+<title>GEO Citation Monitor 5.9.0</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2064%2064%22%3E%3Crect%20width=%2264%22%20height=%2264%22%20rx=%2214%22%20fill=%22%23155eef%22/%3E%3Cpath%20d=%22M32%2011%2014%2021v22l18%2010%2018-10V21L32%2011Zm0%209%209%205-9%205-9-5%209-5ZM22%2033l7%204v8l-7-4v-8Zm13%2012v-8l7-4v8l-7%204Z%22%20fill=%22white%22/%3E%3C/svg%3E">
 <style>
 :root{
@@ -357,6 +357,12 @@ th{font-size:14px}td{font-size:17px}
   .page-title{font-size:20px}
 }
 </style>
+
+<style id="wizard59Styles">
+/* 5.9 — wizard end-to-end, target page visibility and compact action flow */
+#wizardImprovements,#wizardWorkPlan{display:grid;gap:12px}.wizard-target,.target-url-box{display:grid;grid-template-columns:minmax(110px,.35fr) minmax(0,1fr) auto;gap:10px;align-items:center;padding:13px 14px;border:1px solid color-mix(in srgb,var(--accent) 28%,var(--border));border-radius:11px;background:color-mix(in srgb,var(--accent) 5%,var(--surface));margin-bottom:12px}.wizard-target span,.target-url-box span{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:850}.wizard-target strong,.target-url-box strong{word-break:break-word}.wizard-priority-list,.wizard-plan-list{display:grid;gap:10px}.wizard-priority-card{border:1px solid var(--border);border-left-width:5px;border-radius:11px;padding:14px;background:var(--surface)}.wizard-priority-card p{margin:8px 0}.wizard-plan-row{display:grid;grid-template-columns:38px minmax(0,1fr) auto;gap:12px;align-items:center;padding:13px;border:1px solid var(--border);border-radius:11px;background:var(--surface)}.wizard-plan-number{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--surface-3);font-weight:900}.wizard-step-nav.completed:not(.active){color:var(--success)}
+@media(max-width:680px){.wizard-target,.target-url-box,.wizard-plan-row{grid-template-columns:1fr}.wizard-plan-number{display:none}.wizard-target .btn,.target-url-box .btn,.wizard-plan-row .btn{width:100%}}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#mainContent">Vai al contenuto principale</a>
@@ -402,7 +408,7 @@ th{font-size:14px}td{font-size:17px}
     </details>
   </nav>
   <div class="sidebar-system"><button class="nav-item" data-section="settings"><span class="nav-icon" aria-hidden="true">⚙</span><span>Impostazioni</span></button></div>
-  <div class="sidebar-footer"><span class="status-dot" aria-hidden="true"></span><span id="storageStatusText">Dati salvati nel browser</span><strong>v5.8.1</strong></div>
+  <div class="sidebar-footer"><span class="status-dot" aria-hidden="true"></span><span id="storageStatusText">Dati salvati nel browser</span><strong>v5.9.0</strong></div>
 </aside>
 <main class="main" id="mainContent" tabindex="-1">
   <header class="topbar">
@@ -455,7 +461,7 @@ th{font-size:14px}td{font-size:17px}
 const CONFIG = {
   APP_KEY: 'geoCitationMonitor_v42',
   LEGACY_APP_KEYS: ['geoCitationMonitor_v3'],
-  VERSION: '5.8.1',
+  VERSION: '5.9.0',
   DATA_SCHEMA_VERSION: 8,
   MAX_LOGO_SIZE: 350000,
   MIN_RESPONSE_LENGTH: 120,
@@ -1004,6 +1010,68 @@ const Analyzer = {
     return 'Risposta narrativa';
   },
 
+  inferCompetitors(text, project) {
+    const ownBrand = Utils.slug(project?.brand || '');
+    const configured = (project?.competitors || []).map(x => String(x || '').trim()).filter(Boolean);
+    const stop = new Set([
+      'chatgpt','gemini','claude','perplexity','copilot','google','grok','deepseek','fonti','fonte','sito','sito web',
+      'risultato','risultati','perche','perché','motivo','servizi','servizio','specializzazione','localita','località',
+      'conclusione','nota','note','vantaggi','svantaggi','attenzione','consiglio','consigli','criteri','criterio'
+    ]);
+    const candidates = [];
+    const add = (raw, evidenceText = '') => {
+      let name = String(raw || '')
+        .replace(/^\s*(?:\d+[.)]|[-•*])\s*/, '')
+        .replace(/^#{1,6}\s*/, '')
+        .replace(/\*\*/g, '')
+        .replace(/^\[|\]$/g, '')
+        .trim();
+      name = name.split(/\s+(?:—|–|\|)\s+|\s+-\s+|:\s+/)[0].trim();
+      name = name.replace(/\s*\([^)]{0,80}\)\s*$/, '').trim();
+      const slug = Utils.slug(name);
+      const words = slug.split(' ').filter(Boolean);
+      if (!slug || slug === ownBrand || ownBrand.includes(slug) || slug.includes(ownBrand)) return;
+      if (name.length < 3 || name.length > 90 || words.length > 8) return;
+      if (stop.has(slug) || /^(https?|www\.)/i.test(name)) return;
+      if (/^(come|cosa|perche|perché|quando|dove|quale|quali|ecco|questo|questa|questi|queste)\b/i.test(name)) return;
+      if (/[.!?]$/.test(name) && words.length > 4) return;
+      if (!/[A-ZÀ-Ý]/.test(name[0] || '')) return;
+      if (!candidates.some(x => Utils.slug(x.name) === slug)) candidates.push({ name, evidence: evidenceText || name, inferred: true });
+    };
+
+    // Nomi espliciti già configurati: resta la fonte più affidabile.
+    for (const configuredName of configured) {
+      const aliases = Utils.unique([configuredName, Utils.domain(configuredName), Utils.domain(configuredName).split('.')[0].replace(/[-_]/g,' ')]).filter(x => x.length > 2);
+      let idx = -1;
+      for (const alias of aliases) {
+        const i = String(text || '').toLowerCase().indexOf(alias.toLowerCase());
+        if (i >= 0 && (idx < 0 || i < idx)) idx = i;
+      }
+      if (idx >= 0) candidates.push({ name: configuredName, evidence: Utils.excerpt(text, idx), inferred: false });
+    }
+
+    // Link markdown: [Nome azienda](https://...).
+    for (const match of String(text || '').matchAll(/\[([^\]\n]{2,90})\]\(https?:\/\/[^)]+\)/g)) add(match[1], match[0]);
+
+    // Elenchi tipici delle risposte AI: “1. Azienda — descrizione”, “- Azienda: descrizione”.
+    const lines = String(text || '').split(/\r?\n/).map(x => x.trim()).filter(Boolean);
+    for (const line of lines) {
+      if (!/^(?:\d+[.)]|[-•*])\s+/.test(line)) continue;
+      let body = line.replace(/^(?:\d+[.)]|[-•*])\s+/, '').trim();
+      const bold = body.match(/^\*\*([^*]{2,90})\*\*/);
+      if (bold) add(bold[1], line);
+      else add(body, line);
+    }
+
+    // Titoli markdown usati spesso per separare i singoli risultati.
+    for (const line of lines) {
+      const m = line.match(/^#{2,5}\s+(?:\d+[.)]\s*)?(.{2,90})$/);
+      if (m) add(m[1], line);
+    }
+
+    return candidates;
+  },
+
   analyze(project, response, sourcesText = '') {
     const clean = this.cleanText(response);
     const low = clean.toLowerCase();
@@ -1016,23 +1084,10 @@ const Analyzer = {
     const domainCited = domains.some(d => d === domain || d.endsWith('.' + domain));
     const domainIndex = domainMentionedText ? clean.search(domainPattern) : -1;
 
-    const competitors = [];
-    const competitorEvidence = {};
-    for (const competitor of project.competitors || []) {
-      const candidate = String(competitor).trim();
-      const cd = Utils.domain(candidate);
-      const nameAlias = candidate.includes('.') ? cd.split('.')[0].replace(/[-_]/g, ' ') : candidate;
-      const aliases = Utils.unique([candidate, cd, nameAlias]).filter(x => x && x.length > 2);
-      let index = -1;
-      for (const alias of aliases) {
-        const i = low.indexOf(alias.toLowerCase());
-        if (i >= 0 && (index < 0 || i < index)) index = i;
-      }
-      if (index >= 0 || domains.includes(cd)) {
-        competitors.push(candidate);
-        competitorEvidence[candidate] = [Utils.excerpt(clean, index >= 0 ? index : 0)];
-      }
-    }
+    const competitorCandidates = this.inferCompetitors(clean, project);
+    const competitors = competitorCandidates.map(x => x.name);
+    const inferredCompetitors = competitorCandidates.filter(x => x.inferred).map(x => x.name);
+    const competitorEvidence = Object.fromEntries(competitorCandidates.map(x => [x.name, [x.evidence]]));
 
     const services = (project.services || []).filter(s => low.includes(String(s).toLowerCase()));
     const locations = [project.location, ...(project.nearbyLocations || [])].filter(Boolean).filter(x => low.includes(String(x).toLowerCase()));
@@ -1078,7 +1133,7 @@ const Analyzer = {
 
     const result = {
       cleanResponse: clean, brandMentioned: brand.mentioned, domainCited, domainMentionedText,
-      position, mentions: brand.mentions, foundVariant: brand.found, competitors, urls,
+      position, mentions: brand.mentions, foundVariant: brand.found, competitors, inferredCompetitors, urls,
       domains: Utils.unique(domains), sourceDetails, sentiment, brandSentiment, responseType,
       servicesPresent: services, locationsPresent: locations, locationPresent: locations.length > 0,
       evidence, confidence, rawConfidence: confidence, confidenceBreakdown,
@@ -1539,7 +1594,20 @@ function generateOpportunities() {
 // UI HELPERS
 // ============================================================
 function field(name, label, value = '', required = false, placeholder = '', type = 'text', help = '') {
-  return `<div class="field"><label for="${name}">${Utils.esc(label)}${required ? ' *' : ''}</label><input id="${name}" name="${name}" type="${type}" value="${Utils.esc(value)}" placeholder="${Utils.esc(placeholder)}" ${required ? 'required' : ''}>${help ? `<div class="help">${Utils.esc(help)}</div>` : ''}</div>`;
+  // Supporto retrocompatibile per gli editor avanzati che passano un array come ultimo argomento.
+  if (type === 'select' && Array.isArray(help)) {
+    const choices = help;
+    const optionHtml = choices.map(item => {
+      const optionValue = typeof item === 'object' ? item.id : item;
+      const optionLabel = typeof item === 'object' ? (item.name || item.label || item.id) : item;
+      return `<option value="${Utils.esc(optionValue)}" ${String(optionValue) === String(value) ? 'selected' : ''}>${Utils.esc(optionLabel)}</option>`;
+    }).join('');
+    return `<div class="field"><label for="${name}">${Utils.esc(label)}${required ? ' *' : ''}</label><select id="${name}" name="${name}" ${required ? 'required' : ''}>${optionHtml}</select></div>`;
+  }
+  if (type === 'textarea') {
+    return `<div class="field"><label for="${name}">${Utils.esc(label)}${required ? ' *' : ''}</label><textarea id="${name}" name="${name}" placeholder="${Utils.esc(placeholder)}" ${required ? 'required' : ''}>${Utils.esc(value)}</textarea>${help && !Array.isArray(help) ? `<div class="help">${Utils.esc(help)}</div>` : ''}</div>`;
+  }
+  return `<div class="field"><label for="${name}">${Utils.esc(label)}${required ? ' *' : ''}</label><input id="${name}" name="${name}" type="${type}" value="${Utils.esc(value)}" placeholder="${Utils.esc(placeholder)}" ${required ? 'required' : ''}>${help && !Array.isArray(help) ? `<div class="help">${Utils.esc(help)}</div>` : ''}</div>`;
 }
 
 function textareaField(name, label, value = '', help = '', rows = 5) {
@@ -1733,7 +1801,7 @@ function dashboardQuality(checks) {
 
 function resultsTable(checks, selectable = true, showReportAction = false) {
   if (!checks.length) return empty('Nessuna verifica', 'Incolla e analizza una risposta reale.');
-  return `<div class="table-wrap"><table><thead><tr>${selectable ? '<th><input type="checkbox" id="selectAllResults" aria-label="Seleziona tutte"></th>' : ''}<th>Prompt / progetto</th><th>AI</th><th>Esito</th><th>Score</th><th>Confidenza</th><th>Data</th><th>Azioni</th></tr></thead><tbody>${checks.map(c => `<tr data-result-row data-id="${c.id}" data-search="${Utils.esc(Utils.slug(JSON.stringify(c)))}" data-project="${c.projectId}" data-platform="${c.platformId}" data-brand="${c.brandMentioned ? 'yes' : 'no'}" data-domain="${c.domainCited ? 'yes' : 'no'}" data-sources="${(c.urls || []).length ? 'yes' : 'no'}">${selectable ? `<td><input type="checkbox" class="result-select" value="${c.id}" ${selectedResultIds.has(c.id) ? 'checked' : ''}></td>` : ''}<td><strong>${Utils.esc(promptBy(c.promptId)?.text || 'Prompt eliminato')}</strong><div class="help">${Utils.esc(projectBy(c.projectId)?.name || 'Progetto eliminato')}</div></td><td>${Utils.esc(platformBy(c.platformId).name)}<div class="help">${Utils.esc(c.responseType || '')}</div></td><td>${c.brandMentioned ? badge('Brand', 'success') : badge('Assente', 'danger')} ${c.domainCited ? badge('Dominio', 'info') : ''}</td><td><strong>${c.score || 0}</strong>/100</td><td>${c.confidence || 0}/100</td><td>${Utils.date(c.date, true)}</td><td><div class="flex gap-8 wrap"><button class="btn btn-sm" data-view-check="${c.id}">Dettagli</button><button class="btn btn-sm" data-edit-check="${c.id}">Modifica</button><button class="btn btn-sm" data-duplicate-check="${c.id}">Duplica</button>${showReportAction ? `<button class="btn btn-sm btn-primary" data-report-check="${c.id}">Report</button>` : ''}</div></td></tr>`).join('')}</tbody></table></div>`;
+  return `<div class="table-wrap results-table-wrap"><table class="results-data-table"><thead><tr>${selectable ? '<th><input type="checkbox" id="selectAllResults" aria-label="Seleziona tutte"></th>' : ''}<th>Prompt / progetto</th><th>AI</th><th>Esito</th><th>Score</th><th>Confidenza</th><th>Data</th><th>Azioni</th></tr></thead><tbody>${checks.map(c => `<tr data-result-row data-id="${c.id}" data-search="${Utils.esc(Utils.slug(JSON.stringify(c)))}" data-project="${c.projectId}" data-platform="${c.platformId}" data-brand="${c.brandMentioned ? 'yes' : 'no'}" data-domain="${c.domainCited ? 'yes' : 'no'}" data-sources="${(c.urls || []).length ? 'yes' : 'no'}">${selectable ? `<td class="result-select-cell" data-label="Seleziona"><input type="checkbox" class="result-select" value="${c.id}" ${selectedResultIds.has(c.id) ? 'checked' : ''}></td>` : ''}<td data-label="Prompt / progetto"><strong>${Utils.esc(promptBy(c.promptId)?.text || c.promptTextSnapshot || 'Prompt eliminato')}</strong><div class="help">${Utils.esc(projectBy(c.projectId)?.name || 'Progetto eliminato')}</div></td><td data-label="AI">${Utils.esc(platformBy(c.platformId).name)}<div class="help">${Utils.esc(c.responseType || '')}</div></td><td data-label="Esito">${c.brandMentioned ? badge('Brand', 'success') : badge('Assente', 'danger')} ${c.domainCited ? badge('Dominio', 'info') : ''}</td><td data-label="Score"><strong>${c.score || 0}</strong>/100</td><td data-label="Confidenza">${c.confidence || 0}/100</td><td data-label="Data">${Utils.date(c.date, true)}</td><td class="result-actions" data-label="Azioni"><div class="flex gap-8 wrap"><button class="btn btn-sm" data-view-check="${c.id}">Dettagli</button><button class="btn btn-sm" data-edit-check="${c.id}">Modifica</button><button class="btn btn-sm" data-duplicate-check="${c.id}">Duplica</button>${showReportAction ? `<button class="btn btn-sm btn-primary" data-report-check="${c.id}">Report</button>` : ''}</div></td></tr>`).join('')}</tbody></table></div>`;
 }
 
 function renderEvidence(a) {
@@ -1844,6 +1912,7 @@ function promptForm(p = {}) {
 let currentWizardStep = 1;
 let analysisDraft = null;
 let wizardState = {};
+let wizardSavedCheckId = '';
 
 function draft() { return state.checkDraft || {}; }
 
@@ -1953,16 +2022,20 @@ function renderNewCheck(pref = {}) {
   const projectId = d.projectId || state.projects[0]?.id || '';
   const promptId = d.promptId || state.prompts.find(p => p.projectId === projectId)?.id || '';
   const project = projectBy(projectId);
-  currentWizardStep = Number(d.wizardStep || 1);
+  wizardSavedCheckId = d.savedCheckId || wizardSavedCheckId || '';
+  currentWizardStep = Math.max(1, Math.min(5, Number(d.wizardStep || 1)));
 
+  const labels = ['Configura', 'Incolla risposta', 'Analizza e conferma', 'Cosa migliorare', 'Piano di lavoro'];
+  const helps = ['Progetto, domanda e AI', 'Risposta e fonti reali', 'Risultati e controllo umano', 'Pagina target e priorità', 'Azioni operative da eseguire'];
   document.getElementById('new-check').innerHTML = `
     ${!state.projects.length || !state.prompts.length ? `<div class="notice warning">Prima crea almeno un progetto e un prompt. <button class="btn btn-sm" data-go="onboarding">Apri configurazione</button></div>` : ''}
-    <form id="checkForm"><div class="wizard"><aside class="wizard-nav">${[1, 2, 3, 4, 5].map((n, i) => `<button type="button" class="wizard-step-nav ${n === currentWizardStep ? 'active' : ''}" data-wizard-step="${n}"><span class="step-number">${n}</span><span><strong>${['Configurazione', 'Risposta e pulizia', 'Analisi', 'Controllo manuale', 'Salvataggio'][i]}</strong><small class="help" style="display:block">${['Prompt, AI e contesto', 'Testo e fonti reali', 'Rilevamenti e prove', 'Correzioni e conferme', 'Riepilogo finale'][i]}</small></span></button>`).join('')}</aside><div>
+    <form id="checkForm"><div class="wizard"><aside class="wizard-nav">${[1,2,3,4,5].map((n,i)=>`<button type="button" class="wizard-step-nav ${n===currentWizardStep?'active':''} ${wizardSavedCheckId && n<=3?'completed':''}" data-wizard-step="${n}"><span class="step-number">${n}</span><span><strong>${labels[i]}</strong><small class="help" style="display:block">${helps[i]}</small></span></button>`).join('')}</aside><div>
     ${wizardPanel1(d, projectId, promptId, project)}${wizardPanel2(d)}${wizardPanel3()}${wizardPanel4()}${wizardPanel5()}
-    <div class="wizard-footer"><span class="status help" id="draftStatus">Bozza salvata automaticamente</span><div class="spacer"></div><button type="button" class="btn" data-action="clear-draft">Svuota campi</button><button type="button" class="btn" data-action="wizard-prev" ${currentWizardStep === 1 ? 'disabled' : ''}>Indietro</button><button type="button" class="btn btn-primary" data-action="wizard-next">${currentWizardStep === 5 ? 'Salva verifica' : 'Continua'}</button></div></div></div></form>
+    <div class="wizard-footer"><span class="status help" id="draftStatus">${wizardSavedCheckId?'Verifica salvata · continua con le azioni':'Bozza salvata automaticamente'}</span><div class="spacer"></div><button type="button" class="btn" data-action="clear-draft">Nuova verifica</button><button type="button" class="btn" data-action="wizard-prev" ${currentWizardStep===1?'disabled':''}>Indietro</button><button type="button" class="btn btn-primary" data-action="wizard-next">${currentWizardStep===5?'Termina':'Continua'}</button></div></div></div></form>
   `;
   showWizardStep(currentWizardStep);
-  if (currentWizardStep >= 3 && d.response) runAnalysis(false);
+  if (!wizardSavedCheckId && currentWizardStep >= 3 && d.response) runAnalysis(false);
+  if (wizardSavedCheckId && currentWizardStep >= 4) renderWizardPostAnalysis(wizardSavedCheckId);
 }
 
 function wizardPanel1(d, projectId, promptId, project) {
@@ -1976,23 +2049,28 @@ function wizardPanel2(d) {
 }
 
 function wizardPanel3() {
-  return `<section class="wizard-panel" data-step="3"><div class="card"><div class="card-header"><div><div class="card-title">3. Analisi locale</div><div class="card-sub">Rilevamenti automatici con prove testuali e Confidence Score.</div></div><div class="spacer"></div><button type="button" class="btn btn-primary" data-action="analyze-check">Analizza risposta</button></div><div id="analysisOutput">${empty('Analisi non eseguita', 'Premi “Analizza risposta”.')}</div></div></section>`;
+  return `<section class="wizard-panel" data-step="3"><div class="card"><div class="card-header"><div><div class="card-title">3. Analizza e conferma</div><div class="card-sub">Controlla cosa ha rilevato l’app. I competitor trovati automaticamente sono proposte da confermare.</div></div><div class="spacer"></div><button type="button" class="btn btn-primary" data-action="analyze-check">Rianalizza</button></div><div id="analysisOutput">${empty('Analisi non eseguita', 'Premi “Analizza risposta”.')}</div><div class="implementation-box" style="margin-top:16px"><h3 style="margin-top:0">Conferma i risultati</h3><div id="manualReview">${empty('Prima esegui l’analisi', 'Qui potrai correggere competitor, fonti e rilevamenti prima di continuare.')}</div></div></div></section>`;
 }
 
 function wizardPanel4() {
-  return `<section class="wizard-panel" data-step="4"><div class="card"><div class="card-header"><div><div class="card-title">4. Correzione e checklist</div><div class="card-sub">Conferma ciò che l’app ha rilevato prima del salvataggio.</div></div><div class="spacer"></div><button type="button" class="btn btn-primary" data-action="analyze-check">Rianalizza</button></div><div id="manualReview">${empty('Prima esegui l’analisi', 'Le correzioni manuali appariranno qui.')}</div></div></section>`;
+  return `<section class="wizard-panel" data-step="4"><div class="card"><div class="card-header"><div><div class="card-title">4. Cosa migliorare</div><div class="card-sub">Problemi prioritari collegati alla pagina target del progetto.</div></div></div><div id="wizardImprovements">${empty('Completa l’analisi', 'Dopo la conferma vedrai qui cosa migliorare, sulla pagina corretta.')}</div></div></section>`;
 }
 
 function wizardPanel5() {
-  return `<section class="wizard-panel" data-step="5"><div class="card"><div class="card-header"><div><div class="card-title">5. Riepilogo</div><div class="card-sub">Controlla i dati finali e salva.</div></div></div><div id="saveSummary">${empty('Riepilogo non disponibile', 'Completa analisi e controllo manuale.')}</div></div></section>`;
+  return `<section class="wizard-panel" data-step="5"><div class="card"><div class="card-header"><div><div class="card-title">5. Piano di lavoro</div><div class="card-sub">Azioni concrete, in ordine di priorità, con URL interessato e stato.</div></div></div><div id="wizardWorkPlan">${empty('Piano non ancora disponibile', 'Completa il passaggio precedente.')}</div></div></section>`;
 }
 
 function showWizardStep(step) {
   currentWizardStep = Math.max(1, Math.min(5, Number(step)));
   document.querySelectorAll('.wizard-panel').forEach(x => x.classList.toggle('active', Number(x.dataset.step) === currentWizardStep));
-  document.querySelectorAll('.wizard-step-nav').forEach(x => x.classList.toggle('active', Number(x.dataset.wizardStep) === currentWizardStep));
+  document.querySelectorAll('.wizard-step-nav').forEach(x => {
+    const n = Number(x.dataset.wizardStep);
+    x.classList.toggle('active', n === currentWizardStep);
+    x.classList.toggle('completed', Boolean(wizardSavedCheckId) && n <= 3);
+  });
   const next = document.querySelector('[data-action="wizard-next"]');
-  if (next) next.textContent = currentWizardStep === 5 ? 'Salva verifica' : 'Continua';
+  if (next) next.textContent = currentWizardStep === 5 ? 'Termina' : 'Continua';
+  if (wizardSavedCheckId && currentWizardStep >= 4) renderWizardPostAnalysis(wizardSavedCheckId);
   saveDraft();
 }
 
@@ -2002,7 +2080,7 @@ function validateStep(step) {
   if (step === 1) {
     for (const name of ['projectId', 'promptId', 'platformId']) {
       const el = form.elements[name];
-      if (!el.value) { el.reportValidity(); return false; }
+      if (!el?.value) { el?.reportValidity?.(); return false; }
     }
   }
   if (step === 2) {
@@ -2011,8 +2089,10 @@ function validateStep(step) {
       return false;
     }
   }
-  if (step === 3 && !analysisDraft) { Utils.toast('Esegui prima l’analisi.', 'error'); return false; }
-  if (step === 4 && !manualReviewValid()) { Utils.toast('Conferma i quattro controlli obbligatori.', 'error'); return false; }
+  if (step === 3) {
+    if (!analysisDraft) { Utils.toast('Esegui prima l’analisi.', 'error'); return false; }
+    if (!manualReviewValid()) { Utils.toast('Conferma i quattro controlli prima di vedere cosa migliorare.', 'error'); return false; }
+  }
   return true;
 }
 
@@ -2040,7 +2120,6 @@ function runAnalysis(showToast = true) {
   );
   renderAnalysisOutput(project, analysisDraft);
   renderManualReview(analysisDraft);
-  renderSaveSummary(d, analysisDraft);
   if (showToast) Utils.toast('Analisi completata', 'success');
   saveDraft();
 }
@@ -2052,6 +2131,7 @@ function renderAnalysisOutput(project, a) {
     <div class="grid grid-3"><div class="analysis-item"><small>GEO Visibility Score</small><strong>${a.score}/100</strong></div><div class="analysis-item"><small>Confidence Score</small><strong>${a.confidence}/100</strong></div><div class="analysis-item"><small>Tipo risposta</small><strong>${Utils.esc(a.responseType)}</strong></div><div class="analysis-item"><small>Brand</small><strong>${a.brandMentioned ? 'Presente' : 'Assente'}</strong></div><div class="analysis-item"><small>Dominio</small><strong>${a.domainCited ? 'Citato' : 'Non citato'}</strong></div><div class="analysis-item"><small>Posizione</small><strong>${a.position || '—'}</strong></div><div class="analysis-item"><small>Menzioni</small><strong>${a.mentions}</strong></div><div class="analysis-item"><small>Concorrenti</small><strong>${a.competitors.length}</strong></div><div class="analysis-item"><small>Sentiment brand</small><strong>${a.brandSentiment}</strong></div><div class="analysis-item"><small>Qualità fonti</small><strong>${a.sourceQualityScore}/100</strong></div><div class="analysis-item"><small>Qualità risposta</small><strong>${a.responseQualityScore}/100</strong></div></div><div class="confidence-breakdown">${Object.entries(a.confidenceBreakdown || {}).map(([k,v]) => `<div class="confidence-part"><strong>${v}</strong><div class="help">${({environment:'Ambiente',completeness:'Completezza',sources:'Fonti',review:'Revisione',entity:'Entità'})[k] || k}</div></div>`).join('')}</div>
     ${a.environmentPenalty ? `<div class="notice ${environmentMeta(a.testEnvironment).type}" style="margin-top:12px"><strong>Ambiente: ${Utils.esc(environmentMeta(a.testEnvironment).label)}</strong><br>Confidence Score ridotto di ${a.environmentPenalty} punti per possibile personalizzazione o mancata verifica.</div>` : ''}
     ${a.homonymRisk ? '<div class="notice warning" style="margin-top:12px">Possibile rischio di omonimia: controlla l’estratto e il contesto prima di confermare.</div>' : ''}
+    ${(a.competitors || []).length ? `<div class="notice" style="margin-top:12px"><strong>Competitor rilevati:</strong> ${Utils.esc((a.competitors || []).join(', '))}${(a.inferredCompetitors || []).length ? `<br><span class="help">Rilevati automaticamente dalla struttura della risposta: ${Utils.esc(a.inferredCompetitors.join(', '))}. Confermali o correggili qui sotto.</span>` : ''}</div>` : '<div class="notice warning" style="margin-top:12px"><strong>Nessun competitor rilevato.</strong> Se nella risposta sono presenti aziende concorrenti, aggiungile nel campo di conferma sottostante: il rilevatore automatico funziona meglio con elenchi numerati, punti elenco e nomi evidenziati.</div>'}
     <div class="grid grid-2" style="margin-top:15px"><div><h3>Prove rilevate</h3>${renderEvidence(a)}</div><div><h3>Fonti classificate</h3>${renderSources(a.sourceDetails)}</div></div>
     <h3>Risposta evidenziata</h3><div class="answer-view">${Analyzer.highlight(a.cleanResponse, project, a)}</div>
   `;
@@ -2087,7 +2167,7 @@ function finalAnalysisFromForm() {
     responseType: d.manualResponseType || base.responseType,
     sentiment: d.manualSentiment || base.sentiment
   };
-  result.sourceDetails = result.urls.map(u => Analyzer.classifySource(u, project));
+  result.sourceDetails = result.urls.map(u => ({ ...Analyzer.classifySource(u, project), verificationStatus: 'Confermata manualmente' }));
   result.score = Analyzer.score(result);
   result.visibilityScore = result.score;
   const reviewed = applyEnvironmentConfidence(result, d.testEnvironment || 'not-verified', manualReviewValid());
@@ -2104,9 +2184,10 @@ function renderSaveSummary(d, a) {
   `;
 }
 
-function saveCheck() {
+function saveCheck(stayInWizard = false) {
   const form = document.getElementById('checkForm');
-  if (!validateStep(4)) return;
+  if (!validateStep(3)) return null;
+  if (wizardSavedCheckId) return state.checks.find(x => x.id === wizardSavedCheckId) || null;
   const d = Utils.form(form);
   const final = finalAnalysisFromForm();
 
@@ -2164,12 +2245,43 @@ function saveCheck() {
   state.checks.push(item);
   const prompt = promptBy(d.promptId);
   if (prompt) { prompt.lastChecked = item.date; prompt.updatedAt = Utils.now(); }
+  wizardSavedCheckId = item.id;
+  generateOpportunities();
+  if (typeof syncTasks === 'function') syncTasks();
+  if (stayInWizard) {
+    state.checkDraft = { ...state.checkDraft, ...d, savedCheckId: item.id, wizardStep: 4, updatedAt: Utils.now() };
+    saveState(true);
+    Utils.toast('Verifica salvata. Ora vediamo cosa migliorare.', 'success');
+    renderWizardPostAnalysis(item.id);
+    return item;
+  }
   state.checkDraft = {};
   analysisDraft = null;
-  generateOpportunities();
+  wizardSavedCheckId = '';
   saveState();
   Utils.toast('Verifica salvata', 'success');
   setSection('results');
+  return item;
+}
+
+function renderWizardPostAnalysis(checkId) {
+  const check = state.checks.find(c => c.id === checkId);
+  if (!check) return;
+  const project = projectBy(check.projectId);
+  const target = project?.targetUrl || '';
+  const opp = generateOpportunities().filter(o => o.checkId === checkId).sort((a,b)=>({P1:1,P2:2,P3:3,P4:4}[a.priority]||5)-({P1:1,P2:2,P3:3,P4:4}[b.priority]||5));
+  if (typeof syncTasks === 'function') syncTasks();
+  const tasks = (state.tasks || []).filter(t => t.checkId === checkId || opp.some(o => o.id === t.opportunityId)).sort((a,b)=>({P1:1,P2:2,P3:3,P4:4}[a.priority]||5)-({P1:1,P2:2,P3:3,P4:4}[b.priority]||5));
+
+  const targetHtml = target
+    ? `<div class="wizard-target"><span class="section-kicker">Pagina target</span><strong>${Utils.esc(target)}</strong><a class="btn btn-sm" href="${Utils.esc(target)}" target="_blank" rel="noopener noreferrer">Apri pagina</a></div>`
+    : `<div class="notice warning"><strong>Pagina target non configurata.</strong><br>Per indicare con precisione dove intervenire, apri “I tuoi siti” e compila “Pagina da ottimizzare”. <button type="button" class="btn btn-sm" data-go="projects" style="margin-top:8px">Configura pagina target</button></div>`;
+
+  const improvementEl = document.getElementById('wizardImprovements');
+  if (improvementEl) improvementEl.innerHTML = `${targetHtml}${opp.length ? `<div class="wizard-priority-list">${opp.map((o,i)=>`<article class="wizard-priority-card priority-${o.priority}"><div class="flex gap-8 wrap">${badge(o.priority,o.priority==='P1'?'danger':o.priority==='P2'?'warning':'info')}<strong>${i+1}. ${Utils.esc(o.title)}</strong></div><p><strong>Problema:</strong> ${Utils.esc(o.why)}</p><p><strong>Cosa fare:</strong> ${Utils.esc(o.action)}</p><div class="help"><strong>Pagina interessata:</strong> ${Utils.esc(target || 'Da configurare')}</div></article>`).join('')}</div>` : empty('Nessun problema prioritario', 'La verifica non ha generato opportunità automatiche. Controlla comunque fonti e stabilità con test ripetuti.')}`;
+
+  const planEl = document.getElementById('wizardWorkPlan');
+  if (planEl) planEl.innerHTML = `${targetHtml}${tasks.length ? `<div class="wizard-plan-list">${tasks.map((t,i)=>`<article class="wizard-plan-row"><div class="wizard-plan-number">${i+1}</div><div><div class="flex gap-8 wrap">${badge(t.priority||'P3',(t.priority||'P3')==='P1'?'danger':(t.priority||'P3')==='P2'?'warning':'info')}<strong>${Utils.esc(t.title)}</strong></div><div class="help" style="margin-top:5px">URL: ${Utils.esc(t.url || target || 'Da configurare')}</div><div class="help">Stato: ${Utils.esc(t.status || 'Da verificare')}${t.due ? ` · Scadenza: ${Utils.date(t.due)}` : ''}</div></div><button type="button" class="btn btn-sm" data-go="actions">Apri piano</button></article>`).join('')}</div><div class="notice" style="margin-top:14px"><strong>Ordine consigliato:</strong> completa prima le P1, poi verifica che le modifiche siano online e indicizzate; successivamente ripeti lo stesso prompt in ambiente neutrale prima di passare alle P2.</div>` : empty('Nessuna attività generata', 'Apri “Cosa migliorare” e verifica che siano presenti opportunità applicabili.')}`;
 }
 
 // ============================================================
@@ -2382,6 +2494,7 @@ function renderOpportunityCard(o, selectable = true) {
   return `<article class="opportunity priority-${o.priority} ${selectedOpportunityIds.has(o.id) ? 'selected' : ''}" data-project="${o.projectId}" data-priority="${o.priority}" data-status="${o.status}">
     <div class="flex wrap gap-8">${selectable ? `<input type="checkbox" class="opp-select" value="${o.id}" ${selectedOpportunityIds.has(o.id) ? 'checked' : ''} aria-label="Seleziona opportunità">` : ''}${badge(o.priority, o.priority === 'P1' ? 'danger' : o.priority === 'P2' ? 'warning' : 'info')}<strong>${Utils.esc(o.title)}</strong><div class="spacer"></div><select data-opp-status="${o.id}" style="width:auto"><option ${o.status === 'Da fare' ? 'selected' : ''}>Da fare</option><option ${o.status === 'In corso' ? 'selected' : ''}>In corso</option><option ${o.status === 'Completata' ? 'selected' : ''}>Completata</option></select></div>
     <div class="priority-explain"><strong>${Utils.esc(pd.label)} · ${Utils.esc(pd.when)} · Impegno ${Utils.esc(pd.effort)}</strong><br>${Utils.esc(pd.meaning)}</div>
+    <div class="target-url-box"><span>Pagina target</span><strong>${Utils.esc(projectBy(o.projectId)?.targetUrl || 'Non configurata')}</strong>${projectBy(o.projectId)?.targetUrl ? `<a class="btn btn-sm" href="${Utils.esc(projectBy(o.projectId).targetUrl)}" target="_blank" rel="noopener noreferrer">Apri</a>` : `<button type="button" class="btn btn-sm" data-go="projects">Configura</button>`}</div>
     ${renderImpact(o)}${renderDiagnosis(o)}${auditAssessment(projectBy(o.projectId), o)}
     <p class="simple-explanation"><strong>Problema rilevato:</strong> ${Utils.esc(o.why)}</p>
     <p class="simple-explanation"><strong>Obiettivo:</strong> ${Utils.esc(o.expectedOutcome || o.action)}</p>
@@ -2967,13 +3080,12 @@ const actionHandlers = {
   'wizard-prev': () => showWizardStep(currentWizardStep - 1),
   'wizard-next': () => {
     if (!validateStep(currentWizardStep)) return;
-    if (currentWizardStep === 2) runAnalysis(false);
-    if (currentWizardStep === 4) {
-      const d = Utils.form(document.getElementById('checkForm'));
-      renderSaveSummary(d, finalAnalysisFromForm());
+    if (currentWizardStep === 2) { runAnalysis(false); showWizardStep(3); return; }
+    if (currentWizardStep === 3) { const saved = saveCheck(true); if (saved) showWizardStep(4); return; }
+    if (currentWizardStep === 5) {
+      state.checkDraft = {}; analysisDraft = null; wizardSavedCheckId = ''; saveState(true); setSection('results'); return;
     }
-    if (currentWizardStep === 5) saveCheck();
-    else showWizardStep(currentWizardStep + 1);
+    showWizardStep(currentWizardStep + 1);
   },
   'prepare-quick-check': prepareQuickCheck,
   'neutral-test-instructions': neutralTestInstructions,
@@ -2981,6 +3093,7 @@ const actionHandlers = {
     deleteConfirm('Svuotare tutti i campi della bozza?', () => {
       state.checkDraft = {};
       analysisDraft = null;
+      wizardSavedCheckId = '';
       saveState(true);
       renderNewCheck();
     });
@@ -3965,7 +4078,7 @@ function analyzeManualAudit(project,a={}) {
     {key:'schema',label:'Dati strutturati',status:a.hasSchema?'confirmed':'verify',detail:a.hasSchema?'Confermato nell’audit':'Non confermato'},
     {key:'author',label:'Autore identificabile',status:a.hasAuthor?'confirmed':'verify',detail:a.hasAuthor?'Confermato nell’audit':'Non confermato'},
     {key:'links',label:'Link interni presenti',status:Number(a.internalLinks||0)>=3?'confirmed':Number(a.internalLinks||0)>0?'probable':'verify',detail:`${Number(a.internalLinks||0)} link registrati`},
-    {key:'reviews',label:'Prove o recensioni visibili',status:a.hasProof?'confirmed':'verify',detail:a.hasProof?'Confermato nell’audit':'Non confermato'}
+    {key:'reviews',label:'Prove o recensioni visibili',status:Number(a.reviews||0)>0?'confirmed':'verify',detail:Number(a.reviews||0)>0?`${Number(a.reviews)} prove/recensioni registrate`:'Non confermato'}
   ];
   return {mode:'manual-audit',isHtml:false,title:a.title||'',meta:a.meta||'',h1s:a.h1?[a.h1]:[],headings:[],links:Array(Number(a.internalLinks||0)).fill('audit'),schemas:a.hasSchema?['audit']:[],services:[],locations:[],hasFaq:!!a.hasFaq,hasAuthor:!!a.hasAuthor,hasSchema:!!a.hasSchema,wordCount:(a.intro||'').trim().split(/\s+/).filter(Boolean).length,text:a.intro||'',checks};
 }
